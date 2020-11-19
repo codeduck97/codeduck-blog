@@ -1,0 +1,24 @@
+spring:
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 127.0.0.1:8848
+    gateway:
+      routes:
+        - id: blog_server_route
+          uri: lb://codeduck-blog-server
+          predicates:
+            - Path=/server/**
+          filters:
+            - RewritePath=/server/(?<segment>.*),/$\{segment}
+        - id: blog_web_route
+          uri: lb://codeduck-blog-web
+          predicates:
+            - Path=/web/**
+          filters:
+            - RewritePath=/web/(?<segment>.*),/$\{segment}
+  application:
+    name: codeduck-blog-gateway
+
+server:
+  port: 88

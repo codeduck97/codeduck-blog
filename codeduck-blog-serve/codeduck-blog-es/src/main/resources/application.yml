@@ -1,0 +1,103 @@
+server:
+  port: 10000
+
+spring:
+  jackson:
+    serialization:
+      INDENT_OUTPUT: true
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: Asia/Shanghai
+  servlet:
+    multipart:
+      max-file-size: 40MB   #设置单个上传的文件大小
+      max-request-size: 100MB  #设置单次请求的文件的总大小
+
+  # 数据库配置
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/codeduck_blog?useUnicode=true&useSSL=false&characterEncoding=utf8&serverTimezone=Asia/Shanghai
+    username: root
+    password: root
+    type: com.alibaba.druid.pool.DruidDataSource
+    druid:
+      initial-size: 5 #连接池初始化大小
+      min-idle: 10 #最小空闲连接数
+      max-active: 20 #最大连接数
+      web-stat-filter:
+        exclusions: "*.js,*.gif,*.jpg,*.png,*.css,*.ico,/druid/*" #不统计这些请求数据
+      stat-view-servlet: #访问监控网页的登录用户名和密码
+        login-username: druid
+        login-password: druid
+
+  ## Redis配置 - start
+  redis:
+    # Redis数据库索引（默认为0）
+    database: 1
+    # Redis服务器地址
+    host: 127.0.0.1
+    #    host: 172.17.0.1
+    #    host: 192.168.192.169
+    # Redis服务器连接端口
+    port: 6379
+    # Redis服务器连接密码（默认为空）
+    # password: ""
+    # 连接超时时间（毫秒）
+    timeout: 5000
+    jedis:
+      pool:
+        # 连接池最大连接数（使用负值表示没有限制）
+        max-active: 8
+        # 连接池最大阻塞等待时间（使用负值表示没有限制）
+        max-wait: -1
+        # 连接池中的最大空闲连接
+        max-idle: 8
+        # 连接池中的最小空闲连接
+        min-idle: 0
+  ## Redis配置 - end
+
+# mybatis-plus配置
+mybatis-plus:
+  # mapper文件
+  mapper-locations: classpath*:/mapper/**Mapper.xml   # xml文件所在位置
+  type-aliases-package: com.duck.code.entity.*  #实体扫描，多个package用逗号或者分号分隔
+  global-config:
+    # 数据库相关配置
+    db-config:
+      #字段策略 IGNORED:"忽略判断",NOT_NULL:"非 NULL 判断"),NOT_EMPTY:"非空判断"
+      field-strategy: not_empty
+      # 表的前缀
+      table-prefix: tb_
+      logic-delete-value: 1 # 逻辑已删除值(默认为 1)
+      logic-not-delete-value: 0 # 逻辑未删除值(默认为 0)
+
+  #mybatis原生配置
+  configuration:
+    #驼峰下划线转换
+    map-underscore-to-camel-case: true
+    #不开启二级缓存
+    cache-enabled: false
+
+# slf4j日志配置信息，控制台提示的日志信息
+logging:
+  level:
+    com:
+      gulang:
+        dao: debug   # 显示查询sql语句的详情
+    root: INFO  #DEBUG,WARN,ERROR  #日志配置DEBUG,INFO,WARN,ERROR
+# file: demo_log.log #配置日志生成的具体文件名（文件会生成在项目目录的根目录下）
+# path: /logs #配置日志文件所在目录名称
+
+# 不需要授权的公共接口(最后需要加 “,”)
+common_auth: "/user/info/**,"
+
+# 七牛云存储
+oss:
+  qiniu:
+    domain: http://codeduck.top # 访问域名(默认使用七牛云测试域名)
+    accessKey: LbO-QiXM6F7zGbz7inl-PrmJPh6B7QoytdoF4H3p # 公钥
+    secretKey: TyJAtXhBR8pFDK6Soz5qv4zP7G9BPYo-3_gxbA5k # 私钥
+    bucketName: codeduck  #存储空间名称
+
+file:
+  upload:
+    path: D:/code_duck/data
