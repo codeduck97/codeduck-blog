@@ -1,0 +1,25 @@
+server:
+  port: 8201
+spring:
+  application:
+    name: codeduck-admin
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 127.0.0.1:8848   # Nacos服务中心地址
+        namespace: codeduck-dev
+      config:
+        # Nacos作为配置中心的地址
+        server-addr: 127.0.0.1:8848
+        # 指定文件为yml格式的配置文件
+        file-extension: yml
+        # 指定分组
+        group: DEV-GROUP
+        # 指定命名空间
+        namespace: codeduck-dev
+# 暴露所有的监控端口
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
