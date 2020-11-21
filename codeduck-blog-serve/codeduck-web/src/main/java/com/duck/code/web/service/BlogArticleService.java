@@ -16,5 +16,21 @@ import java.util.List;
  */
 public interface BlogArticleService extends IService<BlogArticle> {
 
+    /**
+     * desc: 获取所有博文（博文按照时间顺序排序返回）
+     * <p>
+     * @param pageNum
+     * @param pageSize
+     * @return
+     */
+    List<BlogArticleVO> getAllBlogs(long pageNum, long pageSize);
 
+    /**
+     * desc: 获取阅读量最高的五篇文章
+     * <p>
+     *
+     * @param
+     * @return
+     */
+    List<BlogArticle> getHotArticles();
 }

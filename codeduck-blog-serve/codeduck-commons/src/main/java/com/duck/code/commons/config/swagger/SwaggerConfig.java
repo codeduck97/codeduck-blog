@@ -1,4 +1,4 @@
-package com.duck.code.web.config;
+package com.duck.code.commons.config.swagger;
 
 import io.swagger.annotations.ApiOperation;
 import org.springframework.context.annotation.Bean;
