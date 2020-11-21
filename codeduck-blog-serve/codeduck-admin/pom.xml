@@ -12,6 +12,7 @@
     <groupId>com.duck.code</groupId>
     <artifactId>codeduck-admin</artifactId>
     <version>0.0.1-SNAPSHOT</version>
+
     <name>codeduck-admin</name>
     <description>codeduck admin 后台数据管理系统</description>
 

@@ -3,16 +3,16 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.2.11.RELEASE</version>
-        <relativePath/> <!-- lookup parent from repository -->
+        <groupId>com.duck.code</groupId>
+        <artifactId>codeduck-blog-serve</artifactId>
+        <version>0.0.1-SNAPSHOT</version>
     </parent>
+
     <groupId>com.duck.code</groupId>
-    <artifactId>codeduck-blog-gateway</artifactId>
+    <artifactId>codeduck-gateway</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>codeduck-blog-gateway</name>
-    <description>微服务路由网关索引</description>
+
+    <name>codeduck-gateway</name>
 
     <properties>
         <java.version>1.8</java.version>

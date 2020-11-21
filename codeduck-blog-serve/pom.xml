@@ -24,18 +24,26 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
-        <junit.version>4.12</junit.version>
         <lombok.version>1.18.0</lombok.version>
         <log4j.version>1.2.17</log4j.version>
         <mysql.version>8.0.18</mysql.version>
-        <druid.version>1.1.16</druid.version>
-        <mybatis.spring.boot.version>1.3.0</mybatis.spring.boot.version>
+        <druid.version>1.1.20</druid.version>
+        <mybatis-plus.version>3.3.2</mybatis-plus.version>
+        <mybatis-plus.generator.version>3.3.2</mybatis-plus.generator.version>
+        <qiniu.version>7.2.7</qiniu.version>
+        <freemarker.version>2.3.30</freemarker.version>
+        <hutool.version>5.4.3</hutool.version>
+        <java.jwt.version>3.4.0</java.jwt.version>
+        <shiro.version>1.5.1</shiro.version>
+        <swagger2.version>2.9.2</swagger2.version>
+        <swagger-ui.version>1.8.7</swagger-ui.version>
+        <commons-lang3.version>3.9</commons-lang3.version>
+        <fastjson.version>1.2.66</fastjson.version>
     </properties>
 
     <dependencyManagement>
-
         <dependencies>
-            <!--spring boot 2.2.2-->
+            <!--spring boot 2.2.11-->
             <dependency>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-dependencies</artifactId>
@@ -59,6 +67,24 @@
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
+            <!--validation-->
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-validation</artifactId>
+            </dependency>
+
+            <!--spring aop支持-->
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-aop</artifactId>
+            </dependency>
+
+            <!--redis-->
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-data-redis</artifactId>
+            </dependency>
+
             <!--mysql-->
             <dependency>
                 <groupId>mysql</groupId>
@@ -73,16 +99,42 @@
                 <version>${druid.version}</version>
             </dependency>
 
+            <!--mybatis-plus-->
             <dependency>
-                <groupId>org.mybatis.spring.boot</groupId>
-                <artifactId>mybatis-spring-boot-starter</artifactId>
-                <version>${mybatis.spring.boot.version}</version>
+                <groupId>com.baomidou</groupId>
+                <artifactId>mybatis-plus-boot-starter</artifactId>
+                <version>${mybatis-plus.version}</version>
             </dependency>
-            <!--junit-->
+            <!--代码生成器-->
             <dependency>
-                <groupId>junit</groupId>
-                <artifactId>junit</artifactId>
-                <version>${junit.version}</version>
+                <groupId>com.baomidou</groupId>
+                <artifactId>mybatis-plus-generator</artifactId>
+                <version>${mybatis-plus.generator.version}</version>
+            </dependency>
+            <!--逆向工程需要模板引擎-->
+            <dependency>
+                <groupId>org.freemarker</groupId>
+                <artifactId>freemarker</artifactId>
+                <version>${freemarker.version}</version>
+            </dependency>
+            <!--七牛-->
+            <dependency>
+                <groupId>com.qiniu</groupId>
+                <artifactId>qiniu-java-sdk</artifactId>
+                <version>${qiniu.version}</version>
+            </dependency>
+
+            <!--引入Hutool开源工具包(里面包含发送邮件的包)-->
+            <dependency>
+                <groupId>cn.hutool</groupId>
+                <artifactId>hutool-all</artifactId>
+                <version>${hutool.version}</version>
+            </dependency>
+            <!--引入jwt-->
+            <dependency>
+                <groupId>com.auth0</groupId>
+                <artifactId>java-jwt</artifactId>
+                <version>${java.jwt.version}</version>
             </dependency>
             <!--log4j-->
             <dependency>
@@ -90,7 +142,44 @@
                 <artifactId>log4j</artifactId>
                 <version>${log4j.version}</version>
             </dependency>
+            <!--shiro-->
+            <dependency>
+                <groupId>org.apache.shiro</groupId>
+                <artifactId>shiro-spring</artifactId>
+                <version>${shiro.version}</version>
+            </dependency>
 
+            <!--swagger -->
+            <dependency>
+                <groupId>io.springfox</groupId>
+                <artifactId>springfox-swagger2</artifactId>
+                <version>${swagger2.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.springfox</groupId>
+                <artifactId>springfox-swagger-ui</artifactId>
+                <version>${swagger2.version}</version>
+            </dependency>
+
+            <!-- 第三方swagger显示工具 -->
+            <dependency>
+                <groupId>com.github.xiaoymin</groupId>
+                <artifactId>swagger-bootstrap-ui</artifactId>
+                <version>${swagger-ui.version}</version>
+            </dependency>
+            <!-- fastjson 是阿里巴巴的开源JSON解析库，它可以解析 JSON 格式的字符串，
+                支持将 Java Bean 序列化为 JSON 字符串,也可以从 JSON 字符串反序列化到 JavaBean-->
+            <dependency>
+                <groupId>com.alibaba</groupId>
+                <artifactId>fastjson</artifactId>
+                <version>${fastjson.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-lang3</artifactId>
+                <version>${commons-lang3.version}</version>
+            </dependency>
+            <!--lombok-->
             <dependency>
                 <groupId>org.projectlombok</groupId>
                 <artifactId>lombok</artifactId>
