@@ -23,6 +23,7 @@ public class MybatisPlusConfig {
     public MapperScannerConfigurer mapperScannerConfigurer() {
         MapperScannerConfigurer scannerConfigurer = new MapperScannerConfigurer();
         scannerConfigurer.setBasePackage("com.duck.code.web.mapper");
+        scannerConfigurer.setBasePackage("com.duck.code.admin.mapper");
         return scannerConfigurer;
     }
 

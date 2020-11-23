@@ -71,18 +71,21 @@
             <dependency>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-starter-validation</artifactId>
+                <version>2.2.11.RELEASE</version>
             </dependency>
 
             <!--spring aop支持-->
             <dependency>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-starter-aop</artifactId>
+                <version>2.2.11.RELEASE</version>
             </dependency>
 
             <!--redis-->
             <dependency>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-starter-data-redis</artifactId>
+                <version>2.2.4.RELEASE</version>
             </dependency>
 
             <!--mysql-->
