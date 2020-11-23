@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.duck.code.admin.mapper.BlogSortMapper">
+
+    <sql id="Base_Column_List">
+        id,sort_name,click_count,sort,creation_time,update_time
+    </sql>
+    <select id="queryAllByPageInfo" resultType="com.duck.code.admin.entity.BlogSortVO">
+        select
+            s.id,s.sort_name,s.hits,s.status,s.sort_index,s.creation_time,s.update_time,count(*) as articles_num
+        from
+            tb_blog_sort as s
+        left join
+            tb_blog as b on s.id = b.sort_id
+        where
+            s.deleted=0
+        group by
+            s.id
+        order by sort_index desc
+        <if test="pageNum!=null and pageSize!=null">
+            limit #{pageNum},#{pageSize}
+        </if>
+    </select>
+</mapper>

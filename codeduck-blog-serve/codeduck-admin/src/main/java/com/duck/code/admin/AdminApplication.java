@@ -12,10 +12,12 @@ import org.springframework.context.annotation.ComponentScan;
 @EnableFeignClients
 @ComponentScan(basePackages = {
         "com.duck.code.commons.config",
-        "com.duck.code.commons.exception",
-        "com.duck.code.admin"
+        "com.duck.code.commons.exception"
 })
-@MapperScan("com.duck.code.admin.mapper")
+@MapperScan(basePackages = {
+        "com.duck.code.admin.mapper",
+        "com.duck.code.config"
+})
 public class AdminApplication {
 
     public static void main(String[] args) {
