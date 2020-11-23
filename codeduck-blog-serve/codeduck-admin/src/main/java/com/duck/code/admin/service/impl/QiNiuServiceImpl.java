@@ -1,7 +1,7 @@
 package com.duck.code.admin.service.impl;
 
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
-import com.duck.code.admin.config.SysConfig;
+import com.duck.code.admin.config.system.SysConfig;
 import com.duck.code.admin.service.PictureService;
 import com.duck.code.admin.service.QiNiuService;
 import com.duck.code.admin.utils.FileUtil;

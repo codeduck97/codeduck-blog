@@ -1,7 +1,7 @@
 package com.duck.code.admin.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.duck.code.admin.entity.BlogTagVO;
+import com.duck.code.admin.vo.BlogTagVO;
 import com.duck.code.commons.entity.pojo.BlogTag;
 
 import java.util.List;

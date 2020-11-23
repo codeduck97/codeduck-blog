@@ -35,7 +35,7 @@ import java.util.Map;
 @RestController
 @RequestMapping("/api/home")
 @Validated
-@Api(value = "首页相关接口", tags = {"首页相关接口"})
+@Api(value = "首页相关接口", tags = {"首页相关 API"})
 @Slf4j
 public class HomeController {
 

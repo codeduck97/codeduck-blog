@@ -1,4 +1,4 @@
-package com.duck.code.admin.entity;
+package com.duck.code.admin.vo;
 
 import com.duck.code.commons.validator.Insert;
 import com.duck.code.commons.validator.Update;

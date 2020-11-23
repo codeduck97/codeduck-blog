@@ -1,6 +1,6 @@
 package com.duck.code.admin.utils;
 
-import com.duck.code.admin.config.SysConfig;
+import com.duck.code.admin.config.system.SysConfig;
 import com.google.gson.Gson;
 import com.qiniu.common.Zone;
 import com.qiniu.http.Response;

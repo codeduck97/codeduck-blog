@@ -30,7 +30,7 @@ import java.util.Map;
 @RestController
 @Validated
 @Slf4j
-@Api(value = "博文详情页面相关接口", tags = {"博文详情页面相关接口"})
+@Api(value = "博文详情页面相关接口", tags = {"博文详情页面 API"})
 @RequestMapping("/api/article")
 public class ArticleController {
     @Resource

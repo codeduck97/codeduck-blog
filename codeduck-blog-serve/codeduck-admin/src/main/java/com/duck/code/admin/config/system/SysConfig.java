@@ -1,4 +1,4 @@
-package com.duck.code.admin.config;
+package com.duck.code.admin.config.system;
 
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Value;

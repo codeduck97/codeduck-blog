@@ -5,7 +5,7 @@
     <sql id="Base_Column_List">
         id,sort_name,click_count,sort,creation_time,update_time
     </sql>
-    <select id="queryAllByPageInfo" resultType="com.duck.code.admin.entity.BlogSortVO">
+    <select id="queryAllByPageInfo" resultType="com.duck.code.admin.vo.BlogSortVO">
         select
             s.id,s.sort_name,s.hits,s.status,s.sort_index,s.creation_time,s.update_time,count(*) as articles_num
         from

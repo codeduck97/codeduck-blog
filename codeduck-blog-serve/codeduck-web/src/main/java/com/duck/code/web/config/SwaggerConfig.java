@@ -1,4 +1,4 @@
-package com.duck.code.commons.config.swagger;
+package com.duck.code.web.config;
 
 import io.swagger.annotations.ApiOperation;
 import org.springframework.context.annotation.Bean;
@@ -85,10 +85,9 @@ public class SwaggerConfig {
         return new ApiInfoBuilder()
                 .title("Code Duck Blog 前端门户API文档")
                 .description("本Api文档在逐步完善……")
-                .termsOfServiceUrl("http://127.0.0.1:8848")
+                .termsOfServiceUrl("http://127.0.0.1:8202")
                 .contact(new Contact("Code Duck", "", "codeduck@163.com"))
                 .version("1.0")
-                .termsOfServiceUrl("/api")
                 .build();
     }
 }

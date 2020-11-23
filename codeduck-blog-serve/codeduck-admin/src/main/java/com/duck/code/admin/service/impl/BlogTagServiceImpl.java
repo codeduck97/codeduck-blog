@@ -1,9 +1,8 @@
 package com.duck.code.admin.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.duck.code.admin.entity.BlogTagVO;
+import com.duck.code.admin.vo.BlogTagVO;
 import com.duck.code.admin.mapper.BlogTagMapper;
 import com.duck.code.admin.service.BlogArticleService;
 import com.duck.code.admin.service.BlogTagService;

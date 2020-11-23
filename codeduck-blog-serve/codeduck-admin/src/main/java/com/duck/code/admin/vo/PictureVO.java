@@ -1,4 +1,4 @@
-package com.duck.code.admin.entity;
+package com.duck.code.admin.vo;
 
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.fasterxml.jackson.annotation.JsonFormat;

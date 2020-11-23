@@ -1,6 +1,6 @@
 package com.duck.code.admin.service;
 
-import com.duck.code.admin.entity.BlogArticleVO;
+import com.duck.code.admin.vo.BlogArticleVO;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.duck.code.commons.entity.pojo.BlogArticle;
 

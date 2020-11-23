@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api/sort")
 @Validated
-@Api(value = "分类页面相关接口")
+@Api(value = "分类页面 API")
 @Slf4j
 public class SortController {
 }

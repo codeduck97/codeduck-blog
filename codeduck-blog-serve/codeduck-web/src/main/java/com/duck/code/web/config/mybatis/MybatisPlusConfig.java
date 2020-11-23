@@ -1,8 +1,7 @@
-package com.duck.code.commons.config.mybatis;
+package com.duck.code.web.config.mybatis;
 
 import com.baomidou.mybatisplus.extension.plugins.OptimisticLockerInterceptor;
 import com.baomidou.mybatisplus.extension.plugins.PaginationInterceptor;
-import org.mybatis.spring.annotation.MapperScan;
 import org.mybatis.spring.mapper.MapperScannerConfigurer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -14,7 +13,6 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
  * @author: Code Duck
  * @create: 2020-10-22 19:52
  */
-//@MapperScan({"com.duck.code.web.mapper", "com.duck.code.admin.mapper"})
 @EnableTransactionManagement // 开启事务
 @Configuration
 public class MybatisPlusConfig {
@@ -23,7 +21,6 @@ public class MybatisPlusConfig {
     public MapperScannerConfigurer mapperScannerConfigurer() {
         MapperScannerConfigurer scannerConfigurer = new MapperScannerConfigurer();
         scannerConfigurer.setBasePackage("com.duck.code.web.mapper");
-        scannerConfigurer.setBasePackage("com.duck.code.admin.mapper");
         return scannerConfigurer;
     }
 

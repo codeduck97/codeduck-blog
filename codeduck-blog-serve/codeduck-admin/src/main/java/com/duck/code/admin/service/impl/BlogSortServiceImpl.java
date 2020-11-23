@@ -3,7 +3,7 @@ package com.duck.code.admin.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.duck.code.admin.entity.BlogSortVO;
+import com.duck.code.admin.vo.BlogSortVO;
 import com.duck.code.admin.mapper.BlogSortMapper;
 import com.duck.code.admin.service.BlogArticleService;
 import com.duck.code.admin.service.BlogSortService;

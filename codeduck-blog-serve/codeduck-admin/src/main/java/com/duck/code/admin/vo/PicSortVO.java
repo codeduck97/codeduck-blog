@@ -1,4 +1,4 @@
-package com.duck.code.admin.entity;
+package com.duck.code.admin.vo;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;

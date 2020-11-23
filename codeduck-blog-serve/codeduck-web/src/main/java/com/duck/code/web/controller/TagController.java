@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api/tag")
 @Validated
-@Api(value = "标签页面相关接口")
+@Api(value = "标签页面 API")
 @Slf4j
 public class TagController {
 }

@@ -1,7 +1,7 @@
 package com.duck.code.admin.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.duck.code.admin.entity.BlogSortVO;
+import com.duck.code.admin.vo.BlogSortVO;
 import com.duck.code.commons.entity.pojo.BlogSort;
 
 import java.util.List;
