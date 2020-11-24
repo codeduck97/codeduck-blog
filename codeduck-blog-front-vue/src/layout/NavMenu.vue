@@ -13,7 +13,11 @@
           <el-menu-item v-for="(item,i) in navList" :key="i" :index="item.index">
             {{item.navItem}}
           </el-menu-item>
-          <span class="brand">Code Duck</span>
+          <router-link to="/">
+            <a class="brand">
+              Code Duck
+            </a>
+          </router-link>
           <i class="el-icon-user" v-on:click="login"></i>
         </el-menu>
       </el-col>

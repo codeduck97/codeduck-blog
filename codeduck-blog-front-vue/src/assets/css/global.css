@@ -5,6 +5,12 @@ body,
     padding: 0;
     height: 100%;
 }
+/* ==========================以下样式均为自定义=============== */
+
+.el-card__body {
+  padding: 5px !important;
+}
+
 /*所有组件的容器*/
 .home-container {
     height: 100%;
@@ -61,3 +67,23 @@ a { text-decoration: none; color: #555 }
 .cloud ul a:first-child { background: #036564 }
 .cloud ul a:last-child { background: #3299BB }
 .cloud ul a:hover { border-radius: 0; text-shadow: #000 1px 1px 1px }
+
+/*归档页面*/
+.sortBox .time {
+  float: left;
+  width: 34%;
+  height: 800px;
+  overflow: scroll;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+.sortBox .article {
+  margin-left: 20px;
+  float: left;
+  width: 60%;
+  height: 800px;
+  overflow: scroll;
+  overflow-x: hidden;
+  overflow-y: auto;
+}

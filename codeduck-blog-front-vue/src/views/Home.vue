@@ -83,22 +83,24 @@
           <!-- 热门文章侧边框 -->
           <div class="blog-box-side">
             <el-card>
-              <h2 class="hometitle">热门文章</h2>
-              <div class="hot-artile-first" v-if="hotBlogs[0]" style="margin-bottom:-5rem">
-                <el-image :src="hotBlogs[0].cover" />
-                <p><a>{{hotBlogs[0].title}}</a></p>
-              </div>
-              <div class="hot-article" v-for="(item,i) in hotBlogs" :key="i">
-                <div v-if="i!==0">
-                  <el-row >
-                    <el-col :span="13">
-                      <span class="hot-article-cover"><el-image :src="item.cover" /></span>
-                    </el-col>
-                    <el-col :span="11" style="padding:12px;">
-                      <h5>{{item.title}}</h5>
-                      <div style="font-size:1px">{{item.creationTime}}</div>
-                    </el-col>
-                  </el-row>
+              <div class="box-hot">
+               <h2 class="hometitle">热门文章</h2>
+                <div class="hot-artile-first" v-if="hotBlogs[0]" style="margin-bottom:-5rem">
+                  <el-image :src="hotBlogs[0].cover" />
+                  <p><a>{{hotBlogs[0].title}}</a></p>
+                </div>
+                <div class="hot-article" v-for="(item,i) in hotBlogs" :key="i">
+                  <div v-if="i!==0">
+                    <el-row >
+                      <el-col :span="13">
+                        <span class="hot-article-cover"><el-image :src="item.cover" /></span>
+                      </el-col>
+                      <el-col :span="11" style="padding:12px;">
+                        <h5>{{item.title}}</h5>
+                        <div style="font-size:1px">{{item.creationTime}}</div>
+                      </el-col>
+                    </el-row>
+                  </div>
                 </div>
               </div>
             </el-card>
@@ -215,7 +217,7 @@ export default {
   margin: 17px 0 0 0;
 }
 .blog-card{
-  padding: 0px;
+  padding: 20px;
   overflow: hidden;
 }
 .blog-title{
@@ -243,5 +245,10 @@ export default {
 .blank{
   padding: 10px;
 }
-
+.cloud{
+  padding:10px;
+}
+.box-hot {
+  padding: 10px;
+}
 </style>
