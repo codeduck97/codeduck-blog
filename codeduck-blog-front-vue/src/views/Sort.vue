@@ -1,5 +1,14 @@
 <template>
   <div class="classify-container">
+    <el-row :gutter="20" type="flex" justify="center" style="height:200px">
+      <el-col :span="24">
+        <div class="sort-header">
+          <el-image fit="contain"
+          src="http://localhost:8600/upload/images/2020/11/2020117-0ecc80cf-c1d3-4397-b02d-86d78e3e44e7.jpg" />
+        </div>
+      </el-col>
+    </el-row>
+    <el-divider><i class="el-icon-collection"></i></el-divider>
     <el-row type="flex" justify="center">
       <el-col :xs="4" :sm="4" :md="4" :lg="4" :xl="2">
         <div class="sidebar">
@@ -74,7 +83,7 @@ export default {
           return this.$message.error('系统开小差了……')
         }
         this.articleList = res.data
-        console.log(this.articleList)
+        // console.log(this.articleList)
       })
     },
     // 跳转到博客详细页
@@ -90,15 +99,19 @@ export default {
 </script>
 
 <style scoped>
+.sort-header {
+  width:100%;
+  height:100%;
+  overflow: hidden;
+}
 .article-box {
   padding: 10px;
 }
 .main {
-  margin: 40px 0;
   padding: 10px;
 }
 .sidebar {
-  margin: 50px 0;
+  margin: 5px 0;
   padding: 10px;
 }
 .sortBox {
