@@ -1,11 +1,13 @@
 package com.duck.code.admin.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.duck.code.admin.vo.BlogTagVO;
 import com.duck.code.admin.mapper.BlogTagMapper;
 import com.duck.code.admin.service.BlogArticleService;
 import com.duck.code.admin.service.BlogTagService;
+import com.duck.code.commons.entity.pojo.BlogSort;
 import com.duck.code.commons.entity.pojo.BlogTag;
 import org.springframework.stereotype.Service;
 
@@ -37,8 +39,21 @@ public class BlogTagServiceImpl extends ServiceImpl<BlogTagMapper, BlogTag> impl
      */
     @Override
     public List<BlogTagVO> getBlogTagList(long pageNum, long pageSize) {
+        long start;
+        pageNum = pageNum - 1;
+        if (pageNum == 0) {
+            start = pageNum;
+        } else {
+            start = pageNum * pageSize;
+        }
 
-        return this.baseMapper.queryAllByPageInfo((pageNum - 1) * pageSize, pageSize);
+        List<BlogTagVO> list = this.baseMapper.queryTotalNumOfArticlesInTag(start, pageSize);
+        list.forEach(i -> {
+            if (i.getArticlesNum() == null) {
+                i.setArticlesNum(0);
+            }
+        });
+        return list;
     }
 
     /**
@@ -110,10 +125,41 @@ public class BlogTagServiceImpl extends ServiceImpl<BlogTagMapper, BlogTag> impl
      * @return
      */
     @Override
-    public List<BlogTagVO> getAllTags() {
-        final long pageNum = 0;
-        final long pageSize = 999;
-        List<BlogTagVO> list = this.baseMapper.queryAllByPageInfo(pageNum, pageSize);
-        return list;
+    public List<BlogTag> getAllTags() {
+
+        return this.baseMapper.queryAllTags();
     }
+
+    /**
+     * desc: 递增标签的排序索引
+     * <p>
+     *
+     * @param id
+     * @return
+     */
+    @Override
+    public boolean incrIndex(String id) {
+        BlogTag max = this.baseMapper.queryMaxIndexOfTag();
+
+        BlogTag blogTag = super.getById(id);
+        Integer tagIndex = max.getTagIndex();
+        blogTag.setTagIndex(++tagIndex);
+        return super.updateById(blogTag);
+    }
+
+    /**
+     * desc: 重置所有标签的排序值
+     * <p>
+     *
+     * @param
+     * @return
+     */
+    @Override
+    public boolean resetIndex() {
+        UpdateWrapper<BlogTag> wrapper = new UpdateWrapper<>();
+        wrapper.set(true, "tag_index", 0);
+        return super.update(wrapper);
+    }
+
+
 }

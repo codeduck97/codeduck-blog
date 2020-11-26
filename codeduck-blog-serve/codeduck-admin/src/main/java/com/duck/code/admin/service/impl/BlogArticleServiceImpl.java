@@ -13,6 +13,8 @@ import com.duck.code.admin.service.BlogArticleService;
 import com.duck.code.admin.service.BlogSortService;
 import com.duck.code.admin.service.BlogTagService;
 import com.duck.code.commons.entity.pojo.BlogArticle;
+import com.duck.code.commons.entity.pojo.BlogSort;
+import com.duck.code.commons.entity.pojo.BlogTag;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -53,14 +55,14 @@ public class BlogArticleServiceImpl extends ServiceImpl<BlogArticleMapper, BlogA
     public List<BlogArticleVO> getBlogList(Long pageNum, Long pageSize) {
 
         // 获取标签表的所有信息
-        List<BlogSortVO> sorts = blogSortService.getAllSorts();
-        HashMap<String, BlogSortVO> sortMap = new HashMap<>();
+        List<BlogSort> sorts = blogSortService.getAllSorts();
+        HashMap<String, BlogSort> sortMap = new HashMap<>();
         // 创建字典集合保存所有标签信息
         sorts.forEach(sort -> sortMap.put(sort.getId(), sort));
 
         // 获取分类表的所有信息
-        List<BlogTagVO> tags = blogTagService.getAllTags();
-        Map<String, BlogTagVO> tagMap = new HashMap<>();
+        List<BlogTag> tags = blogTagService.getAllTags();
+        Map<String, BlogTag> tagMap = new HashMap<>();
         // 创建字典集合保存所有分类信息
         tags.forEach(tag -> tagMap.put(tag.getId(), tag));
 
@@ -146,14 +148,14 @@ public class BlogArticleServiceImpl extends ServiceImpl<BlogArticleMapper, BlogA
     public List<BlogArticleVO> getBlogByTitle(String title) {
 
         // 获取标签表的所有信息
-        List<BlogSortVO> sorts = blogSortService.getAllSorts();
-        HashMap<String, BlogSortVO> sortMap = new HashMap<>();
+        List<BlogSort> sorts = blogSortService.getAllSorts();
+        HashMap<String, BlogSort> sortMap = new HashMap<>();
         // 创建字典集合保存所有标签信息
         sorts.forEach(sort -> sortMap.put(sort.getId(), sort));
 
         // 获取分类表的所有信息
-        List<BlogTagVO> tags = blogTagService.getAllTags();
-        Map<String, BlogTagVO> tagMap = new HashMap<>();
+        List<BlogTag> tags = blogTagService.getAllTags();
+        Map<String, BlogTag> tagMap = new HashMap<>();
         // 创建字典集合保存所有分类信息
         tags.forEach(tag -> tagMap.put(tag.getId(), tag));
 
@@ -174,4 +176,5 @@ public class BlogArticleServiceImpl extends ServiceImpl<BlogArticleMapper, BlogA
         }
         return blogArticleVOList;
     }
+
 }

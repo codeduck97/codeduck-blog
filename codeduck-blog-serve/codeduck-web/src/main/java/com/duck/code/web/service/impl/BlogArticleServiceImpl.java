@@ -73,4 +73,30 @@ public class BlogArticleServiceImpl extends ServiceImpl<BlogArticleMapper, BlogA
     public List<BlogArticle> getHotArticles() {
         return this.baseMapper.queryHotArticles();
     }
+
+    /**
+     * desc: 获取博文的创建时间（以年月为单位）
+     * <p>
+     *
+     * @param
+     * @return YYYY-MM
+     */
+    @Override
+    public List<String> getArticleCreationTime() {
+        return this.baseMapper.queryCreationTime();
+    }
+
+    /**
+     * desc: 获取不同年月的博文集合
+     * <p>
+     *
+     * @param date
+     * @return
+     */
+    @Override
+    public List<BlogArticle> getAllArticlesByYearMonth(String date) {
+
+        return this.baseMapper.queryArticleByYearMonth(date);
+    }
+
 }

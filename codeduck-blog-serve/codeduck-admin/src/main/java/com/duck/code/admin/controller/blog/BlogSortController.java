@@ -136,4 +136,21 @@ public class BlogSortController {
         List<BlogSort> all = blogSortService.list();
         return R.ok(all).setCode(ResCode.OPERATION_SUCCESS);
     }
+
+
+    @ApiOperation(value = "递增该分类的排序索引")
+    @GetMapping("/incr")
+    public R incrSortIndex(@RequestParam("id") String id){
+        if (blogSortService.incrIndex(id)) {
+            return R.ok(null).setCode(ResCode.OPERATION_SUCCESS);
+        }
+       return R.failed("操作失败").setCode(ResCode.OPERATION_FAIL);
+    }
+
+    @ApiOperation(value = "重置所有分类的排序索引")
+    @GetMapping("/reset")
+    public R resetTagIndex(){
+        if (blogSortService.resetIndex()) return R.ok(null).setCode(ResCode.OPERATION_SUCCESS);
+        return R.failed("操作失败").setCode(ResCode.OPERATION_FAIL);
+    }
 }

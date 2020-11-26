@@ -1,11 +1,13 @@
 package com.duck.code.web;
 
 import com.duck.code.commons.entity.pojo.BlogArticle;
+import com.duck.code.web.mapper.BlogArticleMapper;
 import com.duck.code.web.mapper.BlogSortMapper;
 
 import com.duck.code.web.mapper.PictureMapper;
 import com.duck.code.web.service.BlogArticleService;
 import com.duck.code.web.service.BlogSortService;
+import com.duck.code.web.service.BlogTagService;
 import com.duck.code.web.vo.BlogArticleVO;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -35,6 +37,12 @@ public class ServiceTest {
     @Resource
     private BlogSortService blogSortService;
 
+    @Resource
+    private BlogTagService blogTagService;
+
+    @Resource
+    private BlogArticleMapper blogArticleMapper;
+
     @Test
     public void testSortDic(){
         Map<String, String> sortDic = blogSortService.getSortDic();
@@ -51,7 +59,8 @@ public class ServiceTest {
 
     @Test
     public void test(){
-        System.out.println("000000");
+        List<BlogArticle> strings = blogArticleMapper.queryArticleByYearMonth("2020-10");
+        strings.forEach(System.out::println);
     }
 
 }

@@ -5,6 +5,7 @@ import com.duck.code.admin.vo.BlogSortVO;
 import com.duck.code.commons.entity.pojo.BlogSort;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * <p>
@@ -27,14 +28,6 @@ public interface BlogSortService extends IService<BlogSort> {
      */
     List<BlogSortVO> getBlogSortList(Long pageNum, Long pageSize);
 
-    /**
-     * desc: 添加博客分类
-     * <p>
-     *
-     * @param name
-     * @return
-     */
-    boolean addBlogSort(String name);
 
     /**
      * desc: 更新分类
@@ -79,5 +72,23 @@ public interface BlogSortService extends IService<BlogSort> {
      * @param
      * @return
      */
-    List<BlogSortVO> getAllSorts();
+    List<BlogSort> getAllSorts();
+
+    /**
+     * desc: 增加排序索引
+     * <p>
+     *
+     * @param
+     * @return
+     */
+    boolean incrIndex(String id);
+
+    /**
+     * desc: 重置所有分类的排序值
+     * <p>
+     *
+     * @param
+     * @return
+     */
+    boolean resetIndex();
 }

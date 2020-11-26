@@ -1,6 +1,7 @@
 package com.duck.code.web.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.duck.code.commons.entity.pojo.BlogArticle;
 import com.duck.code.commons.entity.pojo.BlogTag;
 import com.duck.code.web.vo.BlogTagVO;
 
@@ -35,4 +36,22 @@ public interface BlogTagService extends IService<BlogTag> {
      * @return
      */
     List<BlogTag> getTagCloud();
+
+    /**
+     * desc: 通过标签id获取存在的博文列表
+     * <p>
+     *
+     * @param id
+     * @return
+     */
+    List<BlogArticle> getArticlesByTagId(String id);
+
+    /**
+     * desc: 获取存在博文的标签列表
+     * <p>
+     *
+     * @param
+     * @return
+     */
+    List<BlogTag> getTagList();
 }

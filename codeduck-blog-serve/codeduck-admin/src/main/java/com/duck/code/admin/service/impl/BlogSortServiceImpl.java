@@ -1,13 +1,16 @@
 package com.duck.code.admin.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.duck.code.admin.vo.BlogSortVO;
 import com.duck.code.admin.mapper.BlogSortMapper;
 import com.duck.code.admin.service.BlogArticleService;
 import com.duck.code.admin.service.BlogSortService;
+import com.duck.code.admin.vo.BlogTagVO;
 import com.duck.code.commons.entity.pojo.BlogSort;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -23,6 +26,7 @@ import java.util.List;
  * @since 2020-10-27
  */
 @Service
+@Slf4j
 public class BlogSortServiceImpl extends ServiceImpl<BlogSortMapper, BlogSort> implements BlogSortService {
 
     @Resource
@@ -39,26 +43,23 @@ public class BlogSortServiceImpl extends ServiceImpl<BlogSortMapper, BlogSort> i
      */
     @Override
     public List<BlogSortVO> getBlogSortList(Long pageNum, Long pageSize) {
-
-        return this.baseMapper.queryAllByPageInfo((pageNum - 1) * pageSize, pageSize);
-    }
-
-    /**
-     * desc: 添加博客分类
-     * <p>
-     *
-     * @param name
-     * @return
-     */
-    @Override
-    public boolean addBlogSort(String name) {
-        BlogSort blogSort = new BlogSort();
-        blogSort.setSortName(name);
-        if (super.save(blogSort)) {
-            return true;
+        long start;
+        pageNum = pageNum - 1;
+        if (pageNum == 0) {
+            start = pageNum;
+        } else {
+            start = pageNum * pageSize;
         }
-        return false;
+
+        List<BlogSortVO> list = this.baseMapper.queryTotalNumOfArticlesInCategory(start, pageSize);
+        list.forEach(i -> {
+            if (i.getArticlesNum() == null) {
+                i.setArticlesNum(0);
+            }
+        });
+        return list;
     }
+
 
     /**
      * desc: 更新分类
@@ -127,9 +128,38 @@ public class BlogSortServiceImpl extends ServiceImpl<BlogSortMapper, BlogSort> i
      * @return
      */
     @Override
-    public List<BlogSortVO> getAllSorts() {
-        final long pageNum = 0;
-        final long pageSize = 999;
-        return this.baseMapper.queryAllByPageInfo(pageNum, pageSize);
+    public List<BlogSort> getAllSorts() {
+        return this.baseMapper.queryAllSorts();
+    }
+
+
+    /**
+     * desc: 增加排序索引
+     * <p>
+     *
+     * @param
+     * @return
+     */
+    @Override
+    public boolean incrIndex(String id) {
+        BlogSort max = this.baseMapper.queryMaxIndexOfSort();
+        BlogSort blogSort = super.getById(id);
+        Integer sortIndex = max.getSortIndex();
+        blogSort.setSortIndex(++sortIndex);
+        return super.updateById(blogSort);
+    }
+
+    /**
+     * desc: 重置所有分类的排序值
+     * <p>
+     *
+     * @param
+     * @return
+     */
+    @Override
+    public boolean resetIndex() {
+        UpdateWrapper<BlogSort> wrapper = new UpdateWrapper<>();
+        wrapper.set(true, "sort_index", 0);
+        return super.update(wrapper);
     }
 }

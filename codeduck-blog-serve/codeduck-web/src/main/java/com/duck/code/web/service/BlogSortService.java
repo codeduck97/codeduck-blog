@@ -1,6 +1,7 @@
 package com.duck.code.web.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.duck.code.commons.entity.pojo.BlogArticle;
 import com.duck.code.commons.entity.pojo.BlogSort;
 import com.duck.code.web.vo.BlogSortVO;
 
@@ -34,4 +35,13 @@ public interface BlogSortService extends IService<BlogSort> {
      * @return
      */
     List<BlogSort> getSortList();
+
+    /**
+     * desc: 通过sortId获取相关博文列表
+     * <p>
+     *
+     * @param id
+     * @return
+     */
+    List<BlogArticle> getArticlesBySortId(String id);
 }

@@ -1,5 +1,7 @@
 package com.duck.code.admin.vo;
 
+import com.duck.code.commons.entity.pojo.BlogSort;
+import com.duck.code.commons.entity.pojo.BlogTag;
 import com.duck.code.commons.validator.Insert;
 import com.duck.code.commons.validator.Update;
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -63,7 +65,7 @@ public class BlogArticleVO {
      */
     @ApiModelProperty(value = "博文分类id")
 //    @NotBlank(message = "博文分类id不能为空",groups = {Insert.class,Update.class})
-    private BlogSortVO sort;
+    private BlogSort sort;
 
     /**
      * 博文标签id
@@ -71,7 +73,7 @@ public class BlogArticleVO {
     @ApiModelProperty(value = "博文标签id")
 //    @NotBlank(message = "博文标签id不能为空",groups = {Insert.class,Update.class})
 //    private String tagId;
-    private BlogTagVO tag;
+    private BlogTag tag;
 
     /**
      * 博文是否发布

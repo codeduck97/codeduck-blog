@@ -25,6 +25,6 @@ public interface BlogSortMapper extends BaseMapper<BlogSort> {
      * @param
      * @return
      */
-    @Select("SELECT * FROM tb_blog_sort AS s LEFT JOIN tb_blog AS b ON s.`id`=b.`sort_id` WHERE s.`deleted`=0 GROUP BY s.`id`")
-    List<BlogSort> queryAllByArticle();
+    @Select("SELECT * FROM tb_blog_sort AS s LEFT JOIN tb_blog AS b ON s.`id`=b.`sort_id` WHERE s.`deleted`=0 AND b.`deleted`=0 GROUP BY s.`id`")
+    List<BlogSort> queryAllSortsByBlogId();
 }

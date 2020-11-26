@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.duck.code.commons.entity.pojo.BlogArticle;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * <p>
@@ -61,4 +62,6 @@ public interface BlogArticleService extends IService<BlogArticle> {
      * @return
      */
     List<BlogArticleVO> getBlogByTitle(String title);
+
+
 }

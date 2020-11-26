@@ -3,6 +3,7 @@ package com.duck.code.web.service;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.duck.code.commons.entity.pojo.BlogArticle;
 import com.duck.code.web.vo.BlogArticleVO;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -33,4 +34,22 @@ public interface BlogArticleService extends IService<BlogArticle> {
      * @return
      */
     List<BlogArticle> getHotArticles();
+
+    /**
+     * desc: 获取博文的创建时间（以年月为单位）
+     * <p>
+     *
+     * @param
+     * @return YYYY-MM
+     */
+    List<String> getArticleCreationTime();
+
+    /**
+     * desc: 获取不同年月的博文集合
+     * <p>
+     *
+     * @param date
+     * @return
+     */
+    List<BlogArticle> getAllArticlesByYearMonth(String date);
 }

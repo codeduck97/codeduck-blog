@@ -2,18 +2,17 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.duck.code.admin.mapper.BlogTagMapper">
 
-    <select id="queryAllByPageInfo" resultType="com.duck.code.admin.vo.BlogTagVO">
-        select
-            t.`id`,t.`tag_name`,t.`hits`,t.`tag_index`,t.`status`,t.`deleted`,t.`creation_time`,t.`update_time`,COUNT(*) AS articles_num
-        from
-            tb_blog_tag AS t
-        left join
-            tb_blog AS b on t.`id` = b.`tag_id`
-        where
-            t.`deleted`=0
-        group by
-            t.`id`
-        order by t.`tag_index` desc
+    <select id="queryTotalNumOfArticlesInTag" resultType="com.duck.code.admin.vo.BlogTagVO">
+        SELECT t.`id`,t.`tag_name`,t.`hits`,t.`tag_index`,t.`status`,t.`deleted`,t.`creation_time`,t.`update_time`,b.articles_num
+        FROM tb_blog_tag AS t
+        LEFT JOIN (
+            SELECT tag_id,COUNT(*) AS articles_num
+            FROM tb_blog AS b
+            WHERE deleted=0
+            GROUP BY tag_id) AS b
+        ON b.tag_id = t.`id`
+        WHERE t.`deleted`=0
+        ORDER BY t.`tag_index` DESC
         <if test="pageNum!=null and pageSize!=null">
             limit #{pageNum},#{pageSize}
         </if>

@@ -70,5 +70,23 @@ public interface BlogTagService extends IService<BlogTag> {
      * @param
      * @return
      */
-    List<BlogTagVO> getAllTags();
+    List<BlogTag> getAllTags();
+
+    /**
+     * desc: 递增标签的排序索引
+     * <p>
+     *
+     * @param id
+     * @return
+     */
+    boolean incrIndex(String id);
+
+    /**
+     * desc: 重置所有分类的排序值
+     * <p>
+     *
+     * @param
+     * @return
+     */
+    boolean resetIndex();
 }

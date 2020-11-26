@@ -143,4 +143,20 @@ public class BlogTagController {
         return R.ok(tags).setCode(ResCode.OPERATION_SUCCESS);
     }
 
+    @ApiOperation(value = "递增该标签的排序索引")
+    @GetMapping("/incr")
+    public R incrTgIndex(@RequestParam("id") String id){
+        if (blogTagService.incrIndex(id)) {
+            return R.ok(null).setCode(ResCode.OPERATION_SUCCESS);
+        }
+        return R.failed("操作失败").setCode(ResCode.OPERATION_FAIL);
+    }
+
+    @ApiOperation(value = "重置所有标签的排序索引")
+    @GetMapping("/reset")
+    public R resetTagIndex(){
+        if (blogTagService.resetIndex()) return R.ok(null).setCode(ResCode.OPERATION_SUCCESS);
+        return R.failed("操作失败").setCode(ResCode.OPERATION_FAIL);
+    }
+
 }

@@ -25,7 +25,7 @@ public interface BlogTagMapper extends BaseMapper<BlogTag> {
      * @param
      * @return
      */
-    @Select("SELECT * FROM tb_blog_tag AS t LEFT JOIN tb_blog AS b ON t.`id` = b.`tag_id` WHERE t.`deleted`=0 GROUP BY t.`id`")
-    List<BlogTag> queryAllByArticle();
+    @Select("SELECT * FROM tb_blog_tag AS t LEFT JOIN tb_blog AS b ON t.`id` = b.`tag_id` WHERE t.`deleted`=0 AND b.`deleted`=0 GROUP BY t.`id`")
+    List<BlogTag> queryAllTagsByBlogId();
 
 }
