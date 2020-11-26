@@ -14,24 +14,17 @@
         <el-button class="filter-item" type="primary" icon="el-icon-search" @click="handleFind">查找</el-button>
         <el-button class="filter-item" type="primary" icon="el-icon-edit" @click="handleAdd">添加分类</el-button>
         <el-button class="filter-item" type="danger" icon="el-icon-delete" @click="handleDeleteBatch">删除选中</el-button>
-        <!-- TODO 点击数排序 -->
-        <el-button
-          class="filter-item"
-          type="info"
-          icon="el-icon-document"
-          @click="handlesortSortByClickCount"
-        >点击数排序</el-button>
-
         <!-- TODO 重置排序 -->
         <el-button
           class="filter-item"
           type="info"
           icon="el-icon-document"
-          @click="handlesortSortByCite"
+          @click="handleResetIndex"
         >重置排序</el-button>
       </div>
       <!-- 博客管理||博客分类||表单 -->
       <el-table
+        ref="multipleTable"
         :data="sorts"
         style="width: 100%"
         stripe
@@ -46,7 +39,7 @@
           </template>
         </el-table-column>
         <!-- 表单||分类名 -->
-        <el-table-column label="分类名" width="100" align="center" prop="sortName">
+        <el-table-column label="分类名" width="200" align="center" prop="sortName">
           <template slot-scope="scope">
             {{ scope.row.sortName }}
           </template>
@@ -54,7 +47,7 @@
         <!-- 表单||文章数 -->
         <el-table-column label="文章总数" width="100" align="center" prop="articlesNum">
           <template slot-scope="scope">
-            {{ scope.row.articlesNum }}
+            <el-tag type="danger">{{ scope.row.articlesNum }}</el-tag>
           </template>
         </el-table-column>
         <!-- 表单||点击数 -->
@@ -93,7 +86,7 @@
             <!-- TODO 置顶按钮 -->
             <div class="operate" style="margin-right: 0.5rem">
               <el-tooltip class="item" effect="dark" content="置顶" placement="bottom-end">
-                <el-button type="warning" icon="el-icon-caret-top" circle @click="handleStick(scope.row)" />
+                <el-button type="warning" icon="el-icon-caret-top" circle @click="handleIncr(scope.row.id)" />
               </el-tooltip>
               <el-tooltip class="item" effect="dark" content="编辑" placement="bottom-end">
                 <el-button type="primary" icon="el-icon-edit" circle @click="handleEdit(scope.row)" />
@@ -161,7 +154,7 @@ export default {
       SortApi.list(this.pageInfo).then(res => {
         this.sorts = res.data.sorts
         this.total = res.data.total
-        console.log(this.sorts)
+        // console.log(this.sorts)
       })
     },
     // 监听pageSize改变的事件
@@ -196,11 +189,20 @@ export default {
       }
     },
     // 重置排序
-    handlesortSortByCite() {},
-    // 点击排序
-    handlesortSortByClickCount() {},
+    handleResetIndex() {
+      SortApi.resetIndex().then(res => {
+        if (res.code !== 1000) return this.$message.error('操作失败')
+        this.getList()
+        return this.$message.success('操作成功')
+      })
+    },
     // 置顶操作
-    handleStick(sortInfo) {
+    handleIncr(sortId) {
+      SortApi.incrSortIndex(sortId).then(res => {
+        if (res.code !== 1000) return this.$message.error('操作失败')
+        this.getList()
+        return this.$message.success('操作成功')
+      })
     },
     // 添加分类信息
     handleAdd() {
@@ -252,8 +254,10 @@ export default {
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        return this.$message.success('删除成功！')
+        this.$refs.multipleTable.clearSelection()
+        return this.$message.info('暂未实现')
       }).catch(() => {
+        this.$refs.multipleTable.clearSelection()
         return this.$message.info('已取消删除')
       })
     }

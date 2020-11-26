@@ -23,15 +23,16 @@
         >点击数排序</el-button>-->
 
         <!-- TODO 重置排序 -->
-        <!--<el-button
+        <el-button
           class="filter-item"
           type="info"
           icon="el-icon-document"
-          @click="handleTagSortByCite"
-        >重置排序</el-button>-->
+          @click="handleResetIndex"
+        >重置排序</el-button>
       </div>
       <!-- 博客管理||博客分类||表单 -->
       <el-table
+        ref="multipleTable"
         :data="tags"
         style="width: 100%"
         stripe
@@ -46,7 +47,7 @@
           </template>
         </el-table-column>
         <!-- 表单||分类名 -->
-        <el-table-column label="标签名" width="100" align="center">
+        <el-table-column label="标签名" width="200" align="center">
           <template slot-scope="scope">
             <span>{{ scope.row.tagName }}</span>
           </template>
@@ -54,7 +55,7 @@
         <!-- 表单||文章数 -->
         <el-table-column label="文章总数" width="100" align="center">
           <template slot-scope="scope">
-            <span>{{ scope.row.articlesNum }}</span>
+            <el-tag type="danger">{{ scope.row.articlesNum }}</el-tag>
           </template>
         </el-table-column>
         <!-- 表单||点击数 -->
@@ -94,7 +95,9 @@
         <el-table-column label="操作" fixed="right" min-width="250">
           <template slot-scope="scope">
             <!-- TODO 置顶按钮 -->
-            <!--<el-button type="warning" size="mini" @click="handleStick(scope.row)" circle>置顶</el-button>-->
+            <el-tooltip class="item" effect="dark" content="置顶" placement="bottom-end">
+              <el-button type="warning" icon="el-icon-caret-top" circle @click="handleIncr(scope.row.id)" />
+            </el-tooltip>
             <el-tooltip class="item" effect="dark" content="编辑" placement="bottom-end">
               <el-button type="primary" icon="el-icon-edit" circle @click="handleEdit(scope.row)" />
             </el-tooltip>
@@ -192,6 +195,22 @@ export default {
         })
       }
     },
+    /* 置顶该标签 */
+    handleIncr(tagId) {
+      TagApi.incrTagIndex(tagId).then(res => {
+        if (res.code !== 1000) return this.$message.error('操作失败')
+        this.getList()
+        return this.$message.success('操作成功')
+      })
+    },
+    /* 重置所有标签的排序值 */
+    handleResetIndex() {
+      TagApi.resetIndex().then(res => {
+        if (res.code !== 1000) return this.$message.error('操作失败')
+        this.getList()
+        return this.$message.success('操作成功')
+      })
+    },
     // 添加标签信息
     handleAdd() {
       this.$refs.tagSaveDialogRef.dialogVisible = true
@@ -242,8 +261,10 @@ export default {
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        return this.$message.success('删除成功！')
+        this.$refs.multipleTable.clearSelection()
+        return this.$message.info('暂未实现')
       }).catch(() => {
+        this.$refs.multipleTable.clearSelection()
         return this.$message.info('已取消删除')
       })
     }

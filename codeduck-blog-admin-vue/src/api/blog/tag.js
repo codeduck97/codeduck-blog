@@ -81,3 +81,21 @@ export function getAllTags() {
   })
 }
 
+/* 递增标签的排序索引 */
+export function incrTagIndex(tagId) {
+  return request({
+    url: '/api/blog/tag/incr',
+    method: 'get',
+    params: {
+      id: tagId
+    }
+  })
+}
+
+/* 重置所有标签的排序值 */
+export function resetIndex() {
+  return request({
+    url: '/api/blog/tag/reset',
+    method: 'get'
+  })
+}

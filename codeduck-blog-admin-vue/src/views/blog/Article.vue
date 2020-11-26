@@ -104,10 +104,10 @@
         </el-table-column>
         <el-table-column label="发布状态" align="center">
           <template slot-scope="scope">
-            <template v-if="scope.row.published === 0">
+            <template v-if="scope.row.published === 1">
               <el-tag type="success">已发布</el-tag>
             </template>
-            <template v-if="scope.row.published === 1">
+            <template v-if="scope.row.published === 0">
               <el-tag type="danger">未发布</el-tag>
             </template>
           </template>

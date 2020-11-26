@@ -75,7 +75,7 @@
     <!-- 用户管理||用户列表||查找栏||用户注册 -->
     <user-register ref="userRegisterRef" style="margin-left:15px;" @needRefresh="refresh" />
     <user-update ref="userUpdateRef" style="margin-left:15px;" @needRefresh="refresh" />
-    <register-user ref="registerDrawer" style="margin-left:15px;" @needRefresh="refresh" />
+    <user-register ref="registerDrawer" style="margin-left:15px;" @needRefresh="refresh" />
     <!-- 用户管理||用户列表||分页 -->
     <el-pagination
       :current-page="pageInfo.pageNum"

@@ -81,3 +81,21 @@ export function getAllSorts() {
   })
 }
 
+/* 递增分类的排序索引 */
+export function incrSortIndex(sortId) {
+  return request({
+    url: '/api/blog/sort/incr',
+    method: 'get',
+    params: {
+      id: sortId
+    }
+  })
+}
+
+/* 重置所有分类的排序值 */
+export function resetIndex() {
+  return request({
+    url: '/api/blog/sort/reset',
+    method: 'get'
+  })
+}
