@@ -1,7 +1,7 @@
 package com.duck.code.web.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.duck.code.commons.entity.pojo.BlogArticle;
+import com.duck.code.commons.entity.blog.BlogArticle;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 

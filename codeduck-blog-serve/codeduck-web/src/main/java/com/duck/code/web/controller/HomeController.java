@@ -2,9 +2,9 @@ package com.duck.code.web.controller;
 
 import com.baomidou.mybatisplus.extension.api.R;
 import com.duck.code.commons.constant.ResCode;
-import com.duck.code.commons.entity.pojo.BlogArticle;
-import com.duck.code.commons.entity.pojo.BlogSort;
-import com.duck.code.commons.entity.pojo.BlogTag;
+import com.duck.code.commons.entity.blog.BlogArticle;
+import com.duck.code.commons.entity.blog.BlogSort;
+import com.duck.code.commons.entity.blog.BlogTag;
 import com.duck.code.web.service.BlogArticleService;
 import com.duck.code.web.service.BlogSortService;
 import com.duck.code.web.service.BlogTagService;

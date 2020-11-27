@@ -7,8 +7,7 @@ import com.duck.code.admin.vo.BlogTagVO;
 import com.duck.code.admin.mapper.BlogTagMapper;
 import com.duck.code.admin.service.BlogArticleService;
 import com.duck.code.admin.service.BlogTagService;
-import com.duck.code.commons.entity.pojo.BlogSort;
-import com.duck.code.commons.entity.pojo.BlogTag;
+import com.duck.code.commons.entity.blog.BlogTag;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;

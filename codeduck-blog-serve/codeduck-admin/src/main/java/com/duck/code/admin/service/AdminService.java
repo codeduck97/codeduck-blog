@@ -1,7 +1,7 @@
 package com.duck.code.admin.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.duck.code.commons.entity.pojo.Admin;
+import com.duck.code.commons.entity.sys.Admin;
 
 import java.time.LocalDateTime;
 import java.util.List;

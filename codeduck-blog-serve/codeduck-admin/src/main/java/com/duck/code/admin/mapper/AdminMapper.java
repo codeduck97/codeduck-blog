@@ -1,9 +1,7 @@
 package com.duck.code.admin.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.duck.code.commons.entity.pojo.Admin;
-
-import java.util.List;
+import com.duck.code.commons.entity.sys.Admin;
 
 /**
  * <p>

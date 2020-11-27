@@ -1,6 +1,6 @@
 package com.duck.code.admin.service;
 
-import com.duck.code.commons.entity.pojo.Picture;
+import com.duck.code.commons.entity.picture.Picture;
 import org.springframework.web.multipart.MultipartFile;
 
 /**

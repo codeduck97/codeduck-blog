@@ -1,6 +1,6 @@
 package com.duck.code.web;
 
-import com.duck.code.commons.entity.pojo.BlogArticle;
+import com.duck.code.commons.entity.blog.BlogArticle;
 import com.duck.code.web.mapper.BlogArticleMapper;
 import com.duck.code.web.mapper.BlogSortMapper;
 

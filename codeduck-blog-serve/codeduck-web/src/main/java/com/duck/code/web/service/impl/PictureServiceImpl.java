@@ -1,6 +1,6 @@
 package com.duck.code.web.service.impl;
 
-import com.duck.code.commons.entity.pojo.Picture;
+import com.duck.code.commons.entity.picture.Picture;
 import com.duck.code.web.mapper.PictureMapper;
 import com.duck.code.web.service.PictureService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;

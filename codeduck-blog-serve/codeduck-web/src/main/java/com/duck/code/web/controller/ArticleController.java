@@ -2,14 +2,12 @@ package com.duck.code.web.controller;
 
 import com.baomidou.mybatisplus.extension.api.R;
 import com.duck.code.commons.constant.ResCode;
-import com.duck.code.commons.entity.pojo.BlogArticle;
-import com.duck.code.commons.entity.pojo.BlogTag;
+import com.duck.code.commons.entity.blog.BlogArticle;
 import com.duck.code.web.service.BlogArticleService;
 import com.duck.code.web.service.BlogSortService;
 import com.duck.code.web.service.BlogTagService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import jdk.nashorn.internal.ir.annotations.Reference;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;

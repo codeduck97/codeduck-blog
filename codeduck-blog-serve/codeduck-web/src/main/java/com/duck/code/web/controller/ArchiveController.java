@@ -2,7 +2,7 @@ package com.duck.code.web.controller;
 
 import com.baomidou.mybatisplus.extension.api.R;
 import com.duck.code.commons.constant.ResCode;
-import com.duck.code.commons.entity.pojo.BlogArticle;
+import com.duck.code.commons.entity.blog.BlogArticle;
 import com.duck.code.web.service.BlogArticleService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;

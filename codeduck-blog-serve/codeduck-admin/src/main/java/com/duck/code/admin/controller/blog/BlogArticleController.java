@@ -6,7 +6,7 @@ import com.duck.code.admin.vo.BlogArticleVO;
 import com.duck.code.admin.service.BlogArticleService;
 import com.duck.code.commons.constant.ResCode;
 import com.duck.code.commons.constant.ResMsg;
-import com.duck.code.commons.entity.pojo.BlogArticle;
+import com.duck.code.commons.entity.blog.BlogArticle;
 import com.duck.code.commons.validator.Insert;
 import com.duck.code.commons.validator.Update;
 import io.swagger.annotations.Api;

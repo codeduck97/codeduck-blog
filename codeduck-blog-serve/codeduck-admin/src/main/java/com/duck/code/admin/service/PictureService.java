@@ -1,7 +1,7 @@
 package com.duck.code.admin.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.duck.code.commons.entity.pojo.Picture;
+import com.duck.code.commons.entity.picture.Picture;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;

@@ -5,7 +5,7 @@ import com.baomidou.mybatisplus.extension.api.R;
 import com.duck.code.admin.service.PictureService;
 import com.duck.code.admin.service.QiNiuService;
 import com.duck.code.commons.constant.ResCode;
-import com.duck.code.commons.entity.pojo.Picture;
+import com.duck.code.commons.entity.picture.Picture;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;

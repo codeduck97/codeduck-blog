@@ -8,8 +8,7 @@ import com.duck.code.admin.vo.BlogSortVO;
 import com.duck.code.admin.mapper.BlogSortMapper;
 import com.duck.code.admin.service.BlogArticleService;
 import com.duck.code.admin.service.BlogSortService;
-import com.duck.code.admin.vo.BlogTagVO;
-import com.duck.code.commons.entity.pojo.BlogSort;
+import com.duck.code.commons.entity.blog.BlogSort;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 

@@ -8,7 +8,7 @@ import com.duck.code.admin.mapper.PictureMapper;
 import com.duck.code.admin.service.PictureService;
 import com.duck.code.admin.utils.FileUtil;
 import com.duck.code.admin.utils.PictureUtil;
-import com.duck.code.commons.entity.pojo.Picture;
+import com.duck.code.commons.entity.picture.Picture;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;

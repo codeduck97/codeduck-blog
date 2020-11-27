@@ -1,4 +1,4 @@
-package com.duck.code.commons.entity.pojo;
+package com.duck.code.commons.entity.blog;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
@@ -12,53 +12,55 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.springframework.format.annotation.DateTimeFormat;
 
-
-
 /**
  * <p>
- *
+ * 博客分类表
  * </p>
  *
  * @author Code Duck
- * @since 2020-10-20
+ * @since 2020-10-27
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
-@TableName("tb_blog")
-public class BlogArticle implements Serializable {
+@TableName("tb_blog_sort")
+public class BlogSort implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
     /**
-     * 博文id
+     * 分类 id
      */
     @TableId(value = "id", type = IdType.ASSIGN_UUID)
     private String id;
 
     /**
-     * 管理员id
+     * 分类名称
      */
-    private String adminId;
+    private String sortName;
 
     /**
-     * 作者
+     * 创建时间
      */
-    private String author;
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private LocalDateTime creationTime;
 
     /**
-     * 博文标题
+     * 更新时间
      */
-    private String title;
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private LocalDateTime updateTime;
 
     /**
-     * 博文内容
+     * 排序字段，越大越靠前
      */
-    private String content;
+    private Integer sortIndex;
 
     /**
-     * 博文封面
+     * 分类状态
      */
-    private String cover;
+    private Integer status;
 
     /**
      * 点击数
@@ -66,36 +68,7 @@ public class BlogArticle implements Serializable {
     private Integer hits;
 
     /**
-     * 博文更新时间
-     */
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
-    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    private LocalDateTime updateTime;
-
-    /**
-     * 博文创建时间
-     */
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
-    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    private LocalDateTime creationTime;
-
-    /**
-     * 博文分类id
-     */
-    private String sortId;
-
-    /**
-     * 博文标签id
-     */
-    private String tagId;
-
-    /**
-     * 是否发布：0发布，1不发布
-     */
-    private Integer published;
-
-    /**
-     * 删除状态：0未删除，1删除
+     * 是否被删除：0正常，1删除
      */
     @TableLogic
     private Integer deleted;

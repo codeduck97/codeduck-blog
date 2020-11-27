@@ -1,4 +1,4 @@
-package com.duck.code.commons.entity.pojo;
+package com.duck.code.commons.entity.sys;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
@@ -24,7 +24,7 @@ import org.springframework.format.annotation.DateTimeFormat;
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
-@TableName("tb_admin")
+@TableName("sys_user")
 public class Admin implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -41,9 +41,19 @@ public class Admin implements Serializable {
     private String username;
 
     /**
+     * 昵称
+     */
+    private String nickname;
+
+    /**
      * 用户密码
      */
     private String password;
+
+    /**
+     * 角色id
+     */
+    private String roleId;
 
     /**
      * 用户状态：0正常，1禁止登陆

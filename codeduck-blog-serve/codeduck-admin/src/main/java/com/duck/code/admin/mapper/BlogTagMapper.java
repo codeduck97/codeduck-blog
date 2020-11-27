@@ -2,8 +2,7 @@ package com.duck.code.admin.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.duck.code.admin.vo.BlogTagVO;
-import com.duck.code.commons.entity.pojo.BlogSort;
-import com.duck.code.commons.entity.pojo.BlogTag;
+import com.duck.code.commons.entity.blog.BlogTag;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 

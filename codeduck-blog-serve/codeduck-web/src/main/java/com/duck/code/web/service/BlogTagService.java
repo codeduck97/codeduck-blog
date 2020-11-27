@@ -1,9 +1,8 @@
 package com.duck.code.web.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.duck.code.commons.entity.pojo.BlogArticle;
-import com.duck.code.commons.entity.pojo.BlogTag;
-import com.duck.code.web.vo.BlogTagVO;
+import com.duck.code.commons.entity.blog.BlogArticle;
+import com.duck.code.commons.entity.blog.BlogTag;
 
 import java.util.List;
 import java.util.Map;

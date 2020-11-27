@@ -6,7 +6,7 @@ import com.duck.code.admin.vo.AdminVO;
 import com.duck.code.admin.service.AdminService;
 import com.duck.code.admin.utils.CommonUtil;
 import com.duck.code.commons.constant.ResCode;
-import com.duck.code.commons.entity.pojo.Admin;
+import com.duck.code.commons.entity.sys.Admin;
 import com.duck.code.commons.validator.Insert;
 import com.duck.code.commons.validator.Update;
 import io.swagger.annotations.Api;

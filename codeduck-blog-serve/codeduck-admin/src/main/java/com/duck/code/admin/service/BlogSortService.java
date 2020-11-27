@@ -2,10 +2,9 @@ package com.duck.code.admin.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.duck.code.admin.vo.BlogSortVO;
-import com.duck.code.commons.entity.pojo.BlogSort;
+import com.duck.code.commons.entity.blog.BlogSort;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * <p>

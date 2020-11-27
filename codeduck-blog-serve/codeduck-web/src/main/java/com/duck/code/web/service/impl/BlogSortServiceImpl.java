@@ -2,12 +2,11 @@ package com.duck.code.web.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.duck.code.commons.entity.pojo.BlogArticle;
-import com.duck.code.commons.entity.pojo.BlogSort;
+import com.duck.code.commons.entity.blog.BlogArticle;
+import com.duck.code.commons.entity.blog.BlogSort;
 import com.duck.code.web.mapper.BlogSortMapper;
 import com.duck.code.web.service.BlogArticleService;
 import com.duck.code.web.service.BlogSortService;
-import com.duck.code.web.vo.BlogSortVO;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;

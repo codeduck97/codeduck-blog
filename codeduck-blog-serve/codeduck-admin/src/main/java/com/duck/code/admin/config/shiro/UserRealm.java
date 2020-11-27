@@ -7,7 +7,7 @@ import com.duck.code.admin.config.redis.RedisConstant;
 import com.duck.code.admin.config.redis.client.RedisClient;
 import com.duck.code.admin.config.jwt.JwtToken;
 import com.duck.code.admin.service.AdminService;
-import com.duck.code.commons.entity.pojo.Admin;
+import com.duck.code.commons.entity.sys.Admin;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationInfo;

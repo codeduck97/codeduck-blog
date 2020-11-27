@@ -1,11 +1,7 @@
 package com.duck.code.admin.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.duck.code.commons.entity.pojo.BlogArticle;
-import org.apache.ibatis.annotations.Select;
-
-import java.util.List;
-import java.util.Map;
+import com.duck.code.commons.entity.blog.BlogArticle;
 
 /**
  * <p>

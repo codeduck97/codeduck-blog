@@ -6,7 +6,7 @@ import com.duck.code.admin.vo.BlogSortVO;
 import com.duck.code.admin.service.BlogSortService;
 import com.duck.code.commons.constant.ResCode;
 import com.duck.code.commons.constant.ResMsg;
-import com.duck.code.commons.entity.pojo.BlogSort;
+import com.duck.code.commons.entity.blog.BlogSort;
 import com.duck.code.commons.validator.Update;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;

@@ -6,15 +6,13 @@ import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.duck.code.admin.vo.BlogArticleVO;
-import com.duck.code.admin.vo.BlogSortVO;
-import com.duck.code.admin.vo.BlogTagVO;
 import com.duck.code.admin.mapper.BlogArticleMapper;
 import com.duck.code.admin.service.BlogArticleService;
 import com.duck.code.admin.service.BlogSortService;
 import com.duck.code.admin.service.BlogTagService;
-import com.duck.code.commons.entity.pojo.BlogArticle;
-import com.duck.code.commons.entity.pojo.BlogSort;
-import com.duck.code.commons.entity.pojo.BlogTag;
+import com.duck.code.commons.entity.blog.BlogArticle;
+import com.duck.code.commons.entity.blog.BlogSort;
+import com.duck.code.commons.entity.blog.BlogTag;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;

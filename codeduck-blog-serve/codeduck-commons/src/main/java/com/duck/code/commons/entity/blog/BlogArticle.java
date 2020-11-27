@@ -1,4 +1,4 @@
-package com.duck.code.commons.entity.pojo;
+package com.duck.code.commons.entity.blog;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
@@ -12,66 +12,91 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.springframework.format.annotation.DateTimeFormat;
 
+
+
 /**
  * <p>
- * 标签表
+ *
  * </p>
  *
  * @author Code Duck
- * @since 2020-10-30
+ * @since 2020-10-20
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
-@TableName("tb_blog_tag")
-public class BlogTag implements Serializable {
+@TableName("tb_blog")
+public class BlogArticle implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
     /**
-     * 标签 id
+     * 博文id
      */
     @TableId(value = "id", type = IdType.ASSIGN_UUID)
     private String id;
 
     /**
-     * 标签名
+     * 管理员id
      */
-    private String tagName;
+    private String adminId;
 
     /**
-     * 是否删除：0正常，1删除
+     * 作者
      */
-    @TableLogic
-    private Integer deleted;
+    private String author;
 
     /**
-     * 点击总数
+     * 博文标题
+     */
+    private String title;
+
+    /**
+     * 博文内容
+     */
+    private String content;
+
+    /**
+     * 博文封面
+     */
+    private String cover;
+
+    /**
+     * 点击数
      */
     private Integer hits;
 
     /**
-     * 创建时间
-     */
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
-    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    private LocalDateTime creationTime;
-
-    /**
-     * 更新时间
+     * 博文更新时间
      */
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime updateTime;
 
     /**
-     * 排序字段，越大越靠前
+     * 博文创建时间
      */
-    private Integer tagIndex;
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private LocalDateTime creationTime;
 
     /**
-     * 分类状态
+     * 博文分类id
      */
-    private Integer status;
+    private String sortId;
 
+    /**
+     * 博文标签id
+     */
+    private String tagId;
 
+    /**
+     * 是否发布：0发布，1不发布
+     */
+    private Integer published;
+
+    /**
+     * 删除状态：0未删除，1删除
+     */
+    @TableLogic
+    private Integer deleted;
 }

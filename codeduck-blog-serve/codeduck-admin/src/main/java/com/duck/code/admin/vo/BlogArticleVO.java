@@ -1,7 +1,7 @@
 package com.duck.code.admin.vo;
 
-import com.duck.code.commons.entity.pojo.BlogSort;
-import com.duck.code.commons.entity.pojo.BlogTag;
+import com.duck.code.commons.entity.blog.BlogSort;
+import com.duck.code.commons.entity.blog.BlogTag;
 import com.duck.code.commons.validator.Insert;
 import com.duck.code.commons.validator.Update;
 import com.fasterxml.jackson.annotation.JsonFormat;

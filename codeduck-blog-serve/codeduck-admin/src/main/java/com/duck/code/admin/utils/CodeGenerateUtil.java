@@ -67,7 +67,7 @@ public class CodeGenerateUtil {
         // 包配置
         PackageConfig pc = new PackageConfig();
         pc.setModuleName(null);
-        pc.setParent("com.duck.code");
+        pc.setParent("com.duck.code.admin");
         mpg.setPackageInfo(pc);
 
         // 自定义配置
@@ -112,7 +112,7 @@ public class CodeGenerateUtil {
         strategy.setRestControllerStyle(true);
         strategy.setInclude(scanner("表名，多个英文逗号分割").split(","));
         strategy.setControllerMappingHyphenStyle(true);
-        strategy.setTablePrefix("tb_"); // 设置表前缀
+        strategy.setTablePrefix("sys_"); // 设置表前缀
         mpg.setStrategy(strategy);
         mpg.setTemplateEngine(new FreemarkerTemplateEngine());
         mpg.execute();

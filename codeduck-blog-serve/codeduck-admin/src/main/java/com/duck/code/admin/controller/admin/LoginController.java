@@ -10,7 +10,7 @@ import com.duck.code.admin.service.AdminService;
 import com.duck.code.admin.utils.CommonUtil;
 import com.duck.code.commons.constant.ResCode;
 import com.duck.code.commons.constant.ResMsg;
-import com.duck.code.commons.entity.pojo.Admin;
+import com.duck.code.commons.entity.sys.Admin;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;

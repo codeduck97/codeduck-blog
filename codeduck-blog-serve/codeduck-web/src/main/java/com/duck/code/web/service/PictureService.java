@@ -1,7 +1,7 @@
 package com.duck.code.web.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.duck.code.commons.entity.pojo.Picture;
+import com.duck.code.commons.entity.picture.Picture;
 
 /**
  * <p>

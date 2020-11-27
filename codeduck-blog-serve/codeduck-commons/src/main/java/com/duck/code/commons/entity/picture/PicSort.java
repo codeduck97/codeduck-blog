@@ -1,4 +1,4 @@
-package com.duck.code.commons.entity.pojo;
+package com.duck.code.commons.entity.picture;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
