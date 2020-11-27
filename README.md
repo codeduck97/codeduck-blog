@@ -1,4 +1,4 @@
-**本博客系统借鉴参考蘑菇博客：**https://gitee.com/moxi159753/mogu_blog_v2 
+**本博客系统借鉴参考蘑菇博客：** https://gitee.com/moxi159753/mogu_blog_v2 
 
 ## 项目介绍
 
