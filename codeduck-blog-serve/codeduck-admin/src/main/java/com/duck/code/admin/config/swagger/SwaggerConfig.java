@@ -57,12 +57,12 @@ public class SwaggerConfig {
     private List<ResponseMessage> responseMessageList() {
 
         List<ResponseMessage> responseMessageList = new ArrayList<>();
-        responseMessageList.add(new ResponseMessageBuilder().code(10000).message("操作成功").responseModel(new ModelRef("R")).build());
-        responseMessageList.add(new ResponseMessageBuilder().code(10001).message("操作失败").responseModel(new ModelRef("R")).build());
-        responseMessageList.add(new ResponseMessageBuilder().code(10002).message("拒绝执行本次请求").responseModel(new ModelRef("R")).build());
-        responseMessageList.add(new ResponseMessageBuilder().code(50000).message("token异常").responseModel(new ModelRef("R")).build());
-        responseMessageList.add(new ResponseMessageBuilder().code(50001).message("token失效").responseModel(new ModelRef("R")).build());
-        responseMessageList.add(new ResponseMessageBuilder().code(60000).message("服务器异常").responseModel(new ModelRef("R")).build());
+        responseMessageList.add(new ResponseMessageBuilder().code(1000).message("操作成功").responseModel(new ModelRef("R")).build());
+        responseMessageList.add(new ResponseMessageBuilder().code(1001).message("操作失败").responseModel(new ModelRef("R")).build());
+        responseMessageList.add(new ResponseMessageBuilder().code(1002).message("拒绝执行本次请求").responseModel(new ModelRef("R")).build());
+        responseMessageList.add(new ResponseMessageBuilder().code(5000).message("token异常").responseModel(new ModelRef("R")).build());
+        responseMessageList.add(new ResponseMessageBuilder().code(5001).message("token失效").responseModel(new ModelRef("R")).build());
+        responseMessageList.add(new ResponseMessageBuilder().code(6000).message("服务器异常").responseModel(new ModelRef("R")).build());
         return responseMessageList;
     }
 
