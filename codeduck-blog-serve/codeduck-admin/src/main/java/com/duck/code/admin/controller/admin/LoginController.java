@@ -1,6 +1,7 @@
 package com.duck.code.admin.controller.admin;
 
 
+import com.alibaba.fastjson.JSONObject;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.baomidou.mybatisplus.extension.api.R;
 import com.duck.code.admin.config.jwt.JwtHelper;
@@ -92,6 +93,7 @@ public class LoginController {
 
         Map<String,String> claimsMap = new HashMap<>();
         claimsMap.put("currentTimeMillis",currentTimeMillis);
+        claimsMap.put("nickname", admin.getNickname());
         claimsMap.put("userId", admin.getId());
         claimsMap.put("username", admin.getUsername());
         /**
@@ -160,17 +162,19 @@ public class LoginController {
     @ApiOperation(value = "获取用户信息",notes = "请求头必须携带Authorization令牌")
     @GetMapping("/api/admin/info")
     public R userInfo(HttpServletRequest request){
-        Map<String,String> resultMap = new HashMap<>();
+//        Map<String,String> resultMap = new HashMap<>();
 
         /**
          * 获取请求头部的token值
          */
-        String token    = request.getHeader("Authorization");
-        DecodedJWT claim = JwtHelper.getClaim(token);
-        Admin adminInfo = adminService.getById(claim.getClaim("userId").asString());
-        resultMap.put("avatar", adminInfo.getAvatar()); // 需要的是用户头像，暂时用id代替
-        resultMap.put("name", adminInfo.getUsername());
+        String token   = request.getHeader("Authorization");
+        JSONObject result =  adminService.getUserInfo(token);
 
-        return R.ok(resultMap).setCode(10000);
+//        DecodedJWT claim = JwtHelper.getClaim(token);
+//        Admin adminInfo = adminService.getById(claim.getClaim("userId").asString());
+//        resultMap.put("avatar", adminInfo.getAvatar()); // 需要的是用户头像，暂时用id代替
+//        resultMap.put("name", adminInfo.getUsername());
+
+        return R.ok(result).setCode(1000);
     }
 }

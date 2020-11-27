@@ -1,5 +1,6 @@
 package com.duck.code.admin.service;
 
+import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.duck.code.commons.entity.sys.Admin;
 
@@ -81,12 +82,9 @@ public interface AdminService extends IService<Admin> {
      */
     Admin getAdminByName(String username);
 
+
     /**
-     * desc: 根据用户名计算存在的用户个数
-     * <p>
-     *
-     * @param username
-     * @return
+     * 查询当前登录用户的权限等信息
      */
-    int countNumByName(String username);
+    JSONObject getUserInfo(String token);
 }

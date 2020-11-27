@@ -1,5 +1,6 @@
 package com.duck.code.admin.config.shiro;
 
+import com.alibaba.fastjson.JSONObject;
 import com.auth0.jwt.interfaces.Claim;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.duck.code.admin.config.jwt.JwtHelper;
@@ -7,8 +8,11 @@ import com.duck.code.admin.config.redis.RedisConstant;
 import com.duck.code.admin.config.redis.client.RedisClient;
 import com.duck.code.admin.config.jwt.JwtToken;
 import com.duck.code.admin.service.AdminService;
+import com.duck.code.commons.constant.Constants;
 import com.duck.code.commons.entity.sys.Admin;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationInfo;
 import org.apache.shiro.authc.AuthenticationToken;
@@ -16,9 +20,11 @@ import org.apache.shiro.authc.SimpleAuthenticationInfo;
 import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
+import org.apache.shiro.session.Session;
 import org.apache.shiro.subject.PrincipalCollection;
 
 import javax.annotation.Resource;
+import java.util.Collection;
 import java.util.Map;
 
 /**
@@ -27,6 +33,7 @@ import java.util.Map;
  * @author: Code Duck
  * @create: 2020-09-27 20:19
  */
+@Slf4j
 public class UserRealm extends AuthorizingRealm {
 
     @Resource
@@ -50,8 +57,15 @@ public class UserRealm extends AuthorizingRealm {
      */
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principalCollection) {
-        SimpleAuthorizationInfo simpleAuthorizationInfo = new SimpleAuthorizationInfo();
-        return simpleAuthorizationInfo;
+        Session session = SecurityUtils.getSubject().getSession();
+        //查询用户的权限
+        JSONObject permission = (JSONObject) session.getAttribute(Constants.SESSION_USER_PERMISSION);
+        log.info("permission的值为:" + permission);
+        log.info("本用户权限为:" + permission.get("permissionList"));
+        // 为当前用户设置角色和权限
+        SimpleAuthorizationInfo authorizationInfo = new SimpleAuthorizationInfo();
+        authorizationInfo.addStringPermissions((Collection<String>) permission.get("permissionList"));
+        return authorizationInfo;
     }
 
     /**

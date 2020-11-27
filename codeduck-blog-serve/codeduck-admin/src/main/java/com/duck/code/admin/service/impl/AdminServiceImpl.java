@@ -1,15 +1,24 @@
 package com.duck.code.admin.service.impl;
 
+import com.alibaba.fastjson.JSONObject;
+import com.auth0.jwt.interfaces.DecodedJWT;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.duck.code.admin.config.jwt.JwtHelper;
 import com.duck.code.admin.mapper.AdminMapper;
 import com.duck.code.admin.service.AdminService;
+import com.duck.code.admin.service.PermissionService;
+import com.duck.code.commons.constant.Constants;
 import com.duck.code.commons.entity.sys.Admin;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.session.Session;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import javax.annotation.Resource;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -23,6 +32,9 @@ import java.util.List;
  */
 @Service
 public class AdminServiceImpl extends ServiceImpl<AdminMapper, Admin> implements AdminService {
+
+    @Resource
+    private PermissionService permissionService;
 
     /**
      * desc: 根据用户名获取用户的创建时间
@@ -138,16 +150,22 @@ public class AdminServiceImpl extends ServiceImpl<AdminMapper, Admin> implements
     }
 
     /**
-     * desc: 根据用户名计算存在的用户个数
+     * desc: 查询当前登录用户的权限等信息
      * <p>
      *
-     * @param username
+     * @param
      * @return
      */
     @Override
-    public int countNumByName(String username) {
-        QueryWrapper<Admin> wrapper = new QueryWrapper<>();
-        wrapper.eq("username", username);
-        return super.count(wrapper);
+    public JSONObject getUserInfo(String token) {
+        // 解析token获取附加信息
+        DecodedJWT claim = JwtHelper.getClaim(token);
+        String username = claim.getClaim("username").asString();
+        JSONObject userPermission = permissionService.getUserPermission(username);
+        // 使用shiro session保存用户权限信息
+        Session session = SecurityUtils.getSubject().getSession();
+        session.setAttribute(Constants.SESSION_USER_PERMISSION, userPermission);
+
+        return userPermission;
     }
 }

@@ -1,5 +1,6 @@
 package com.duck.code.admin.mapper;
 
+import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.duck.code.commons.entity.sys.Permission;
 
@@ -13,4 +14,5 @@ import com.duck.code.commons.entity.sys.Permission;
  */
 public interface PermissionMapper extends BaseMapper<Permission> {
 
+    JSONObject getUserPermission(String username);
 }
