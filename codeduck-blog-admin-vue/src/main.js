@@ -14,6 +14,7 @@ import router from './router'
 
 import '@/icons' // icon
 import '@/permission' // permission control
+import { hasPermission } from './utils/hasPermission'
 
 import http from '@/utils/request'
 import prototype from './utils/prototype' // 全局自定义工具
@@ -22,6 +23,7 @@ import mavonEditor from 'mavon-editor'
 import 'mavon-editor/dist/css/index.css'
 
 Vue.prototype.$axios = http
+Vue.prototype.hasPerm = hasPermission
 /**
  * If you don't want to use mock-server
  * you want to use MockJs for mock api

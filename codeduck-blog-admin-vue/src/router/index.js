@@ -26,11 +26,11 @@ import Layout from '@/layout'
  */
 
 /**
- * constantRoutes
+ * constantRouterMap
  * a base page that does not have permission requirements
  * all roles can be accessed
  */
-export const constantRoutes = [
+export const constantRouterMap = [
   {
     path: '/login',
     component: () => import('@/views/login/index'),
@@ -54,29 +54,6 @@ export const constantRoutes = [
       meta: { title: '仪表盘', icon: 'dashboard' }
     }]
   },
-
-  {
-    path: '/user',
-    component: Layout,
-    redirect: '/user',
-    name: 'User',
-    meta: { title: '用户管理', icon: 'el-icon-s-help' },
-    children: [
-      {
-        path: 'info',
-        name: 'UserInfo',
-        component: () => import('@/views/user/index'),
-        meta: { title: '用户列表', icon: 'user' }
-      },
-      {
-        path: 'tree',
-        name: 'Tree',
-        component: () => import('@/views/tree/index'),
-        meta: { title: 'Tree', icon: 'tree' }
-      }
-    ]
-  },
-
   {
     path: '/blog',
     redirect: '/blog/write',
@@ -112,29 +89,34 @@ export const constantRoutes = [
   {
     path: '/picture',
     component: Layout,
-    redirect: '/picture',
+    redirect: '/picture/list',
     name: '图片管理',
-    meta: { title: '图片管理', icon: 'el-icon-picture' },
+    meta: {
+      title: '图片管理',
+      icon: 'el-icon-picture',
+      role: ['pic']
+    },
     children: [
       {
-        path: '/picture/pic',
+        path: 'list',
         component: () => import('@/views/picture/Picture'),
-        meta: { title: '图片管理', icon: 'el-icon-picture' }
+        meta: { title: '图片管理', icon: 'el-icon-picture' },
+        menu: 'pic'
       },
       {
-        path: '/picture/sort',
+        path: 'sort',
         component: () => import('@/views/picture/Sort'),
-        meta: { title: '分类管理', icon: 'el-icon-picture' }
+        meta: { title: '分类管理', icon: 'el-icon-picture' },
+        menu: 'pic-sort'
       }
     ]
   },
-
   {
     path: 'external-link',
     component: Layout,
     children: [
       {
-        path: 'https://localhost:7100/doc.html',
+        path: 'https://localhost:8201/doc.html',
         meta: { title: 'Api 文档', icon: 'link' }
       }
     ]
@@ -144,10 +126,36 @@ export const constantRoutes = [
   { path: '*', redirect: '/404', hidden: true }
 ]
 
+export const asyncRouterMap = [
+  {
+    path: '/user',
+    component: Layout,
+    redirect: '/user',
+    name: 'User',
+    meta: { title: '用户管理', icon: 'el-icon-s-help' },
+    children: [
+      {
+        path: 'info',
+        name: 'UserInfo',
+        component: () => import('@/views/user/index'),
+        meta: { title: '用户列表', icon: 'user' },
+        menu: 'user'
+      },
+      {
+        path: 'role',
+        name: '权限管理',
+        component: () => import('@/views/user/Role'),
+        meta: { title: '权限管理', icon: 'tree' },
+        menu: 'role'
+      }
+    ]
+  }
+]
+
 const createRouter = () => new Router({
   // mode: 'history', // require service support
   scrollBehavior: () => ({ y: 0 }),
-  routes: constantRoutes
+  routes: constantRouterMap
 })
 
 const router = createRouter()

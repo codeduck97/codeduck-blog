@@ -17,14 +17,18 @@ router.beforeEach(async(to, from, next) => {
   // set page title
   document.title = getPageTitle(to.meta.title)
 
-  // 确定用户是否已登录
+  // 获取当前登录用户的token
   const hasToken = getToken()
-
   if (hasToken) {
     if (to.path === '/login') {
       // 如果已登录，则重定向到主页
       next({ path: '/' })
       NProgress.done()
+    } else if (!store.getters.role) {
+      // 登录成功后获取用户角色信息
+      store.dispatch('user/getInfo').then(() => {
+        next({ ...to, replace: true })
+      })
     } else {
       const hasGetUserInfo = store.getters.name
       if (hasGetUserInfo) {
@@ -46,12 +50,11 @@ router.beforeEach(async(to, from, next) => {
     }
   } else {
     /* 没有获取到token*/
-
     if (whiteList.indexOf(to.path) !== -1) {
-      // 在免费登录白名单中，直接进入
+      // 在免登录白名单中，直接进入
       next()
     } else {
-      // 其他无权访问的页面将被重定向到登录页面。
+      // 如果路径不是白名单内的,而且又没有登录,就跳转登录页面
       next(`/login?redirect=${to.path}`)
       NProgress.done()
     }
