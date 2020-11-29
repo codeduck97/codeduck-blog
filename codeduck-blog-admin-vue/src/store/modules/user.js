@@ -13,8 +13,7 @@ const getDefaultState = () => {
     role: '', // 用户角色
     menus: [], // 可访问的菜单列表
     permissions: [], // 具体权限信息列表
-    avatar: '', // 用户头像信息
-    roles: [] // 基于vue-admin-template的权限控制角色列表
+    avatar: '' // 用户头像信息
   }
 }
 
@@ -46,9 +45,6 @@ const mutations = {
     state.role = ''
     state.menus = []
     state.permissions = []
-  },
-  SET_ROLES: (state, roles) => {
-    state.roles = roles
   }
 }
 
@@ -83,7 +79,6 @@ const actions = {
         // 将获取到的用户权限信息存储到state中
         const userPermission = data
         commit('SET_USER', userPermission)
-        commit('SET_ROLES', userPermission.menus) // 保存用户角色信息
         // 生成路由
         store.dispatch('generateRoutes', userPermission).then(() => {
           // 生成该用户的新路由json操作完毕之后,调用vue-router的动态新增路由方法,将新路由添加

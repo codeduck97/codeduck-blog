@@ -137,7 +137,7 @@ export const asyncRouterMap = [
       {
         path: 'info',
         name: 'UserInfo',
-        component: () => import('@/views/user/index'),
+        component: () => import('@/views/user/User'),
         meta: { title: '用户列表', icon: 'user' },
         menu: 'user'
       },

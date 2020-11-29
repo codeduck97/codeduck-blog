@@ -3,6 +3,7 @@
 <mapper namespace="com.duck.code.admin.mapper.PermissionMapper">
     <resultMap id="permissionMap" type="com.duck.code.admin.config.mybatis.OneToMany">
         <id column="userId" property="userId"/>
+        <result column="username" property="username"/>
         <result column="nickname" property="nickname"/>
         <result column="avatar" property="avatar"/>
         <result column="roleId" property="roleId"/>
@@ -14,9 +15,10 @@
             <id column="permissionCode" property="permissionCode"/>
         </collection>
     </resultMap>
-    <select id="getUserPermission" resultMap="permissionMap">
+    <select id="queryUserPermission" resultMap="permissionMap">
         SELECT
             u.id              userId,
+            u.username	      username,
             u.nickname        nickname,
             u.avatar	      avatar,
             u.role_id         roleId,
@@ -30,4 +32,68 @@
         WHERE u.username = #{username}
           AND u.deleted = 0;
     </select>
+
+    <resultMap id="roleMap" type="com.duck.code.admin.config.mybatis.OneToMany">
+        <id column="roleId" property="roleId"/>
+        <result column="roleName" property="roleName"/>
+        <collection property="users" ofType="com.alibaba.fastjson.JSONObject">
+            <id column="userId" property="userId"/>
+            <result column="nickname" property="nickname"/>
+        </collection>
+        <collection property="menus" ofType="com.duck.code.admin.config.mybatis.OneToMany">
+            <id column="menuCode" property="menuCode"/>
+            <result column="menuName" property="menuName"/>
+            <collection property="permissions" ofType="com.alibaba.fastjson.JSONObject">
+                <id column="permissionId" property="permissionId"/>
+                <result column="permissionName" property="permissionName"/>
+            </collection>
+        </collection>
+    </resultMap>
+    <select id="queryAllRole" resultMap="roleMap">
+        SELECT
+            r.id              roleId,
+            r.role_name       roleName,
+            u.id              userId,
+            u.nickname        nickname,
+            p.id              permissionId,
+            p.menu_code       menuCode,
+            p.menu_name       menuName,
+            p.permission_name permissionName
+        FROM sys_role r
+            LEFT JOIN sys_user u ON r.id = u.role_id AND u.deleted = 0
+            LEFT JOIN sys_role_permission rp ON r.id = rp.role_id AND rp.deleted = 0
+            LEFT JOIN sys_permission p ON rp.permission_id = p.id
+        WHERE r.deleted = 0
+        ORDER BY r.id, p.id
+    </select>
+
+    <resultMap id="permMap" type="com.duck.code.admin.config.mybatis.OneToMany">
+        <id column="menuName" property="menuName"/>
+        <collection property="permissions" ofType="com.alibaba.fastjson.JSONObject">
+            <id column="id" property="id"/>
+            <result column="permissionName" property="permissionName"/>
+            <result column="requiredPerm" property="requiredPerm" javaType="Integer"/>
+        </collection>
+    </resultMap>
+    <select id="queryPermissionList" resultMap="permMap">
+        SELECT
+            p.id                  id,
+            p.menu_name           menuName,
+            p.permission_name     permissionName,
+            p.required_permission requiredPerm
+        FROM sys_permission p;
+    </select>
+
+    <insert id="insertRole" useGeneratedKeys="true" keyProperty="roleId">
+        INSERT INTO sys_role
+        (role_name)
+        VALUES (#{roleName})
+    </insert>
+    <insert id="insertRolePermission">
+        insert into sys_role_permission (role_id, permission_id)
+        values
+        <foreach collection="permissions" item="item" index="index" separator=",">
+            (#{roleId}, #{item})
+        </foreach>
+    </insert>
 </mapper>

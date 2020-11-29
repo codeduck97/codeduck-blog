@@ -3,14 +3,12 @@ package com.duck.code.admin;
 import com.alibaba.fastjson.JSONObject;
 import com.duck.code.admin.mapper.BlogArticleMapper;
 import com.duck.code.admin.mapper.PermissionMapper;
-import com.duck.code.admin.service.AdminService;
-import com.duck.code.admin.service.BlogArticleService;
-import com.duck.code.admin.service.BlogSortService;
-import com.duck.code.admin.service.PictureService;
+import com.duck.code.admin.service.*;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 @SpringBootTest
 class AdminApplicationTests {
@@ -33,10 +31,13 @@ class AdminApplicationTests {
     @Resource
     private PermissionMapper permissionMapper;
 
+    @Resource
+    private PermissionService permissionService;
+
     @Test
     public void test(){
-        JSONObject admin = permissionMapper.getUserPermission("admin");
-        System.out.println(admin);
+        List<JSONObject> jsonObjects = permissionService.getAllPermission();
+        jsonObjects.forEach(System.out::println);
     }
 
 
