@@ -168,8 +168,12 @@ public class LoginController {
          * 获取请求头部的token值
          */
         String token   = request.getHeader("Authorization");
-        JSONObject result =  adminService.getUserInfo(token);
-
+        JSONObject jsonObject =  adminService.getUserInfo(token);
+        Map<String,Object> result = new HashMap<>();
+        result.put("avatar", jsonObject.get("avatar"));
+        result.put("introduction","暂无……");
+        result.put("name", "nickname");
+        result.put("roles", jsonObject.get("menuList"));
 //        DecodedJWT claim = JwtHelper.getClaim(token);
 //        Admin adminInfo = adminService.getById(claim.getClaim("userId").asString());
 //        resultMap.put("avatar", adminInfo.getAvatar()); // 需要的是用户头像，暂时用id代替
