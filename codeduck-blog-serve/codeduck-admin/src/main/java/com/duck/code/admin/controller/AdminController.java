@@ -1,6 +1,7 @@
-package com.duck.code.admin.controller.admin;
+package com.duck.code.admin.controller;
 
 import cn.hutool.core.bean.BeanUtil;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.api.R;
 import com.duck.code.admin.vo.AdminVO;
 import com.duck.code.admin.service.AdminService;
@@ -60,13 +61,6 @@ public class AdminController {
     }
 
 
-    /**
-     * desc: 根据用户id删除用户信息
-     * <p>
-     *
-     * @param id
-     * @return
-     */
     @ApiOperation(value = "删除用户信息")
     @ApiImplicitParam(name = "id", value = "用户id", paramType = "query", required = true)
     @DeleteMapping("/delete")
@@ -79,13 +73,6 @@ public class AdminController {
         return R.failed("该用户不存在，删除失败").setCode(ResCode.OPERATION_FAIL);
     }
 
-    /**
-     * desc: 注册用户信息
-     * <p>
-     *
-     * @param adminVO
-     * @return
-     */
     @PostMapping("/add")
     @ApiOperation(value = "注册或更新用户信息", notes = "请注意必填属性信息")
     public R registerUserInfo(@Validated({Insert.class}) @RequestBody AdminVO adminVO) {
@@ -104,13 +91,6 @@ public class AdminController {
         return R.failed("该用户已存在").setCode(ResCode.OPERATION_REJECT);
     }
 
-    /**
-     * desc: 获取管理所有管理员信息
-     * <p>
-     *
-     * @param
-     * @return
-     */
     @ApiOperation(value = "获取管理员信息列表", notes = "分页获取管理员标签列表")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "pageNum", value = "当前页码，默认值：1，最小值：1", paramType = "query", defaultValue = "1", required = true),
@@ -119,12 +99,11 @@ public class AdminController {
     @PostMapping("/list")
     public R getAllUserInfo(@Min(value = 1, message = "当前页 pageNum >= 1") @RequestParam(value = "pageNum", defaultValue = "1") long pageNum,
                             @Min(value = 1, message = "页面大小 pageSize >= 1") @RequestParam(value = "pageSize", defaultValue = "5") long pageSize) {
-        List<Admin> adminList = this.adminService.getAdminList(pageNum, pageSize);
-        int total = adminService.count();
-        HashMap<String, Object> resMap = new HashMap<>();
-        resMap.put("admins", adminList);
-        resMap.put("total", total);
-        return R.ok(resMap).setCode(ResCode.OPERATION_SUCCESS);
+        IPage<Admin> adminList = this.adminService.getAdminList(pageNum, pageSize);
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("total", adminList.getTotal());
+        map.put("admins", adminList.getRecords());
+        return R.ok(map).setCode(ResCode.OPERATION_SUCCESS);
     }
 
     /**

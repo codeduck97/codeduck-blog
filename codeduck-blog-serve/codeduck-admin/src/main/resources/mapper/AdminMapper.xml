@@ -2,4 +2,28 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.duck.code.admin.mapper.AdminMapper">
 
+    <select id="queryAllUser" resultType="com.duck.code.commons.entity.sys.Admin">
+        SELECT
+        u.`id`,
+        u.`avatar`,
+        u.`birthday`,
+        u.`creation_time` creationTime,
+        u.`username`,
+        u.`update_time` updateTime,
+        u.`email`,
+        u.`status`,
+        u.`last_login_time` lastLoginTime,
+        u.`login_times` loginTimes,
+        u.`mobile`,
+        u.`nickname`,
+        u.`qq_number` qqNumber,
+        u.`region`,
+        r.`id` AS roleId,
+        r.`role_name` AS roleName
+        FROM sys_user u
+        LEFT JOIN sys_user_role ur ON ur.`user_id` = u.`id`
+        LEFT JOIN sys_role r ON r.`id` = ur.`role_id`
+        WHERE u.`deleted` = 0
+        GROUP BY u.`last_login_time` DESC
+    </select>
 </mapper>

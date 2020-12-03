@@ -51,11 +51,6 @@ public class Admin implements Serializable {
     private String password;
 
     /**
-     * 角色id
-     */
-    private String roleId;
-
-    /**
      * 用户状态：0正常，1禁止登陆
      */
     private Integer status;
@@ -79,6 +74,10 @@ public class Admin implements Serializable {
      * qq号
      */
     private String qqNumber;
+
+    // transient关键字标记的成员变量不参与序列化过程
+    private transient Integer roleId;
+    private transient String roleName;
 
     /**
      * 用户出生日期
@@ -114,6 +113,11 @@ public class Admin implements Serializable {
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime updateTime;
+
+    /**
+     * 用户所在地
+     */
+    private String region;
 
     /**
      * 用户是否被删除：0正常，1，删除

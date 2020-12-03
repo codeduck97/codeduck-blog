@@ -1,17 +1,21 @@
-package com.duck.code.admin.controller.admin;
+package com.duck.code.admin.controller;
 
 
-import com.alibaba.fastjson.JSONObject;
+import com.auth0.jwt.interfaces.Claim;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.baomidou.mybatisplus.extension.api.R;
 import com.duck.code.admin.config.jwt.JwtHelper;
 import com.duck.code.admin.config.redis.RedisConstant;
 import com.duck.code.admin.config.redis.client.RedisClient;
 import com.duck.code.admin.service.AdminService;
+import com.duck.code.admin.service.PermissionService;
+import com.duck.code.admin.service.RoleService;
 import com.duck.code.admin.utils.CommonUtil;
 import com.duck.code.commons.constant.ResCode;
 import com.duck.code.commons.constant.ResMsg;
 import com.duck.code.commons.entity.sys.Admin;
+import com.duck.code.commons.entity.sys.Permission;
+import com.duck.code.commons.entity.sys.Role;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
@@ -28,9 +32,7 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.constraints.NotBlank;
-import java.util.Enumeration;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 /**
  * <p>
@@ -54,6 +56,12 @@ public class LoginController {
 
     @Resource
     private RedisClient redis;
+
+    @Resource
+    private RoleService roleService;
+
+    @Resource
+    private PermissionService permissionService;
 
     /**
      * desc: 使用用户名和密码进行登录
@@ -152,9 +160,7 @@ public class LoginController {
     }
 
     /**
-     * desc: 由于使用jwt保存用户信息，为了避免修改了用户信息，不重新登录的话不会立即生效，刷新页面会调用这个接口，
-     *       所以我们在此接口中重新获取用户信息并生成token值。这样的话，页面刷新就可以重新生成最新的token值，
-     *       避免了重新登录来刷新token
+     * desc: 返回用户基本信息，角色信息，权限列表信息
      * <p>
      * @param
      * @return
@@ -162,22 +168,32 @@ public class LoginController {
     @ApiOperation(value = "获取用户信息",notes = "请求头必须携带Authorization令牌")
     @GetMapping("/api/admin/info")
     public R userInfo(HttpServletRequest request){
-//        Map<String,String> resultMap = new HashMap<>();
-
-        /**
-         * 获取请求头部的token值
-         */
         String token   = request.getHeader("Authorization");
-        JSONObject jsonObject =  adminService.getUserInfo(token);
+        // 获取用户信息
+        DecodedJWT claim = JwtHelper.getClaim(token);
+        Map<String, Claim> claims = claim.getClaims();
+        String username = claims.get("username").asString();
+
+        Admin user = adminService.getAdminByName(username);
+        List<Role> userRole = roleService.findUserRole(username);
+
+        List<Permission> permissions = permissionService.findUserPermissions(username);
+        Set<String> permission = new HashSet<>();
+        permissions.forEach(p -> permission.add(p.getPermissionCode()));
+
         Map<String,Object> result = new HashMap<>();
-        result.put("avatar", jsonObject.get("avatar"));
-        result.put("introduction","暂无……");
-        result.put("name", "nickname");
-        result.put("roles", jsonObject.get("menuList"));
-//        DecodedJWT claim = JwtHelper.getClaim(token);
-//        Admin adminInfo = adminService.getById(claim.getClaim("userId").asString());
-//        resultMap.put("avatar", adminInfo.getAvatar()); // 需要的是用户头像，暂时用id代替
-//        resultMap.put("name", adminInfo.getUsername());
+        result.put("avatar", user.getAvatar());
+        result.put("introduction",user.getRegion());
+        result.put("name", user.getNickname());
+
+        // 前端需要的是一个角色数组，目前数据库每个用户只有一个角色需要特殊处理
+
+        String roleName = userRole.get(0).getRoleKey();
+        ArrayList<String> roles = new ArrayList<>();
+        roles.add(roleName);
+        result.put("roles", roles.toArray());
+
+        result.put("permission", permission);
 
         return R.ok(result).setCode(1000);
     }

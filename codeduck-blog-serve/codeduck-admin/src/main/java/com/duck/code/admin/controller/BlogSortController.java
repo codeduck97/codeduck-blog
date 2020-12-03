@@ -1,4 +1,4 @@
-package com.duck.code.admin.controller.blog;
+package com.duck.code.admin.controller;
 
 
 import com.baomidou.mybatisplus.extension.api.R;

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.duck.code.admin.mapper.RoleMapper">
+
+    <resultMap id="roleMap" type="com.duck.code.commons.entity.sys.Role">
+        <result column="id" jdbcType="DECIMAL" property="id"/>
+        <result column="role_name" jdbcType="VARCHAR" property="roleName"/>
+        <result column="remark" jdbcType="VARCHAR" property="remark"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+    </resultMap>
+
+
+    <select id="findUserRole" resultMap="roleMap">
+        SELECT r.*
+        FROM sys_role AS r
+	        LEFT JOIN sys_user_role AS ur ON r.`id` = ur.`role_id`
+	        LEFT JOIN sys_user AS u ON ur.`user_id` = u.`id`
+	        WHERE u.`deleted`=0 AND u.`username`=#{username};
+    </select>
+</mapper>

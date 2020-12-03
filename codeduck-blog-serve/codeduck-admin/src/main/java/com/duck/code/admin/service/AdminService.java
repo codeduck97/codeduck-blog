@@ -1,6 +1,6 @@
 package com.duck.code.admin.service;
 
-import com.alibaba.fastjson.JSONObject;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.duck.code.commons.entity.sys.Admin;
 
@@ -53,7 +53,7 @@ public interface AdminService extends IService<Admin> {
      * @param pageSize
      * @return
      */
-    List<Admin> getAdminList(long pageNum, long pageSize);
+    IPage<Admin> getAdminList(long pageNum, long pageSize);
 
     /**
      * desc: 更新用户登录次数
@@ -82,9 +82,4 @@ public interface AdminService extends IService<Admin> {
      */
     Admin getAdminByName(String username);
 
-
-    /**
-     * 查询当前登录用户的权限等信息
-     */
-    JSONObject getUserInfo(String token);
 }

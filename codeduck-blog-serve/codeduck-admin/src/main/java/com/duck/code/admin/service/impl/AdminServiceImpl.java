@@ -2,7 +2,9 @@ package com.duck.code.admin.service.impl;
 
 import com.alibaba.fastjson.JSONObject;
 import com.auth0.jwt.interfaces.DecodedJWT;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -12,6 +14,7 @@ import com.duck.code.admin.service.AdminService;
 import com.duck.code.admin.service.PermissionService;
 import com.duck.code.commons.constant.Constants;
 import com.duck.code.commons.entity.sys.Admin;
+import com.duck.code.commons.entity.sys.UserRole;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.session.Session;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -94,13 +97,9 @@ public class AdminServiceImpl extends ServiceImpl<AdminMapper, Admin> implements
      * @return
      */
     @Override
-    public List<Admin> getAdminList(long pageNum, long pageSize) {
-        QueryWrapper<Admin> wrapper = new QueryWrapper<>();
+    public IPage<Admin> getAdminList(long pageNum, long pageSize) {
         Page<Admin> page = new Page<>(pageNum, pageSize);
-        wrapper.select(Admin.class, i -> !i.getColumn().equals("password"));
-        wrapper.orderByDesc("last_login_time");
-        Page<Admin> adminPage = super.page(page, wrapper);
-        return adminPage.getRecords();
+        return baseMapper.queryAllUser(page);
     }
 
     /**
@@ -149,23 +148,4 @@ public class AdminServiceImpl extends ServiceImpl<AdminMapper, Admin> implements
         return super.getOne(wrapper);
     }
 
-    /**
-     * desc: 查询当前登录用户的权限等信息
-     * <p>
-     *
-     * @param
-     * @return
-     */
-    @Override
-    public JSONObject getUserInfo(String token) {
-        // 解析token获取附加信息
-        DecodedJWT claim = JwtHelper.getClaim(token);
-        String username = claim.getClaim("username").asString();
-        JSONObject userPermission = permissionService.getUserPermission(username);
-        // 使用shiro session保存用户权限信息
-        Session session = SecurityUtils.getSubject().getSession();
-        session.setAttribute(Constants.SESSION_USER_PERMISSION, userPermission);
-
-        return userPermission;
-    }
 }

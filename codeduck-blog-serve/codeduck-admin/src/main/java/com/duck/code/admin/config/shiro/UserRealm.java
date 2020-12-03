@@ -1,6 +1,5 @@
 package com.duck.code.admin.config.shiro;
 
-import com.alibaba.fastjson.JSONObject;
 import com.auth0.jwt.interfaces.Claim;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.duck.code.admin.config.jwt.JwtHelper;
@@ -8,11 +7,11 @@ import com.duck.code.admin.config.redis.RedisConstant;
 import com.duck.code.admin.config.redis.client.RedisClient;
 import com.duck.code.admin.config.jwt.JwtToken;
 import com.duck.code.admin.service.AdminService;
-import com.duck.code.commons.constant.Constants;
+import com.duck.code.admin.service.PermissionService;
 import com.duck.code.commons.entity.sys.Admin;
+import com.duck.code.commons.entity.sys.Permission;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationInfo;
 import org.apache.shiro.authc.AuthenticationToken;
@@ -24,8 +23,7 @@ import org.apache.shiro.session.Session;
 import org.apache.shiro.subject.PrincipalCollection;
 
 import javax.annotation.Resource;
-import java.util.Collection;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @program: codeduck-auth
@@ -42,29 +40,30 @@ public class UserRealm extends AuthorizingRealm {
     @Resource
     private AdminService adminService;
 
+    @Resource
+    private PermissionService permissionService;
+
     /**
-     * 大坑，必须重写此方法，不然Shiro会报错
+     * 必须重写此方法，不然Shiro会报错
      */
     @Override
     public boolean supports(AuthenticationToken token) {
         return token instanceof JwtToken;
     }
 
-    /**
-     * 对用户进行授权操作
-     *      * 在过滤器中调用 isPermitted()方法时，会触发该方法
-     *      * 注：权限判断这部分没有用isPermitted（）方法来判断，而是在PermissionFilter过滤器中自定义了权限判断所以用不到这个方法
-     */
     @Override
-    protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principalCollection) {
-        Session session = SecurityUtils.getSubject().getSession();
+    protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection token) {
+        DecodedJWT claim = JwtHelper.getClaim(token.toString());
+        Map<String, Claim> claims = claim.getClaims();
+        String username = claims.get("username").asString();
+        List<Permission> permissions = permissionService.findUserPermissions(username);
+        Set<String> permission = new HashSet<>();
+        permissions.forEach(p -> permission.add(p.getPermissionCode()));
+
         //查询用户的权限
-        JSONObject permission = (JSONObject) session.getAttribute(Constants.SESSION_USER_PERMISSION);
-        log.info("permission的值为:" + permission);
-        log.info("本用户权限为:" + permission.get("permissionList"));
         // 为当前用户设置角色和权限
         SimpleAuthorizationInfo authorizationInfo = new SimpleAuthorizationInfo();
-        authorizationInfo.addStringPermissions((Collection<String>) permission.get("permissionList"));
+        authorizationInfo.addStringPermissions(permission);
         return authorizationInfo;
     }
 
@@ -74,9 +73,7 @@ public class UserRealm extends AuthorizingRealm {
      */
     @Override
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken authenticationToken) throws AuthenticationException {
-        /**
-         *  认证通过后，会触发PermissionFilter的isAccessAllowed方法，开始验证权限
-         */
+
         // 获取token
         String token = (String) authenticationToken.getCredentials();
         if (StringUtils.isBlank(token)){
@@ -100,6 +97,6 @@ public class UserRealm extends AuthorizingRealm {
                 return new SimpleAuthenticationInfo(token, token, "userRealm");
             }
         }
-        throw new AuthenticationException("token失效或token异常");
+        throw new AuthenticationException("token异常");
     }
 }

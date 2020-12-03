@@ -1,16 +1,22 @@
 package com.duck.code.admin.service.impl;
 
 import com.alibaba.fastjson.JSONObject;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.duck.code.admin.mapper.AdminMapper;
 import com.duck.code.admin.mapper.PermissionMapper;
 import com.duck.code.admin.service.PermissionService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.duck.code.admin.utils.TreeUtil;
 import com.duck.code.commons.entity.sys.Permission;
+import com.duck.code.commons.entity.sys.Tree;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 /**
  * <p>
@@ -21,6 +27,8 @@ import java.util.Set;
  * @since 2020-11-27
  */
 @Service
+@Slf4j
+@Transactional(propagation = Propagation.SUPPORTS, readOnly = true, rollbackFor = Exception.class)
 public class PermissionServiceImpl extends ServiceImpl<PermissionMapper, Permission> implements PermissionService {
 
     @Resource
@@ -29,84 +37,48 @@ public class PermissionServiceImpl extends ServiceImpl<PermissionMapper, Permiss
     @Resource
     private AdminMapper adminMapper;
 
-    /**
-     * desc: 查询用户的 角色 菜单列表 权限列表
-     *
-     * {
-     *     "roleId":"1",
-     *     "nickname":"程序猿",
-     *     "roleName":"添加用户管理员",
-     *     "permissionList":[
-     *         "user:list",
-     *         "user:add"
-     *     ],
-     *     "userId":"awsd0b4f46344543121ad4811239c34d"
-     * }
-     * <p>
-     *
-     * @param
-     * @return
-     */
     @Override
-    public JSONObject getUserPermission(String username) {
-        JSONObject userPermission = getUserPermissionFromDB(username);
-        return userPermission;
+    public List<Permission> findUserPermissions(String username) {
+        return baseMapper.findUserPermissions(username);
     }
 
-    /**
-     * desc: 获取角色用户角色列表
-     * <p>
-     *
-     * @param
-     * @return
-     */
     @Override
-    public List<JSONObject> getRoleList() {
-        return this.baseMapper.queryAllRole();
-    }
+    public Map<String, Object> getPermissionMenus() {
+        Map<String, Object> result = new HashMap<>();
+        try {
+            QueryWrapper<Permission> wrapper = new QueryWrapper<>();
+            wrapper.orderByDesc("id");
+            List<Permission> menus = baseMapper.selectList(wrapper);
 
-    /**
-     * desc: 获取所有的权限信息
-     * <p>
-     *
-     * @param
-     * @return
-     */
-    @Override
-    public List<JSONObject> getAllPermission() {
-        return this.baseMapper.queryPermissionList();
-    }
+            List<Tree<Permission>> trees = new ArrayList<>();
+            List<String> ids = new ArrayList<>();
+            buildTrees(trees, menus, ids);
 
-    /**
-     * desc: 添加角色
-     * <p>
-     *
-     * @param
-     * @return
-     */
-    @Override
-    public boolean addRole(JSONObject jsonObject) {
-        permissionMapper.insertRole(jsonObject);
-        permissionMapper.insertRolePermission(jsonObject.getString("roleId"), (List<Integer>) jsonObject.get("permissions"));
-        return true;
-    }
-
-    /**
-     * desc: 从数据库中查询用户权限信息
-     *
-     * @param
-     * @return
-     */
-    private JSONObject getUserPermissionFromDB(String username) {
-        JSONObject userPermission = permissionMapper.queryUserPermission(username);
-        // 如果是超级管理员，则拥有整个系统的所有权限
-        String roleName = adminMapper.queryRoleNameByUsername(username);
-        if (roleName.equals("超级管理员")) {
-            Set<String> menuList = permissionMapper.queryAllMenu();
-            Set<String> permissionList = permissionMapper.queryALlPermissions();
-            userPermission.put("menuList", menuList);
-            userPermission.put("permissionList", permissionList);
+            result.put("ids", ids);
+            Tree<Permission> menuTree = TreeUtil.build(trees);
+            result.put("rows", menuTree);
+        } catch (NumberFormatException e) {
+            log.error("查询菜单失败", e);
+            result.put("rows", null);
+            result.put("total", 0);
         }
-        return userPermission;
+
+        return result;
     }
+
+    private void buildTrees(List<Tree<Permission>> trees, List<Permission> menus, List<String> ids) {
+        menus.forEach(menu -> {
+            ids.add(menu.getId().toString());
+
+            Tree<Permission> tree = new Tree<>();
+            tree.setId(menu.getId().toString());
+            tree.setValue(tree.getId());
+            tree.setParentId(menu.getParentId().toString());
+            tree.setLabel(menu.getMenuName());
+            tree.setPermission(menu.getPermissionCode());
+            trees.add(tree);
+        });
+    }
+
+
 }

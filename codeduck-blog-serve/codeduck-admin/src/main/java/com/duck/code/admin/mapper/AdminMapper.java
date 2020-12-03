@@ -1,6 +1,8 @@
 package com.duck.code.admin.mapper;
 
+import cn.hutool.db.Page;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.duck.code.commons.entity.sys.Admin;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
@@ -24,5 +26,13 @@ public interface AdminMapper extends BaseMapper<Admin> {
      */
     @Select("SELECT role_name FROM sys_user u, sys_role r WHERE u.`role_id`= r.`id` AND u.`username`=#{username}")
     String queryRoleNameByUsername(@Param("username") String username);
+
+    /**
+     * desc: 查询所有用户信息
+     * <p>
+     *
+     * @param page
+     */
+    IPage<Admin> queryAllUser(IPage page);
 
 }

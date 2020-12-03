@@ -104,10 +104,11 @@ public class JwtHelper {
             String test = getClaim(token) + Base64Util.encodeThrowsException("");
             Algorithm secret = Algorithm.HMAC256(encryptJWTKey);
             JWTVerifier verifier = JWT.require(secret).build();
-            DecodedJWT verify = verifier.verify(token);
+            verifier.verify(token);
+            logger.info("token is valid");
             return true;
         } catch (UnsupportedEncodingException e) {
-            logger.error("JWTToken认证解密出现JWTVerificationException异常:" + e.getMessage());
+            logger.info("token is invalid{}", e.getMessage());
             e.printStackTrace();
         }
         return false;
