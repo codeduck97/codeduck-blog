@@ -7,8 +7,8 @@
       <mavon-editor ref="mavonEditorRef" v-model="blog.content" class="editor" :ishljs="true" @imgAdd="imgAdd" />
     </div>
     <div class="operate">
-      <el-button type="danger">保存草稿</el-button>
-      <el-button type="primary" @click="openPublishDrawer">发布</el-button>
+      <el-button v-if="hasPerm('blog:add')" type="danger">保存草稿</el-button>
+      <el-button v-if="hasPerm('blog:add')" type="primary" @click="openPublishDrawer">发布</el-button>
       <el-button type="warning" @click="checkImage">图库</el-button>
     </div>
     <!-- 博客信息设置对话框 -->

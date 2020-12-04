@@ -18,7 +18,6 @@
         clearable
         reserve-keyword
         placeholder="请选择分类"
-        :loading="loading"
         @keyup.enter.native="handleFind"
       >
         <el-option
@@ -30,10 +29,10 @@
       </el-select>
       <el-button class="filter-item" type="primary" icon="el-icon-search" @click="handleFind">查找</el-button>
       <el-button class="filter-item" icon="el-icon-refresh" @click="handleReset">重置</el-button>
-      <el-button class="filter-item" style="margin-left:100px" type="primary" icon="el-icon-upload" @click="handleUploadPic">上传图片</el-button>
-      <el-button class="filter-item" type="primary" icon="el-icon-upload" @click="handleQiniuUpload">七牛上传</el-button>
+      <el-button v-if="hasPerm('pic:add')" class="filter-item" style="margin-left:100px" type="primary" icon="el-icon-upload" @click="handleUploadPic">上传图片</el-button>
+      <el-button v-if="hasPerm('pic:add')" class="filter-item" type="primary" icon="el-icon-upload" @click="handleQiniuUpload">七牛上传</el-button>
       <el-button class="button" style="margin-left:30px" type="primary" icon="el-icon-refresh-right" @click="checkAll">{{ chooseTitle }}</el-button>
-      <el-button class="filter-item" type="danger" icon="el-icon-delete" @click="handleDeleteBatch">删除选中</el-button>
+      <el-button v-if="hasPerm('pic:delete')" class="filter-item" type="danger" icon="el-icon-delete" @click="handleDeleteBatch">删除选中</el-button>
     </div>
     <!-- 图片显示区 -->
     <el-card>
@@ -103,7 +102,9 @@ export default {
       pictureIds: [], // 图片id集合
       chooseTitle: '全部选中', // 全选的提示信息
       isCheckedAll: false, // 是否全选
-      dialogUploadVisible: false
+      dialogUploadVisible: false,
+      sortKeyword: '',
+      sortList: []
     }
   },
   watch: {
@@ -191,6 +192,8 @@ export default {
         this.pictureIds.push(data.id)
       }
       // console.log('选择列表', this.pictureIds)
+    },
+    handleReset() {
     }
   }
 }

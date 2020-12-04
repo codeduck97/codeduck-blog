@@ -56,7 +56,8 @@ export default {
       this.dialogVisible = false
       done()
       console.log('已关闭')
-    }
+    },
+    handleUploadSuccess() {}
   }
 }
 </script>

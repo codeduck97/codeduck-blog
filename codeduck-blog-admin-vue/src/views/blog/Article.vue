@@ -119,11 +119,11 @@
           </template>
         </el-table-column>
 
-        <el-table-column v-if="hasPerm('blog:add') & hasPerm('blog:delete')" fixed="right" width="150px" label="操作">
+        <el-table-column fixed="right" width="150px" label="操作">
           <template slot-scope="scope">
             <div class="operate">
-              <el-button type="primary" size="small" @click="editBlog(scope.row)">编辑</el-button>
-              <el-button type="danger" size="small" @click="deleteBlog(scope.row.id)">删除</el-button>
+              <el-button v-if="hasPerm('blog:update')" type="primary" size="small" @click="editBlog(scope.row)">编辑</el-button>
+              <el-button v-if="hasPerm('blog:delete')" type="danger" size="small" @click="deleteBlog(scope.row.id)">删除</el-button>
             </div>
           </template>
         </el-table-column>

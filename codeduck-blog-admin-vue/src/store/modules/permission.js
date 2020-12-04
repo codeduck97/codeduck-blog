@@ -1,76 +1,69 @@
-import { asyncRouterMap, constantRouterMap } from '@/router/index'
+import { asyncRoutes, constantRoutes } from '@/router'
 
 /**
- * 判断用户是否拥有此菜单
- * @param menus
+ * Use meta.role to determine if the current user has permission
+ * @param roles
  * @param route
  */
-function hasPermission(menus, route) {
-  if (route.menu) {
-    /*
-    * 如果这个路由有menu属性,就需要判断用户是否拥有此menu权限
-    */
-    return menus.indexOf(route.menu) > -1
+function hasPermission(roles, route) {
+  if (route.meta && route.meta.roles) {
+    return roles.some(role => route.meta.roles.includes(role))
   } else {
     return true
   }
 }
 
 /**
- * 递归过滤异步路由表，返回符合用户菜单权限的路由表
- * @param asyncRouterMap
- * @param menus
+ * Filter asynchronous routing tables by recursion
+ * @param routes asyncRoutes
+ * @param roles
  */
-function filterAsyncRouter(asyncRouterMap, menus) {
-  const accessedRouters = asyncRouterMap.filter(route => {
-    // filter,js语法里数组的过滤筛选方法
-    if (hasPermission(menus, route)) {
-      if (route.children && route.children.length) {
-        // 如果这个路由下面还有下一级的话,就递归调用
-        route.children = filterAsyncRouter(route.children, menus)
-        // 如果过滤一圈后,没有子元素了,这个父级菜单就也不显示了
-        return (route.children && route.children.length)
+export function filterAsyncRoutes(routes, roles) {
+  const res = []
+
+  routes.forEach(route => {
+    const tmp = { ...route }
+    if (hasPermission(roles, tmp)) {
+      if (tmp.children) {
+        tmp.children = filterAsyncRoutes(tmp.children, roles)
       }
-      return true
+      res.push(tmp)
     }
-    return false
   })
-  return accessedRouters
+
+  return res
 }
 
-const permission = {
-  state: {
-    routers: constantRouterMap, // 本用户所有的路由,包括了固定的路由和下面的addRouters
-    addRouters: [] // 本用户的角色赋予的新增的动态路由
-  },
-  mutations: {
-    SET_ROUTERS: (state, routers) => {
-      state.addRouters = routers
-      state.routers = constantRouterMap.concat(routers) // 将固定路由和新增路由进行合并, 成为本用户最终的全部路由信息
-    }
-  },
-  actions: {
-    // 生成路由
-    generateRoutes({ commit }, userPermission) {
-      return new Promise(resolve => {
-        // roles是后台传过来的角色数组,比如['管理员','文章']
-        const role = userPermission.roleName
-        const menus = userPermission.menuList
-        // 声明 该角色可用的路由
-        let accessedRouters
-        if (role === '超级管理员') {
-          // 如果角色里包含'管理员',那么所有的路由都可以用
-          // 其实管理员也拥有全部菜单,这里主要是利用角色判断,节省加载时间
-          accessedRouters = asyncRouterMap
-        } else {
-          // 否则需要通过以下方法来筛选出本角色可用的路由
-          accessedRouters = filterAsyncRouter(asyncRouterMap, menus)
-        }
-        // 执行设置路由的方法
-        commit('SET_ROUTERS', accessedRouters)
-        resolve()
-      })
-    }
+const state = {
+  routes: [],
+  addRoutes: []
+}
+
+const mutations = {
+  SET_ROUTES: (state, routes) => {
+    state.addRoutes = routes
+    state.routes = constantRoutes.concat(routes)
   }
 }
-export default permission
+
+const actions = {
+  generateRoutes({ commit }, roles) {
+    return new Promise(resolve => {
+      let accessedRoutes
+      if (roles.includes('admin')) {
+        accessedRoutes = asyncRoutes || []
+      } else {
+        accessedRoutes = filterAsyncRoutes(asyncRoutes, roles)
+      }
+      commit('SET_ROUTES', accessedRoutes)
+      resolve(accessedRoutes)
+    })
+  }
+}
+
+export default {
+  namespaced: true,
+  state,
+  mutations,
+  actions
+}

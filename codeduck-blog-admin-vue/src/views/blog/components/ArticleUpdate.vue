@@ -31,7 +31,7 @@
         </el-form-item>
 
         <el-form-item label="标题" :label-width="formLabelWidth" prop="title">
-          <el-input v-model="blog.title" auto-complete="off" @input="contentChange" />
+          <el-input v-model="blog.title" auto-complete="off" />
         </el-form-item>
 
         <el-form-item label="作者" :label-width="formLabelWidth" prop="author">
@@ -95,7 +95,6 @@
         </el-row>
         <!-- CKEditor编辑器 -->
         <el-form-item label="内容" :label-width="formLabelWidth" prop="content">
-          <!-- <ck-editor ref="editor" :height="320" :content="blog.content" @contentChange="contentChange" /> -->
           <mavon-editor ref="mavonEditorRef" v-model="blog.content" :ishljs="true" />
         </el-form-item>
       </el-form>
@@ -109,11 +108,9 @@
   </div>
 </template>
 <script>
-// import CkEditor from '@/components/CKEditor'
 import CheckPicture from '@/components/CheckPicture'
 
 import { getToken } from '@/utils/auth'
-import { setCookie } from '@/utils/cookieUtils'
 import * as BlogApi from '@/api/blog/article'
 
 export default {
@@ -200,6 +197,8 @@ export default {
       this.blog.cover = ''
       return
     },
+    handleClose() {
+    },
     // 提交修改表单
     submitForm(blogFormRef) {
       this.$refs[blogFormRef].validate(valid => {
@@ -210,48 +209,13 @@ export default {
             this.$emit('needRefresh')
             this.$refs[blogFormRef].resetFields()
             this.dialogVisible = false
-            return this.$router.push('/blog')
+            return this.$router.push('/blog/list')
           }
           this.$refs[blogFormRef].resetFields()
           this.dialogVisible = false
           return this.$notify({ title: '失败', message: '博客添加失败', type: 'error' })
         })
       })
-    },
-    // 关闭dialog对话框
-    cansulSubmit(blogFormRef) {
-      this.$refs[blogFormRef].resetFields()
-      this.dialogVisible = false
-    },
-    // 内容改变，触发监听
-    contentChange: function() {
-      var that = this
-      if (this.changeCount > 0) {
-        that.isChange = true
-        // 存放到cookie中，时间10天
-        that.blog.content = that.$refs.editor.getData() // 获取CKEditor中的内容
-        setCookie('form', JSON.stringify(that.blog), 10)
-      }
-      this.changeCount = this.changeCount + 1
-    },
-    handleClose(done) {
-      if (this.isChange) {
-        this.$confirm('是否关闭编辑窗口？', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning'
-        })
-          .then(() => {
-            this.isChange = false
-            done()
-          })
-          .catch(() => {
-            this.$message.info('已取消')
-          })
-      } else {
-        this.isChange = false
-        done()
-      }
     }
   }
 }

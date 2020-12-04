@@ -1,30 +1,22 @@
-import * as LoginApi from '@/api/admin/login'
+import { login, logout, getInfo } from '@/api/login'
 import { getToken, setToken, removeToken } from '@/utils/auth'
-import { resetRouter } from '@/router'
-import router from '../../router'
-import store from '../../store'
+import router, { resetRouter } from '@/router'
 
-const getDefaultState = () => {
-  return {
-    token: getToken(),
-    name: '', // 用户名
-    nickname: '', // 用户昵称
-    userId: '', // 用户id
-    role: '', // 用户角色
-    menus: [], // 可访问的菜单列表
-    permissions: [], // 具体权限信息列表
-    avatar: '' // 用户头像信息
-  }
+const state = {
+  token: getToken(),
+  name: '',
+  avatar: '',
+  introduction: '',
+  roles: [],
+  permissions: []
 }
 
-const state = getDefaultState()
-
 const mutations = {
-  RESET_STATE: (state) => {
-    Object.assign(state, getDefaultState())
-  },
   SET_TOKEN: (state, token) => {
     state.token = token
+  },
+  SET_INTRODUCTION: (state, introduction) => {
+    state.introduction = introduction
   },
   SET_NAME: (state, name) => {
     state.name = name
@@ -32,19 +24,11 @@ const mutations = {
   SET_AVATAR: (state, avatar) => {
     state.avatar = avatar
   },
-  SET_USER: (state, userInfo) => {
-    state.nickname = userInfo.nickname
-    state.userId = userInfo.userId
-    state.role = userInfo.roleName
-    state.menus = userInfo.menuList
-    state.permissions = userInfo.permissionList
+  SET_ROLES: (state, roles) => {
+    state.roles = roles
   },
-  RESET_USER: (state) => {
-    state.nickname = ''
-    state.userId = ''
-    state.role = ''
-    state.menus = []
-    state.permissions = []
+  SET_PERMISSION: (state, permissions) => {
+    state.permissions = permissions
   }
 }
 
@@ -52,10 +36,10 @@ const actions = {
   // user login
   login({ commit }, userInfo) {
     return new Promise((resolve, reject) => {
-      LoginApi.login(userInfo).then(response => {
+      login(userInfo).then(response => {
         const { data } = response
+        // console.log('token:', data.token)
         commit('SET_TOKEN', data.token)
-        commit('SET_NAME', data.username)
         setToken(data.token)
         resolve()
       }).catch(error => {
@@ -64,26 +48,31 @@ const actions = {
     })
   },
 
-  // 获取登录用户信息并记录用户权限
+  // get user info
   getInfo({ commit, state }) {
     return new Promise((resolve, reject) => {
-      LoginApi.getInfo(state.token).then(response => {
+      getInfo(state.token).then(response => {
         const { data } = response
-        // console.log(data)
         if (!data) {
-          return reject('用户信息获取失败，请重新登录！')
+          reject('Verification failed, please Login again.')
         }
-        commit('SET_NAME', data.username)
-        commit('SET_AVATAR', data.avatar)
 
-        // 将获取到的用户权限信息存储到state中
-        const userPermission = data
-        commit('SET_USER', userPermission)
-        // 生成路由
-        store.dispatch('generateRoutes', userPermission).then(() => {
-          // 生成该用户的新路由json操作完毕之后,调用vue-router的动态新增路由方法,将新路由添加
-          router.addRoutes(store.getters.addRouters)
-        })
+        const { roles, name, avatar, introduction, permissions } = data
+
+        // roles must be a non-empty array
+        if (!roles || roles.length <= 0) {
+          reject('getInfo: roles must be a non-null array!')
+        }
+
+        if (avatar === '') {
+          commit('SET_AVATAR', 'http://localhost:8600/upload/images/2020/11/2020119-8e1ceb2a-4c95-4ee3-85ac-730721308d25.jpg')
+        } else {
+          commit('SET_AVATAR', avatar)
+        }
+        commit('SET_ROLES', roles)
+        commit('SET_NAME', name)
+        commit('SET_INTRODUCTION', introduction)
+        commit('SET_PERMISSION', permissions)
         resolve(data)
       }).catch(error => {
         reject(error)
@@ -91,14 +80,20 @@ const actions = {
     })
   },
 
-  // 登出
-  logout({ commit, state }) {
+  // user logout
+  logout({ commit, state, dispatch }) {
     return new Promise((resolve, reject) => {
-      LoginApi.logout(state.token).then(() => {
-        removeToken() // must remove  token  first
+      logout(state.token).then(() => {
+        commit('SET_TOKEN', '')
+        commit('SET_ROLES', [])
+        commit('SET_PERMISSION', [])
+        removeToken()
         resetRouter()
-        commit('RESET_STATE')
-        commit('RESET_USER')
+
+        // reset visited views and cached views
+        // to fixed https://github.com/PanJiaChen/vue-element-admin/issues/2485
+        dispatch('tagsView/delAllViews', null, { root: true })
+
         resolve()
       }).catch(error => {
         reject(error)
@@ -109,10 +104,31 @@ const actions = {
   // remove token
   resetToken({ commit }) {
     return new Promise(resolve => {
-      removeToken() // must remove  token  first
-      commit('RESET_STATE')
+      commit('SET_TOKEN', '')
+      commit('SET_ROLES', [])
+      removeToken()
       resolve()
     })
+  },
+
+  // dynamically modify permissions
+  async changeRoles({ commit, dispatch }, role) {
+    const token = role + '-token'
+
+    commit('SET_TOKEN', token)
+    setToken(token)
+
+    const { roles } = await dispatch('getInfo')
+
+    resetRouter()
+
+    // generate accessible routes map based on roles
+    const accessRoutes = await dispatch('permission/generateRoutes', roles, { root: true })
+    // dynamically add accessible routes
+    router.addRoutes(accessRoutes)
+
+    // reset visited views and cached views
+    dispatch('tagsView/delAllViews', null, { root: true })
   }
 }
 
@@ -122,4 +138,3 @@ export default {
   mutations,
   actions
 }
-

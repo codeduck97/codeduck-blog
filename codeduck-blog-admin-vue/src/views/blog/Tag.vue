@@ -12,8 +12,8 @@
           @keyup.enter.native="handleFind"
         />
         <el-button class="filter-item" type="primary" icon="el-icon-search" @click="handleFind">查找</el-button>
-        <el-button class="filter-item" type="primary" icon="el-icon-edit" @click="handleAdd">添加标签</el-button>
-        <el-button class="filter-item" type="danger" icon="el-icon-delete" @click="handleDeleteBatch">删除选中</el-button>
+        <el-button v-if="hasPerm('blog-tag:add')" class="filter-item" type="primary" icon="el-icon-edit" @click="handleAdd">添加标签</el-button>
+        <el-button v-if="hasPerm('blog-tag:delete')" class="filter-item" type="danger" icon="el-icon-delete" @click="handleDeleteBatch">删除选中</el-button>
         <!-- TODO 点击数排序 -->
         <!--<el-button
           class="filter-item"
@@ -98,10 +98,10 @@
             <el-tooltip class="item" effect="dark" content="置顶" placement="bottom-end">
               <el-button type="warning" icon="el-icon-caret-top" circle @click="handleIncr(scope.row.id)" />
             </el-tooltip>
-            <el-tooltip class="item" effect="dark" content="编辑" placement="bottom-end">
+            <el-tooltip v-if="hasPerm('blog-tag:update')" class="item" effect="dark" content="编辑" placement="bottom-end">
               <el-button type="primary" icon="el-icon-edit" circle @click="handleEdit(scope.row)" />
             </el-tooltip>
-            <el-tooltip class="item" effect="dark" content="删除" placement="bottom-end">
+            <el-tooltip v-if="hasPerm('blog-tag:delete')" class="item" effect="dark" content="删除" placement="bottom-end">
               <el-button type="danger" icon="el-icon-delete" circle @click="handleDelete(scope.row.id)" />
             </el-tooltip>
           </template>

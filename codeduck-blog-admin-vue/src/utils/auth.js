@@ -1,6 +1,6 @@
 import Cookies from 'js-cookie'
 
-const TokenKey = 'codeduck_blog_token'
+const TokenKey = 'Admin-Token'
 
 export function getToken() {
   return Cookies.get(TokenKey)

@@ -1,5 +1,5 @@
 <template>
-  <a href="https://gitee.com/code-duck/codeduck-blog-vue" target="_blank" class="github-corner" aria-label="View source on Github">
+  <a href="https://github.com/codeduck97/codeduck-blog" target="_blank" class="github-corner" aria-label="View source on Github">
     <svg
       width="80"
       height="80"

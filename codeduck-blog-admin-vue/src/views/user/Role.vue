@@ -1,353 +1,158 @@
 <template>
   <div class="app-container">
-    <div class="filter-container">
-      <el-form>
-        <el-form-item>
-          <el-button v-if="hasPerm('role:add')" type="success" icon="plus" @click="showCreate">添加角色
-          </el-button>
-        </el-form-item>
-      </el-form>
-    </div>
-    <el-table
-      v-loading.body="listLoading"
-      :data="list"
-      element-loading-text="拼命加载中"
-      border
-      fit
-      highlight-current-row
-    >
-      <el-table-column align="center" label="序号" width="80">
-        <template slot-scope="scope">
-          <span v-text="getIndex(scope.$index)" />
-        </template>
-      </el-table-column>
-      <el-table-column align="center" label="角色" prop="roleName" width="150" />
-      <el-table-column align="center" label="用户">
-        <template slot-scope="scope">
-          <div v-for="(user,index) in scope.row.users" :key="index">
-            <div style="display: inline-block;vertical-align: middle;" v-text="user.nickname" />
-          </div>
-        </template>
-      </el-table-column>
-      <el-table-column align="center" label="菜单&权限" width="420">
-        <template slot-scope="scope">
-          <el-tag v-if="scope.row.roleName==adminName" type="success">全部</el-tag>
-          <div v-else>
-            <div v-for="(menu,index) in scope.row.menus" :key="index" style="text-align: left">
-              <span style="width: 100px;display: inline-block;text-align: right ">{{ menu.menuName }} </span>
-              <el-tag
-                v-for="perm in menu.permissions"
-                :key="perm.permissionName"
-                style="margin-right: 3px;"
-                type="primary"
-                v-text="perm.permissionName"
-              />
-            </div>
-          </div>
-        </template>
-      </el-table-column>
-      <el-table-column v-if="hasPerm('role:update') || hasPerm('role:delete') " align="center" label="管理" width="220">
-        <template slot-scope="scope">
-          <div v-if="scope.row.roleName != adminName">
-            <el-button v-if="hasPerm('role:update')" type="primary" icon="edit" @click="showUpdate(scope.$index)">修改
-            </el-button>
-            <el-button
-              v-if=" hasPerm('role:delete')"
-              type="danger"
-              icon="delete"
-              @click="removeRole(scope.$index)"
-            >
-              删除
-            </el-button>
-          </div>
-        </template>
-      </el-table-column>
-    </el-table>
-    <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
-      <el-form
-        class="small-space"
-        :model="tempRole"
-        label-position="left"
-        label-width="100px"
-        style="width: 600px; margin-left:50px;"
+    <el-button v-if="hasPerm('role:add')" type="primary" @click="handleAddRole">添加角色</el-button>
+    <div class="role-table">
+      <el-table
+        v-loading="loading"
+        :data="roles"
+        stripe
+        style="width:100%;margin:20px 0 30px 0;"
       >
-        <el-form-item label="角色名称" required>
-          <el-input v-model="tempRole.roleName" type="text" style="width: 250px;" />
-        </el-form-item>
-        <el-form-item label="菜单&权限" required>
-          <div v-for=" (menu,_index) in allPermission" :key="menu.menuName">
-            <span style="width: 100px;display: inline-block;">
-              <el-button
-                :type="isMenuNone(_index)?'':(isMenuAll(_index)?'success':'primary')"
-                size="mini"
-                style="width:80px;"
-                @click="checkAll(_index)"
-              >{{ menu.menuName }}</el-button>
-            </span>
-            <div style="display: inline-block;margin-left:20px;">
-              <el-checkbox-group v-model="tempRole.permissions">
-                <el-checkbox
-                  v-for="perm in menu.permissions"
-                  :key="perm.id"
-                  :label="perm.id"
-                  @change="checkRequired(perm,_index)"
-                >
-                  <span :class="{requiredPerm:perm.requiredPerm===1}">{{ perm.permissionName }}</span>
-                </el-checkbox>
-              </el-checkbox-group>
-            </div>
-          </div>
-          <p style="color:#848484;">说明:红色权限为对应菜单内的必选权限</p>
-        </el-form-item>
-      </el-form>
-      <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogFormVisible = false">取 消</el-button>
-        <el-button v-if="dialogStatus=='create'" type="success" @click="createRole">创 建</el-button>
-        <el-button v-else type="primary" @click="updateRole">修 改</el-button>
-      </div>
-    </el-dialog>
+        <!-- 表单||ID -->
+        <el-table-column align="center" label="ID" width="95">
+          <template slot-scope="scope">
+            {{ scope.$index + 1 }}
+          </template>
+        </el-table-column>
+
+        <el-table-column align="center" label="角色名" width="220">
+          <template slot-scope="scope">
+            {{ scope.row.roleName }}
+          </template>
+        </el-table-column>
+
+        <el-table-column align="center" label="备注信息">
+          <template slot-scope="scope">
+            {{ scope.row.remark }}
+          </template>
+        </el-table-column>
+
+        <el-table-column align="center" label="创建时间" width="220">
+          <template slot-scope="scope">
+            <i class="el-icon-time" />
+            <span>{{ scope.row.createTime }}</span>
+          </template>
+        </el-table-column>
+
+        <el-table-column align="center" label="修改时间" width="220">
+          <template slot-scope="scope">
+            <i class="el-icon-time" />
+            <span>{{ scope.row.updateTime }}</span>
+          </template>
+        </el-table-column>
+
+        <el-table-column align="center" label="操作" width="220">
+          <template slot-scope="scope">
+            <el-button v-if="hasPerm('role:view')" type="primary" size="small" @click="handleView(scope.row)">查看</el-button>
+            <el-button v-if="hasPerm('role:update')" type="primary" size="small" @click="handleEdit(scope.row)">编辑</el-button>
+            <el-button v-if="hasPerm('role:delete')" type="danger" size="small" @click="handleDelete(scope.row.id)">删除</el-button>
+          </template>
+        </el-table-column>
+      </el-table>
+    </div>
+    <el-pagination
+      :current-page="pageInfo.pageNum"
+      :page-sizes="[3, 5, 8, 15]"
+      :page-size="pageInfo.pageSize"
+      layout="total, sizes, prev, pager, next, jumper"
+      :total="total"
+      @size-change="handleSizeChange"
+      @current-change="handleCurrentChange"
+    />
+    <role-add ref="roleAdd" @needRefresh="refresh" />
+    <role-edit ref="roleEdit" @needRefresh="refresh" />
+    <role-view ref="roleView" @needRefresh="refresh" />
   </div>
 </template>
+
 <script>
-import * as RoleApi from '@/api/admin/role'
+import * as RoleApi from '@/api/role'
+import RoleAdd from '@/views/user/components/RoleAdd'
+import RoleEdit from '@/views/user/components/RoleEdit'
+import RoleView from '@/views/user/components/RoleView'
+
 export default {
+  components: { RoleAdd, RoleEdit, RoleView },
   data() {
     return {
-      list: [], // 表格的数据
-      allPermission: [],
-      listLoading: false, // 数据加载等待动画
-      dialogStatus: 'create',
-      dialogFormVisible: false,
-      textMap: {
-        update: '编辑',
-        create: '新建角色'
+      roles: [],
+      loading: true,
+      total: 0,
+      pageInfo: {
+        pageNum: 1,
+        pageSize: 5
       },
-      tempRole: {
-        roleName: '',
-        roleId: '',
-        permissions: []
-      },
-      adminName: '超级管理员'
+      roleEdit: {
+        visiable: false
+      }
     }
   },
   created() {
     this.getList()
-    this.getAllPermisson()
   },
   methods: {
-    getAllPermisson() {
-      // 查询所有权限
-      RoleApi.getAllPermissions().then(res => {
-        this.allPermission = res.data
-      })
-    },
     getList() {
-      // 查询列表
-      this.listLoading = true
-      RoleApi.getRoleList().then({
-      }).then(res => {
-        this.listLoading = false
-        this.list = res.data
+      this.loading = true
+      RoleApi.getList(this.pageInfo).then(res => {
+        if (res.code !== 1000) {
+          this.loading = false
+          return this.$message.error('服务器异常')
+        }
+        this.total = res.data.total
+        this.roles = res.data.roles
+      })
+      this.loading = false
+    },
+    handleEdit(roleInfo) {
+      RoleApi.getRolePermission(roleInfo.id).then(res => {
+        const permissions = res.data
+        this.$refs.roleEdit.setPermissions(permissions)
+      })
+      this.$refs.roleEdit.setRadioKey(roleInfo.roleKey)
+      this.$refs.roleEdit.role = roleInfo
+      this.$refs.roleEdit.drawer = true
+    },
+    handleView(roleInfo) {
+      RoleApi.getRolePermission(roleInfo.id).then(res => {
+        const permissions = res.data
+        this.$refs.roleView.setPermissions(permissions)
+      })
+      this.$refs.roleView.setRadioKey(roleInfo.roleKey)
+      this.$refs.roleView.role = roleInfo
+      this.$refs.roleView.drawer = true
+    },
+    handleDelete(roleId) {
+      RoleApi.deleteRole(roleId).then(res => {
+        if (res.code === 1002) {
+          return this.$message.error('删除失败，某些用户拥有该角色')
+        } else if (res.code === 1000) {
+          this.getList()
+          return this.$message.success('删除成功')
+        }
+        return this.$message.error('删除失败')
       })
     },
-    getIndex($index) {
-      // 表格序号
-      return $index + 1
+    handleAddRole() {
+      this.$refs.roleAdd.drawer = true
+      return this.$notify.info('暂时不支持该功能')
     },
-    showCreate() {
-      // 显示新增对话框
-      this.tempRole.roleName = ''
-      this.tempRole.roleId = ''
-      this.tempRole.permissions = []
-      this.dialogStatus = 'create'
-      this.dialogFormVisible = true
+    // 用户管理||用户列表||分页||监听pagesize改变事件
+    handleSizeChange(size) {
+      this.pageInfo.pageSize = size
+      this.getList()
     },
-    showUpdate($index) {
-      const role = this.list[$index]
-      this.tempRole.roleName = role.roleName
-      this.tempRole.roleId = role.roleId
-      this.tempRole.permissions = []
-      for (let i = 0; i < role.menus.length; i++) {
-        const perm = role.menus[i].permissions
-        for (let j = 0; j < perm.length; j++) {
-          this.tempRole.permissions.push(perm[j].permissionId)
-        }
-      }
-      this.dialogStatus = 'update'
-      this.dialogFormVisible = true
+    // 用户管理||用户列表||分页||监听page-sizes改变
+    handleCurrentChange(num) {
+      this.pageInfo.pageNum = num
+      this.getList()
     },
-    createRole() {
-      if (!this.checkRoleNameUnique()) {
-        return
-      }
-      if (!this.checkPermissionNum()) {
-        return
-      }
-      // 添加新角色
-      this.api({
-        url: '/user/addRole',
-        method: 'post',
-        data: this.tempRole
-      }).then(() => {
-        this.getList()
-        this.dialogFormVisible = false
-      })
-    },
-    updateRole() {
-      if (!this.checkRoleNameUnique(this.tempRole.roleId)) {
-        return
-      }
-      if (!this.checkPermissionNum()) {
-        return
-      }
-      // 修改角色
-      this.api({
-        url: '/user/updateRole',
-        method: 'post',
-        data: this.tempRole
-      }).then(() => {
-        this.getList()
-        this.dialogFormVisible = false
-      })
-    },
-    checkPermissionNum() {
-      // 校验至少有一种权限
-      if (this.tempRole.permissions.length === 0) {
-        this.$message.error('请至少选择一种权限')
-        return false
-      }
-      return true
-    },
-    checkRoleNameUnique(roleId) {
-      // 校验名称重复
-      const roleName = this.tempRole.roleName
-      if (!roleName) {
-        this.$message.error('请填写角色名称')
-        return false
-      }
-      const roles = this.list
-      let result = true
-      for (let j = 0; j < roles.length; j++) {
-        if (roles[j].roleName === roleName && (!roleId || roles[j].roleId !== roleId)) {
-          this.$message.error('角色名称已存在')
-          result = false
-          break
-        }
-      }
-      return result
-    },
-    removeRole($index) {
-      const _vue = this
-      this.$confirm('确定删除此角色?', '提示', {
-        confirmButtonText: '确定',
-        showCancelButton: false,
-        type: 'warning'
-      }).then(() => {
-        const role = _vue.list[$index]
-        _vue.api({
-          url: '/user/deleteRole',
-          method: 'post',
-          data: {
-            roleId: role.roleId
-          }
-        }).then(() => {
-          _vue.getList()
-        }).catch(e => {
-        })
-      })
-    },
-    isMenuNone(_index) {
-      // 判断本级菜单内的权限是否一个都没选
-      const menu = this.allPermission[_index].permissions
-      let result = true
-      for (let j = 0; j < menu.length; j++) {
-        if (this.tempRole.permissions.indexOf(menu[j].id) > -1) {
-          result = false
-          break
-        }
-      }
-      return result
-    },
-    isMenuAll(_index) {
-      // 判断本级菜单内的权限是否全选了
-      const menu = this.allPermission[_index].permissions
-      let result = true
-      for (let j = 0; j < menu.length; j++) {
-        if (this.tempRole.permissions.indexOf(menu[j].id) < 0) {
-          result = false
-          break
-        }
-      }
-      return result
-    },
-    checkAll(_index) {
-      // 点击菜单   相当于全选按钮
-      const v = this
-      if (v.isMenuAll(_index)) {
-        // 如果已经全选了,则全部取消
-        v.noPerm(_index)
-      } else {
-        // 如果尚未全选,则全选
-        v.allPerm(_index)
-      }
-    },
-    allPerm(_index) {
-      // 全部选中
-      const menu = this.allPermission[_index].permissions
-      for (let j = 0; j < menu.length; j++) {
-        this.addUnique(menu[j].id, this.tempRole.permissions)
-      }
-    },
-    noPerm(_index) {
-      // 全部取消选中
-      const menu = this.allPermission[_index].permissions
-      for (let j = 0; j < menu.length; j++) {
-        const idIndex = this.tempRole.permissions.indexOf(menu[j].id)
-        if (idIndex > -1) {
-          this.tempRole.permissions.splice(idIndex, 1)
-        }
-      }
-    },
-    addUnique(val, arr) {
-      // 数组内防重复地添加元素
-      const _index = arr.indexOf(val)
-      if (_index < 0) {
-        arr.push(val)
-      }
-    },
-    checkRequired(_perm, _index) {
-      // 本方法会在勾选状态改变之后触发
-      const permId = _perm.id
-      if (this.tempRole.permissions.indexOf(permId) > -1) {
-        // 选中事件
-        // 如果之前未勾选本权限,现在勾选完之后,tempRole里就会包含本id
-        // 那么就要将必选的权限勾上
-        this.makeReuqiredPermissionChecked(_index)
-      } else {
-        // 取消选中事件
-        if (_perm.requiredPerm === 1) {
-          // 如果是必勾权限,就把本菜单的权限全部移出
-          // (其实也可以提示用户本权限是菜单里的必选,请先取消勾选另外几个权限,交互太麻烦,此处就直接全部取消选中了)
-          this.noPerm(_index)
-        }
-      }
-    },
-    makeReuqiredPermissionChecked(_index) {
-      // 将本菜单必选的权限勾上
-      const menu = this.allPermission[_index].permissions
-      for (let j = 0; j < menu.length; j++) {
-        const perm = menu[j]
-        if (perm.requiredPerm === 1) {
-          // 找到本菜单的必选权限,将其勾上
-          this.addUnique(perm.id, this.tempRole.permissions)
-        }
-      }
+    refresh() {
+      this.getList()
     }
   }
 }
 </script>
+
 <style scoped>
-  .requiredPerm {
-    color: #ff0e13;
-  }
+
 </style>

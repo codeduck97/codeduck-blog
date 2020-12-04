@@ -3,8 +3,8 @@
     <!-- 用户管理||用户列表||查找栏 -->
     <div class="nav-bar">
       <el-input v-model="keyword" class="search-bar" placeholder="请输入用户名" @keyup.enter.native="searchByName" />
-      <el-button type="primary" style="margin-left: 15px; background-color:#000000" @click="searchByName">查找</el-button>
-      <el-button type="primary" style="background-color:#000000" @click="registerUser">用户注册</el-button>
+      <el-button type="primary" style="margin-left: 15px;" @click="searchByName">查找</el-button>
+      <el-button v-if="hasPerm('user:add')" type="primary" @click="registerUser">用户注册</el-button>
     </div>
     <!-- 用户管理||用户列表||表单 -->
     <el-table
@@ -20,22 +20,22 @@
           {{ scope.$index + 1 }}
         </template>
       </el-table-column>
+      <!-- 表单||邮箱 -->
+      <el-table-column align="center" label="昵称">
+        <template slot-scope="scope">
+          {{ scope.row.nickname }}
+        </template>
+      </el-table-column>
       <!-- 表单||用户名 -->
       <el-table-column align="center" label="用户名">
         <template slot-scope="scope">
           {{ scope.row.username }}
         </template>
       </el-table-column>
-      <!-- 表单||邮箱 -->
-      <el-table-column align="center" label="邮箱">
-        <template slot-scope="scope">
-          {{ scope.row.email }}
-        </template>
-      </el-table-column>
       <!-- 表单||手机号 -->
-      <el-table-column align="center" label="手机号">
+      <el-table-column align="center" label="角色">
         <template slot-scope="scope">
-          {{ scope.row.mobile }}
+          <el-tag type="primary">{{ scope.row.roleName }} </el-tag>
         </template>
       </el-table-column>
       <!-- 表单||登录次数 -->
@@ -45,7 +45,7 @@
         </template>
       </el-table-column>
       <!-- 表单||登陆时间 -->
-      <el-table-column align="center" prop="lastLoginTime" label="登陆时间" width="180px">
+      <el-table-column align="center" prop="lastLoginTime" label="最近登录" width="180px">
         <template slot-scope="scope">
           <i class="el-icon-time" />
           <span>{{ scope.row.lastLoginTime }}</span>
@@ -61,10 +61,10 @@
       <el-table-column align="center" label="操作">
         <template slot-scope="scope">
           <div class="operate">
-            <el-tooltip class="item" effect="dark" content="编辑" placement="bottom-end">
+            <el-tooltip v-if="hasPerm('user:update')" class="item" effect="dark" content="编辑" placement="bottom-end">
               <el-button type="primary" icon="el-icon-edit" circle @click="editUserInfo(scope.row)" />
             </el-tooltip>
-            <el-tooltip class="item" effect="dark" content="删除" placement="bottom-end">
+            <el-tooltip v-if="hasPerm('user:delete')" class="item" effect="dark" content="删除" placement="bottom-end">
               <el-button type="danger" icon="el-icon-delete" circle @click="deleteUserById(scope.row.id)" />
             </el-tooltip>
           </div>
@@ -73,9 +73,9 @@
     </el-table>
     <!-- 用户管理||用户列表||表单||操作||用户修改 -->
     <!-- 用户管理||用户列表||查找栏||用户注册 -->
-    <user-register ref="userRegisterRef" style="margin-left:15px;" @needRefresh="refresh" />
-    <user-update ref="userUpdateRef" style="margin-left:15px;" @needRefresh="refresh" />
-    <user-register ref="registerDrawer" style="margin-left:15px;" @needRefresh="refresh" />
+    <user-add ref="userRegisterRef" style="margin-left:15px;" @needRefresh="refresh" />
+    <user-edit ref="userUpdateRef" style="margin-left:15px;" @needRefresh="refresh" />
+    <user-add ref="registerDrawer" style="margin-left:15px;" @needRefresh="refresh" />
     <!-- 用户管理||用户列表||分页 -->
     <el-pagination
       :current-page="pageInfo.pageNum"
@@ -90,13 +90,13 @@
 </template>
 
 <script>
-import UserRegister from '@/views/user/components/UserRegister'
-import UserUpdate from '@/views/user/components/UserUpdate'
+import UserAdd from '@/views/user/components/UserAdd'
+import UserEdit from '@/views/user/components/UserEdit'
 
-import * as UserApi from '@/api/admin/user'
+import * as UserApi from '@/api/user'
 
 export default {
-  components: { UserRegister, UserUpdate },
+  components: { UserAdd, UserEdit },
   filters: {
     statusFilter(status) {
       if (Number.prototype.valueOf(status) === 0) {
@@ -149,8 +149,8 @@ export default {
       // this.listLoading = true
       UserApi.getList(this.pageInfo).then(response => {
         this.list = response.data.admins
-        this.listLoading = false
         this.total = response.data.total
+        this.listLoading = false
       })
     },
     // 根据用户名查询用户信息
@@ -174,6 +174,7 @@ export default {
     // 注册用户信息
     registerUser() {
       this.$refs.userRegisterRef.title = '用户注册页面'
+      this.$refs.userRegisterRef.getRoleList()
       this.$refs.userRegisterRef.drawer = true
     },
     // 注册或更新完成后调用此方法
@@ -185,29 +186,10 @@ export default {
     // 编辑用户信息
     editUserInfo(userInfo) {
       this.$refs.userUpdateRef.userForm = userInfo
+      this.$refs.userUpdateRef.roleId = userInfo.roleId
+      this.$refs.userUpdateRef.getRoleList()
       this.$refs.userUpdateRef.title = '用户信息修改页面'
       this.$refs.userUpdateRef.drawer = true
-    },
-    submitForm(formName) {
-      this.$refs[formName].validate((valid) => {
-        if (valid) {
-          UserApi.updateUser(this.userForm).then(res => {
-            if (res.code !== 1000) {
-              this.$message.error('修改失败！')
-              return false
-            }
-            this.getList()
-            this.$message.success('修改成功！')
-            this.drawer = false
-          })
-        } else {
-          this.$message({
-            message: '请填写完整信息',
-            type: 'error'
-          })
-          return false
-        }
-      })
     },
     // 通过id删除用户信息
     deleteUserById(id) {
