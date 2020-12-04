@@ -9,9 +9,13 @@ CodeDuck Blog 是一个前后分离的博客项目。
 - 登录认证使用`JWT` + `Shiro` + `Redis`，前端根据后端返回的角色权限信息进行动态渲染。
 - 使用`Swagger2`作为开发文档API记录工具。
 - 使用`Elasticsearch`框架作为检索引擎（马上就做……）
-- 支持图片上传至本地或者[七牛云存储](https://www.qiniu.com/)
+- 支持图片上传至本地服务器（使用Nginx做反向代理）或者[七牛云存储](https://www.qiniu.com/)
 
 前端主要使用 [VUE](https://cn.vuejs.org/) + [Element UI](https://element.eleme.cn/#/zh-CN) + [vue-element-admin](https://github.com/PanJiaChen/vue-element-admin/)来做博客门户和后台管理系统（前端比较业余，边学边做，慢慢完善……）
+
+**GitHub地址：** https://github.com/codeduck97/codeduck-blog
+
+**Gitee地址：** https://gitee.com/code-duck/codeduck-blog
 
 ## 已完成的功能
 
