@@ -2,6 +2,7 @@
   <el-drawer
     title="编辑角色信息"
     :visible.sync="drawer"
+    :before-close="handleClose"
     :with-header="true"
   >
     <el-form ref="roleForm" label-width="120px" :model="role" :rules="rules" style="padding:0 60px 0 0">
@@ -105,6 +106,13 @@ export default {
     },
     setPermissions(permissions) {
       this.checkedKeys = permissions
+    },
+    handleClose(done) {
+      this.$confirm('确认关闭？')
+        .then(_ => {
+          done()
+        })
+        .catch(_ => {})
     }
   }
 }

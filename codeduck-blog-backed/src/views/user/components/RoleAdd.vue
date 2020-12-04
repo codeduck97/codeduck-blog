@@ -2,6 +2,7 @@
   <el-drawer
     title="新增角色"
     :visible.sync="drawer"
+    :before-close="handleClose"
     :with-header="true"
   >
     <el-form ref="roleForm" label-width="120px" :model="role" :rules="rules" style="padding:0 60px 0 0">
@@ -91,6 +92,15 @@ export default {
           return this.$message.success('添加成功')
         })
       })
+    },
+    handleClose(done) {
+      this.$confirm('确认关闭？')
+        .then(_ => {
+          this.$refs.roleForm.resetFields()
+          this.checkedKeys = []
+          done()
+        })
+        .catch(_ => {})
     }
   }
 }
