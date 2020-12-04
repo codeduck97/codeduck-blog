@@ -47,6 +47,6 @@ CodeDuck Blog 是一个前后分离的博客项目。
 
 **感谢蘑菇博客：** https://gitee.com/moxi159753/mogu_blog_v2 
 
-**感谢Vue后台管理模板：**https://github.com/PanJiaChen/vue-element-admin
+**感谢Vue后台管理模板：** https://github.com/PanJiaChen/vue-element-admin
 
-**感谢FEBS权限框架：**https://github.com/wx7614140/FEBS-Vue-Fix
+**感谢FEBS权限框架：** https://github.com/wx7614140/FEBS-Vue-Fix
