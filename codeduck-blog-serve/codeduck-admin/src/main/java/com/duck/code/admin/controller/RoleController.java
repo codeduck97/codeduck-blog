@@ -4,12 +4,10 @@ import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.StringPool;
 import com.baomidou.mybatisplus.extension.api.R;
-import com.duck.code.admin.service.AdminService;
-import com.duck.code.admin.service.PermissionService;
-import com.duck.code.admin.service.RoleService;
-import com.duck.code.admin.service.UserRoleService;
+import com.duck.code.admin.service.*;
 import com.duck.code.commons.constant.ResCode;
 import com.duck.code.commons.entity.sys.Role;
+import com.duck.code.commons.entity.sys.RolePermission;
 import com.duck.code.commons.utils.CommonRes;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiModelProperty;
@@ -27,6 +25,7 @@ import javax.validation.constraints.NotBlank;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * @program: codeduck-blog-serve
@@ -49,6 +48,9 @@ public class RoleController {
 
     @Resource
     private UserRoleService userRoleService;
+
+    @Resource
+    private RolePermissionService rolePermissionService;
 
     private String message;
 
@@ -83,6 +85,14 @@ public class RoleController {
         }
     }
 
+    @ApiOperation(value = "获取用户权限信息")
+    @GetMapping("/permission/{roleId}")
+    public R getRolePermissions(@NotBlank(message = "{required}") @PathVariable String roleId) {
+        List<RolePermission> list = this.rolePermissionService.getRolePermissionByRoleId(roleId);
+        List<String> res = list.stream().map(rolePermission -> String.valueOf(rolePermission.getPermissionId())).collect(Collectors.toList());
+        return CommonRes.success(res.toArray());
+    }
+
     @ApiOperation(value = "删除角色信息")
     @DeleteMapping("/{roleId}")
     public R deleteRoles(@NotBlank(message = "{required}") @PathVariable String roleId) {
@@ -96,5 +106,15 @@ public class RoleController {
         } else {
             return CommonRes.fail("删除失败");
         }
+    }
+
+    @ApiOperation(value = "修改角色信息")
+    @PutMapping("/update")
+    public R updateRole(@RequestBody @Valid Role role) {
+        if (this.roleService.updateRole(role)) {
+            return CommonRes.success(null);
+        }
+        log.info("角色信息修改失败{{}}",role.getRoleName());
+        return CommonRes.fail("角色信息修改失败");
     }
 }

@@ -15,6 +15,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 
@@ -56,6 +57,18 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements Ro
         // 删除角色对应的权限id
         if (rolePermissionService.deleteRolePermissionByRoleId(roleId)) {
             return super.removeById(roleId);
+        }
+        return false;
+    }
+
+    @Override
+    @Transactional
+    public boolean updateRole(Role role) {
+        role.setUpdateTime(LocalDateTime.now());
+        if (super.updateById(role)) {
+            rolePermissionService.deleteRolePermissionByRoleId(role.getId().toString());
+            setRolePermission(role, role.getPermissionId());
+            return true;
         }
         return false;
     }

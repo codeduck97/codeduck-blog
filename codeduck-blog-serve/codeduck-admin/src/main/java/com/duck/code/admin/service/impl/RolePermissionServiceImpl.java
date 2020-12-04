@@ -8,6 +8,8 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.duck.code.commons.entity.sys.RolePermission;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
  * <p>
  * 角色-权限关联表 服务实现类
@@ -24,5 +26,10 @@ public class RolePermissionServiceImpl extends ServiceImpl<RolePermissionMapper,
         QueryWrapper<RolePermission> wrapper = new QueryWrapper<>();
         wrapper.eq("role_id", roleId);
         return super.remove(wrapper);
+    }
+
+    @Override
+    public List<RolePermission> getRolePermissionByRoleId(String roleId) {
+        return this.baseMapper.selectList(new LambdaQueryWrapper<RolePermission>().eq(RolePermission::getRoleId,Long.valueOf(roleId)));
     }
 }

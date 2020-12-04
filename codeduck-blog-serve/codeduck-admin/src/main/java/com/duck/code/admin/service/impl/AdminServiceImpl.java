@@ -10,8 +10,10 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.duck.code.admin.config.jwt.JwtHelper;
 import com.duck.code.admin.mapper.AdminMapper;
+import com.duck.code.admin.mapper.UserRoleMapper;
 import com.duck.code.admin.service.AdminService;
 import com.duck.code.admin.service.PermissionService;
+import com.duck.code.admin.service.UserRoleService;
 import com.duck.code.commons.constant.Constants;
 import com.duck.code.commons.entity.sys.Admin;
 import com.duck.code.commons.entity.sys.UserRole;
@@ -19,6 +21,8 @@ import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.session.Session;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
@@ -34,28 +38,17 @@ import java.util.List;
  * @since 2020-10-20
  */
 @Service
+@Transactional(propagation = Propagation.SUPPORTS, readOnly = true, rollbackFor = Exception.class)
 public class AdminServiceImpl extends ServiceImpl<AdminMapper, Admin> implements AdminService {
 
-    @Resource
-    private PermissionService permissionService;
 
-    /**
-     * desc: 根据用户名获取用户的创建时间
-     * <p>
-     *
-     * @param username
-     * @return time
-     */
-    @Override
-    public LocalDateTime getCreatedTime(String username) {
-        if (!StringUtils.isEmpty(username)) {
-            QueryWrapper<Admin> wrapper = new QueryWrapper<>();
-            wrapper.select("creation_time").eq("username", username);
-            Admin admin = this.baseMapper.selectOne(wrapper);
-            if (admin != null) return admin.getCreationTime();
-        }
-        return null;
-    }
+
+    @Resource
+    private UserRoleService userRoleService;
+
+    @Resource
+    private UserRoleMapper userRoleMapper;
+
 
     /**
      * desc: 根据用户密码查询用户信息
@@ -146,6 +139,48 @@ public class AdminServiceImpl extends ServiceImpl<AdminMapper, Admin> implements
         wrapper.select(Admin.class, i -> !i.getColumn().equals("password"));
         wrapper.eq("username", username);
         return super.getOne(wrapper);
+    }
+
+    @Override
+    @Transactional
+    public boolean addUser(Admin admin) {
+        if (super.save(admin)) {
+            setUserRole(admin.getId(),admin.getRoleId());
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    @Transactional
+    public boolean updateUser(Admin admin) {
+        if (super.updateById(admin)) {
+            updateUserRole(admin.getId(),admin.getRoleId());
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    @Transactional
+    public boolean deleteUserById(String userId) {
+        if (super.removeById(userId)) {
+            this.userRoleMapper.delete(new LambdaQueryWrapper<UserRole>().eq(UserRole::getUserId,userId));
+            return true;
+        }
+        return false;
+    }
+
+    private void updateUserRole(String userId, Integer roleId) {
+        this.userRoleMapper.delete(new LambdaQueryWrapper<UserRole>().eq(UserRole::getUserId,userId));
+        setUserRole(userId,roleId);
+    }
+
+    private void setUserRole(String userId, Integer roleId) {
+        UserRole userRole = new UserRole();
+        userRole.setUserId(userId);
+        userRole.setRoleId(Long.valueOf(roleId));
+        this.userRoleService.save(userRole);
     }
 
 }

@@ -193,7 +193,7 @@ public class LoginController {
         roles.add(roleName);
         result.put("roles", roles.toArray());
 
-        result.put("permission", permission);
+        result.put("permissions", permission.toArray());
 
         return R.ok(result).setCode(1000);
     }

@@ -46,4 +46,11 @@ public interface RoleService extends IService<Role> {
      * @param roleId
      */
     boolean deleteRoles(String roleId);
+
+    /**
+     * 更新角色相关信息
+     *
+     * @param role
+     */
+    boolean updateRole(Role role);
 }

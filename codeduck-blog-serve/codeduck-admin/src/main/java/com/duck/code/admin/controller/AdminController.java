@@ -43,19 +43,23 @@ public class AdminController {
 
     @ApiOperation(value = "更新用户信息",notes = "用户更新功能待修改……目前可以对用户名和密码同时修改，但用户名不能同名")
     @PutMapping("/update")
-    public R updateUserInfo(@Validated({Update.class}) @RequestBody AdminVO adminVO) {
-
+    public R updateUserInfo(@Validated({Update.class}) @RequestBody Admin adminVO) {
+        log.info("{{}}",adminVO);
         // 用户修改信息时，用户名必须唯一
         Admin admin = adminService.getAdminByName(adminVO.getUsername());
         if (admin == null || admin != null && admin.getId().equals(adminVO.getId())) {
-            BeanUtil.copyProperties(adminVO, admin);
             admin.setPassword(CommonUtil.md5UserPwd(adminVO.getPassword()));
             admin.setUpdateTime(LocalDateTime.now());
-            if (adminService.updateById(admin)){
-                log.info("用户信息已被修改 {{}}", admin);
-                return R.ok(null).setCode(ResCode.OPERATION_SUCCESS);
+            admin.setRoleId(adminVO.getRoleId());
+            try {
+                if (adminService.updateUser(admin)){
+                    log.info("用户信息已被修改 {{}}", admin);
+                    return R.ok(null).setCode(ResCode.OPERATION_SUCCESS);
+                }
+            } catch (Exception e) {
+                log.info("用户更新发生异常{{}}",e.getMessage());
+                return R.failed("用户信息修改失败").setCode(ResCode.OPERATION_FAIL);
             }
-            return R.failed("用户信息修改失败").setCode(ResCode.OPERATION_FAIL);
         }
         return R.failed("该用户已存在（与已存在的用户名冲突）").setCode(ResCode.OPERATION_REJECT);
     }
@@ -66,7 +70,7 @@ public class AdminController {
     @DeleteMapping("/delete")
     public R deleteUserInfo(@NotBlank(message = "用户id不能为空") @RequestParam("id") String id) {
         Admin admin = adminService.getById(id);
-        if (adminService.removeById(id)) {
+        if (adminService.deleteUserById(id)) {
             log.info("用户信息已被删除 {{}}",admin);
             return R.ok(null).setCode(ResCode.OPERATION_SUCCESS);
         }
@@ -75,18 +79,20 @@ public class AdminController {
 
     @PostMapping("/add")
     @ApiOperation(value = "注册或更新用户信息", notes = "请注意必填属性信息")
-    public R registerUserInfo(@Validated({Insert.class}) @RequestBody AdminVO adminVO) {
-
+    public R registerUserInfo(@Validated({Insert.class}) @RequestBody Admin admin) {
+        log.info("{{}}",admin);
         // 1.判断当前注册的用户名是否合法
-        if (!adminService.existAdminByName(adminVO.getUsername())) {
-            Admin admin = new Admin();
-            BeanUtil.copyProperties(adminVO, admin);
-            admin.setPassword(CommonUtil.md5UserPwd(adminVO.getPassword()));
-            if (adminService.saveOrUpdate(admin)) {
-                log.info("更新用户信息 {{}}", admin);
-                return R.ok(null).setCode(ResCode.OPERATION_SUCCESS).setMsg("用户注册成功");
+        if (!adminService.existAdminByName(admin.getUsername())) {
+            admin.setPassword(CommonUtil.md5UserPwd(admin.getPassword()));
+            try {
+                if (adminService.addUser(admin)) {
+                    log.info("更新用户信息 {{}}", admin);
+                    return R.ok(null).setCode(ResCode.OPERATION_SUCCESS).setMsg("用户注册成功");
+                }
+            } catch (Exception e) {
+                log.error("添加用户操作发生异常{{}}",e.getCause());
+                return R.failed("用户注册失败").setCode(ResCode.OPERATION_FAIL);
             }
-            return R.failed("用户注册失败").setCode(ResCode.OPERATION_FAIL);
         }
         return R.failed("该用户已存在").setCode(ResCode.OPERATION_REJECT);
     }

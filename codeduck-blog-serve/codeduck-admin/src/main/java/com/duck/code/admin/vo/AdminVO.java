@@ -51,6 +51,9 @@ public class AdminVO {
     @NotBlank(message = "手机号码不能为空", groups = {Insert.class, Update.class})
     private String mobile;
 
+    private String roleId;
+    private String roleName;
+
     @ApiModelProperty(value = "管理员qq号")
     private String qqNumber;
 

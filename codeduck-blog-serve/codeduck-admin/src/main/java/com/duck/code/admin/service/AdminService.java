@@ -17,14 +17,6 @@ import java.util.List;
  */
 public interface AdminService extends IService<Admin> {
 
-    /**
-     * desc: 根据用户名获取用户的创建时间
-     * <p>
-     *
-     * @param username
-     * @return time
-     */
-    LocalDateTime getCreatedTime(String username);
 
     /**
      * desc: 根据用户密码查询用户
@@ -82,4 +74,24 @@ public interface AdminService extends IService<Admin> {
      */
     Admin getAdminByName(String username);
 
+    /**
+     * 添加用户
+     *
+     * @param admin
+     */
+    boolean addUser(Admin admin);
+
+    /**
+     * 更新用户信息
+     *
+     * @param admin
+     */
+    boolean updateUser(Admin admin);
+
+    /**
+     * 删除用户信息及相关角色信息
+     *
+     * @param userId
+     */
+    boolean deleteUserById(String userId);
 }
