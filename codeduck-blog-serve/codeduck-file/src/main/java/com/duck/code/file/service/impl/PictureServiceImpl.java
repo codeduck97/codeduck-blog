@@ -1,14 +1,15 @@
-package com.duck.code.admin.service.impl;
+package com.duck.code.file.service.impl;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.duck.code.admin.config.system.SysConfig;
-import com.duck.code.admin.mapper.PictureMapper;
-import com.duck.code.admin.service.PictureService;
-import com.duck.code.admin.utils.FileUtil;
-import com.duck.code.admin.utils.PictureUtil;
 import com.duck.code.commons.entity.picture.Picture;
+import com.duck.code.commons.utils.FileUtil;
+import com.duck.code.commons.utils.PictureUtil;
+import com.duck.code.file.config.system.SysConfig;
+import com.duck.code.file.mapper.PictureMapper;
+import com.duck.code.file.service.PictureService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -18,7 +19,6 @@ import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.util.List;
 
 /**
  * <p>
@@ -26,7 +26,7 @@ import java.util.List;
  * </p>
  *
  * @author Code Duck
- * @since 2020-11-20
+ * @since 2020-12-05
  */
 @Service
 @Slf4j
@@ -36,7 +36,7 @@ public class PictureServiceImpl extends ServiceImpl<PictureMapper, Picture> impl
     private SysConfig sysConfig;
 
     /**
-     * desc: 批量上传图片
+     * desc: 批量上传图片至本地服务器
      * <p>
      *
      * @param pic
@@ -104,31 +104,9 @@ public class PictureServiceImpl extends ServiceImpl<PictureMapper, Picture> impl
         }
         return resPic;
     }
-
-    /**
-     * desc: 批量上传图片至七牛云存储
-     * <p>
-     *
-     * @param picture
-     * @return
-     */
     @Override
-    public Picture batchUploadPicToQiNiu(MultipartFile picture) {
-        return null;
-    }
-
-    /**
-     * desc: 分页获取图片信息
-     * <p>
-     *
-     * @param pageNum
-     * @param pageSize
-     * @return
-     */
-    @Override
-    public List<Picture> getPictureList(long pageNum, long pageSize) {
+    public IPage<Picture> getPictureList(long pageNum, long pageSize) {
         Page<Picture> pageInfo = new Page<>(pageNum, pageSize);
-        Page<Picture> page = super.page(pageInfo, Wrappers.<Picture>query().orderByDesc("creation_time"));
-        return page.getRecords();
+        return super.page(pageInfo, Wrappers.<Picture>query().orderByDesc("creation_time"));
     }
 }

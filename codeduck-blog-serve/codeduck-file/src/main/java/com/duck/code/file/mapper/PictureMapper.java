@@ -1,4 +1,4 @@
-package com.duck.code.admin.mapper;
+package com.duck.code.file.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.duck.code.commons.entity.picture.Picture;
@@ -9,7 +9,7 @@ import com.duck.code.commons.entity.picture.Picture;
  * </p>
  *
  * @author Code Duck
- * @since 2020-11-20
+ * @since 2020-12-05
  */
 public interface PictureMapper extends BaseMapper<Picture> {
 

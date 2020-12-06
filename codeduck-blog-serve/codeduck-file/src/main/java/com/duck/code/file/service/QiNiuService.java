@@ -1,4 +1,4 @@
-package com.duck.code.admin.service;
+package com.duck.code.file.service;
 
 import com.duck.code.commons.entity.picture.Picture;
 import org.springframework.web.multipart.MultipartFile;

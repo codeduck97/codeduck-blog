@@ -57,7 +57,9 @@ export default {
       done()
       console.log('已关闭')
     },
-    handleUploadSuccess() {}
+    handleUploadSuccess() {
+      return this.$message.success('上传成功')
+    }
   }
 }
 </script>

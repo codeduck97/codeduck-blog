@@ -9,7 +9,7 @@ import org.springframework.context.annotation.ComponentScan;
 
 @EnableDiscoveryClient
 @SpringBootApplication
-@EnableFeignClients
+@EnableFeignClients("com.duck.code.commons.feign")
 @ComponentScan(basePackages = {
         "com.duck.code.commons.config",
         "com.duck.code.commons.exception",

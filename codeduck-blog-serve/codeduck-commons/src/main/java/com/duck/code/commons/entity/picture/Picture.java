@@ -22,7 +22,7 @@ import java.time.LocalDateTime;
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
-@TableName("tb_pic")
+@TableName("tb_picture")
 public class Picture implements Serializable {
 
     private static final long serialVersionUID = 1L;

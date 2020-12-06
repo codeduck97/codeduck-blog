@@ -17,6 +17,7 @@
         <module>codeduck-web</module>
         <module>codeduck-es</module>
         <module>codeduck-gateway</module>
+        <module>codeduck-file</module>
     </modules>
 
     <properties>

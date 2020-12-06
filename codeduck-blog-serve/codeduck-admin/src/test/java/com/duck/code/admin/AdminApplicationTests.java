@@ -18,8 +18,6 @@ import java.util.Map;
 @SpringBootTest
 class AdminApplicationTests {
 
-    @Resource
-    private PictureService pictureService;
 
     @Resource
     private BlogSortService blogSortService;

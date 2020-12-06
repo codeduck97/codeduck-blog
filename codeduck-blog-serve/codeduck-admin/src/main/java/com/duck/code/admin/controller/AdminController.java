@@ -26,7 +26,6 @@ import java.util.HashMap;
 import java.util.List;
 
 /**
- * @program: codeduck-auth
  * @description: 用户信息控制器
  * @author: Code Duck
  * @create: 2020-10-03 18:18

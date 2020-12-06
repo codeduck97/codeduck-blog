@@ -1,13 +1,13 @@
-package com.duck.code.admin.service.impl;
+package com.duck.code.file.service.impl;
 
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
-import com.duck.code.admin.config.system.SysConfig;
-import com.duck.code.admin.service.PictureService;
-import com.duck.code.admin.service.QiNiuService;
-import com.duck.code.admin.utils.FileUtil;
-import com.duck.code.admin.utils.PictureUtil;
-import com.duck.code.admin.utils.QiniuUtil;
 import com.duck.code.commons.entity.picture.Picture;
+import com.duck.code.commons.utils.FileUtil;
+import com.duck.code.commons.utils.PictureUtil;
+import com.duck.code.file.config.system.SysConfig;
+import com.duck.code.file.service.PictureService;
+import com.duck.code.file.service.QiNiuService;
+import com.duck.code.file.utils.QiniuUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
