@@ -2,13 +2,12 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-
     <groupId>com.duck.code</groupId>
     <artifactId>codeduck-blog-serve</artifactId>
     <version>0.0.1-SNAPSHOT</version>
 
     <name>codeduck-blog-serve</name>
-    <description>总工程</description>
+    <description>聚合整个服务项目</description>
     <packaging>pom</packaging>
 
     <modules>
@@ -16,6 +15,7 @@
         <module>codeduck-admin</module>
         <module>codeduck-web</module>
         <module>codeduck-es</module>
+        <module>codeduck-search</module>
         <module>codeduck-gateway</module>
         <module>codeduck-file</module>
     </modules>

@@ -2,6 +2,7 @@ package com.duck.code.commons.feign;
 
 import com.baomidou.mybatisplus.extension.api.R;
 import com.duck.code.commons.config.FeignConfig;
+import com.duck.code.commons.entity.file.Contract;
 import com.duck.code.commons.entity.picture.Picture;
 import feign.Headers;
 import feign.codec.Encoder;
@@ -44,5 +45,8 @@ public interface PictureFeignClient {
 
     @PostMapping("/api/picture/delete")
     boolean deletePicture(@RequestParam("pictureIds") String[] pictureIds);
+
+    @PostMapping("/api/contract/upload")
+    boolean uploadContract(@RequestBody Contract contract);
 
 }

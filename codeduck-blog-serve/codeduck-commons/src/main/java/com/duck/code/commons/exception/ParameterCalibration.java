@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import java.security.InvalidParameterException;
+
 /**
  * @program: codeduck-blog-serve
  * @description: 参数异常处理类
@@ -51,7 +53,7 @@ public class ParameterCalibration {
     @ResponseBody
     public R  handleDefaultException(Exception exception) {
         log.error(exception.toString());
-        return  R.failed("参数异常：" + exception.toString()).setCode(ResCode.OPERATION_REJECT);
+        return  R.failed("系统异常" + exception.toString()).setCode(ResCode.SERVICE_ERROR);
     }
 
 }

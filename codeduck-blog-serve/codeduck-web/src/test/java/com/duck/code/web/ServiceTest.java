@@ -13,6 +13,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import javax.annotation.Resource;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
@@ -59,8 +60,7 @@ public class ServiceTest {
 
     @Test
     public void test(){
-        List<BlogArticle> strings = blogArticleMapper.queryArticleByYearMonth("2020-10");
-        strings.forEach(System.out::println);
+        HashSet<Object> objects = new HashSet<>();
     }
 
 }

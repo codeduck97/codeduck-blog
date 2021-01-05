@@ -133,4 +133,6 @@ public class FileUtil {
     public static String getSuffix(String fileName) {
         return fileName.substring(fileName.indexOf('.') + 1);
     }
+
+
 }

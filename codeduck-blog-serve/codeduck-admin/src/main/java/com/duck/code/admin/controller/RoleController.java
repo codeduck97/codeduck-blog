@@ -1,8 +1,6 @@
 package com.duck.code.admin.controller;
 
-import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.core.toolkit.StringPool;
 import com.baomidou.mybatisplus.extension.api.R;
 import com.duck.code.admin.service.*;
 import com.duck.code.commons.constant.ResCode;
@@ -10,11 +8,8 @@ import com.duck.code.commons.entity.sys.Role;
 import com.duck.code.commons.entity.sys.RolePermission;
 import com.duck.code.commons.utils.CommonRes;
 import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiModelProperty;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.shiro.authz.annotation.RequiresPermissions;
-import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
