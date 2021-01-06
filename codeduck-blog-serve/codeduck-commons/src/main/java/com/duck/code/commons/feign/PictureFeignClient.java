@@ -1,24 +1,11 @@
 package com.duck.code.commons.feign;
 
-import com.baomidou.mybatisplus.extension.api.R;
-import com.duck.code.commons.config.FeignConfig;
-import com.duck.code.commons.entity.file.Contract;
 import com.duck.code.commons.entity.picture.Picture;
-import feign.Headers;
-import feign.codec.Encoder;
-import feign.form.spring.SpringFormEncoder;
-import org.springframework.beans.factory.ObjectFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.http.HttpMessageConverters;
 import org.springframework.cloud.openfeign.FeignClient;
-import org.springframework.cloud.openfeign.support.SpringEncoder;
-import org.springframework.context.annotation.Bean;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.validation.constraints.Min;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -46,7 +33,5 @@ public interface PictureFeignClient {
     @PostMapping("/api/picture/delete")
     boolean deletePicture(@RequestParam("pictureIds") String[] pictureIds);
 
-    @PostMapping("/api/contract/upload")
-    boolean uploadContract(@RequestBody Contract contract);
 
 }

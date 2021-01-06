@@ -2,7 +2,7 @@ package com.duck.code.admin.filter;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.interfaces.DecodedJWT;
-import com.duck.code.admin.utils.CommonUtil;
+import com.duck.code.admin.utils.AdminUtil;
 import org.apache.shiro.util.AntPathMatcher;
 import org.apache.shiro.web.filter.AccessControlFilter;
 
@@ -65,7 +65,7 @@ public class PermissionFilter extends AccessControlFilter {
 
         resultMap.put("code", 10002);
         resultMap.put("msg", "无操作权限");
-        CommonUtil.outJson(servletResponse, resultMap);
+        AdminUtil.outJson(servletResponse, resultMap);
 
         return Boolean.FALSE;
     }

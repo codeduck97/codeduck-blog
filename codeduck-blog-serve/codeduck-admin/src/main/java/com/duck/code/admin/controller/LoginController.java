@@ -10,7 +10,7 @@ import com.duck.code.admin.config.redis.client.RedisClient;
 import com.duck.code.admin.service.AdminService;
 import com.duck.code.admin.service.PermissionService;
 import com.duck.code.admin.service.RoleService;
-import com.duck.code.admin.utils.CommonUtil;
+import com.duck.code.admin.utils.AdminUtil;
 import com.duck.code.commons.constant.ResCode;
 import com.duck.code.commons.constant.ResMsg;
 import com.duck.code.commons.entity.sys.Admin;
@@ -78,7 +78,7 @@ public class LoginController {
     @PostMapping("/login")
     public R userLogin(@NotBlank(message = "用户名不能为空") @RequestParam("username") String username,
                        @NotBlank(message = "登录密码不能为空") @RequestParam("password") String password){
-        Admin admin = adminService.queryByNamePwd(username, CommonUtil.md5UserPwd(password));
+        Admin admin = adminService.queryByNamePwd(username, AdminUtil.md5UserPwd(password));
 
         if (admin == null){
             return R.failed(ResMsg.LOGIN_ERROR).setCode(ResCode.OPERATION_FAIL);

@@ -18,7 +18,7 @@ import java.util.Map;
  * @author: Code Duck
  * @create: 2020-09-27 17:20
  **/
-public class CommonUtil {
+public class AdminUtil {
 
     /**
      * 密码加密 salt

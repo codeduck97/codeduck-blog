@@ -1,11 +1,9 @@
 package com.duck.code.admin.controller;
 
-import cn.hutool.core.bean.BeanUtil;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.api.R;
-import com.duck.code.admin.vo.AdminVO;
 import com.duck.code.admin.service.AdminService;
-import com.duck.code.admin.utils.CommonUtil;
+import com.duck.code.admin.utils.AdminUtil;
 import com.duck.code.commons.constant.ResCode;
 import com.duck.code.commons.entity.sys.Admin;
 import com.duck.code.commons.validator.Insert;
@@ -23,7 +21,6 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import java.time.LocalDateTime;
 import java.util.HashMap;
-import java.util.List;
 
 /**
  * @description: 用户信息控制器
@@ -47,7 +44,7 @@ public class AdminController {
         // 用户修改信息时，用户名必须唯一
         Admin admin = adminService.getAdminByName(adminVO.getUsername());
         if (admin == null || admin != null && admin.getId().equals(adminVO.getId())) {
-            admin.setPassword(CommonUtil.md5UserPwd(adminVO.getPassword()));
+            admin.setPassword(AdminUtil.md5UserPwd(adminVO.getPassword()));
             admin.setUpdateTime(LocalDateTime.now());
             admin.setRoleId(adminVO.getRoleId());
             try {
@@ -82,7 +79,7 @@ public class AdminController {
         log.info("{{}}",admin);
         // 1.判断当前注册的用户名是否合法
         if (!adminService.existAdminByName(admin.getUsername())) {
-            admin.setPassword(CommonUtil.md5UserPwd(admin.getPassword()));
+            admin.setPassword(AdminUtil.md5UserPwd(admin.getPassword()));
             try {
                 if (adminService.addUser(admin)) {
                     log.info("更新用户信息 {{}}", admin);

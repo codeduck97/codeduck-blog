@@ -8,7 +8,7 @@ import com.duck.code.admin.config.jwt.JwtHelper;
 import com.duck.code.admin.config.redis.RedisConstant;
 import com.duck.code.admin.config.redis.client.RedisClient;
 import com.duck.code.admin.config.jwt.JwtToken;
-import com.duck.code.admin.utils.CommonUtil;
+import com.duck.code.admin.utils.AdminUtil;
 import com.duck.code.commons.constant.ResCode;
 import com.duck.code.commons.constant.ResMsg;
 import lombok.extern.slf4j.Slf4j;
@@ -82,7 +82,7 @@ public class JwtFilter extends BasicHttpAuthenticationFilter {
                     resultMap.put("code", ResCode.TOKEN_ERROR);
                     resultMap.put("msg", msg);
                 }
-                CommonUtil.outJson(response, resultMap);
+                AdminUtil.outJson(response, resultMap);
                 return false;
             }
 
