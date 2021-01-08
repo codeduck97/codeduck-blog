@@ -49,6 +49,18 @@
               </div>
             </el-card>
           </div>
+          <div>
+                <!-- 用户管理||用户列表||分页 -->
+    <el-pagination
+      :current-page="pageInfo.pageNum"
+      :page-sizes="[10, 15, 20, 30]"
+      :page-size="pageInfo.pageSize"
+      layout="total, sizes, prev, pager, next, jumper"
+      :total="total"
+      @size-change="handleSizeChange"
+      @current-change="handleCurrentChange"
+    />
+          </div>
         </el-col>
         <!-- END -->
 
@@ -106,21 +118,10 @@
             </el-card>
           </div>
           <!-- END -->
-
         </el-col>
         <!-- END -->
       </el-row>
       <el-backtop><i class="el-icon-upload2"></i></el-backtop>
-    <!-- 用户管理||用户列表||分页 -->
-    <el-pagination
-      :current-page="pageInfo.pageNum"
-      :page-sizes="[10, 15, 20, 30]"
-      :page-size="pageInfo.pageSize"
-      layout="total, sizes, prev, pager, next, jumper"
-      :total="total"
-      @size-change="handleSizeChange"
-      @current-change="handleCurrentChange"
-    />
     </div>
 </template>
 
