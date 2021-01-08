@@ -21,7 +21,7 @@
         <dependency>
             <groupId>com.duck.code</groupId>
             <artifactId>codeduck-commons</artifactId>
-            <version>${project.version}</version>
+            <version>0.0.1-SNAPSHOT</version>
         </dependency>
         <!--openfeign-->
         <dependency>

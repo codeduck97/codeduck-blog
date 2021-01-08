@@ -111,6 +111,16 @@
         <!-- END -->
       </el-row>
       <el-backtop><i class="el-icon-upload2"></i></el-backtop>
+    <!-- 用户管理||用户列表||分页 -->
+    <el-pagination
+      :current-page="pageInfo.pageNum"
+      :page-sizes="[10, 15, 20, 30]"
+      :page-size="pageInfo.pageSize"
+      layout="total, sizes, prev, pager, next, jumper"
+      :total="total"
+      @size-change="handleSizeChange"
+      @current-change="handleCurrentChange"
+    />
     </div>
 </template>
 
@@ -123,6 +133,7 @@ export default {
         pageNum: 1,
         pageSize: 10
       },
+      total: 0,
       blogs: [], // 博文列表
       tags: [], // 标签列表
       sorts: [], // 分类列表
@@ -141,7 +152,7 @@ export default {
       HomeApi.getBlogs(this.pageInfo).then(res => {
         if (res.code === 1000) {
           this.blogs = res.data.blogs
-          // console.log(this.blogs)
+          this.total = res.data.total
           return
         }
         return this.$notify.error('博文信息获取失败')
@@ -185,6 +196,16 @@ export default {
         query: { id: blogId }
       })
       window.open(routeData.href, '_blank')
+    },
+    // 用户管理||用户列表||分页||监听pagesize改变事件
+    handleSizeChange (size) {
+      this.pageInfo.pageSize = size
+      this.getList()
+    },
+    // 用户管理||用户列表||分页||监听page-sizes改变
+    handleCurrentChange (num) {
+      this.pageInfo.pageNum = num
+      this.getList()
     }
   }
 }

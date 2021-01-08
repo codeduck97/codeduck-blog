@@ -179,8 +179,8 @@ export default {
     // 创建发布字典信息
     initPublished() {
       const status = [
-        { 'id': '0', 'value': '发布' },
-        { 'id': '1', 'value': '未发布' }
+        { 'id': '0', 'value': '未发布' },
+        { 'id': '1', 'value': '发布' }
       ]
       this.publishList = status
     },
@@ -197,7 +197,11 @@ export default {
       this.blog.cover = ''
       return
     },
+    cansulSubmit(blogFormRef) {
+      this.dialogVisible = false
+    },
     handleClose() {
+      this.dialogVisible = false
     },
     // 提交修改表单
     submitForm(blogFormRef) {

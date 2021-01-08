@@ -63,4 +63,9 @@ public interface BlogArticleService extends IService<BlogArticle> {
     List<BlogArticleVO> getBlogByTitle(String title);
 
 
+    boolean saveBlog(BlogArticle blogArticle);
+
+    boolean updateBlog(BlogArticle blogArticle);
+
+    boolean deleteBlog(BlogArticle blogArticle);
 }

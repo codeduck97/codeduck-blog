@@ -63,7 +63,7 @@ public class BlogArticleController {
     @ApiOperation(value = "增加博文信息", notes = "请注意博文对象必填的属性")
     @PostMapping("/add")
     public R addBlog(@Validated({Insert.class}) @RequestBody BlogArticle blogArticle) {
-        if (blogArticleService.saveOrUpdate(blogArticle)) {
+        if (blogArticleService.saveBlog(blogArticle)) {
             log.info("新增博客信息 {{}}", blogArticle);
             return R.ok(null).setCode(ResCode.OPERATION_SUCCESS);
         }
@@ -73,8 +73,7 @@ public class BlogArticleController {
     @ApiOperation(value = "更新博文信息", notes = "请注意博文对象必填的属性")
     @PutMapping("/update")
     public R updateBlog(@Validated({Update.class}) @RequestBody BlogArticle blogArticle) {
-        blogArticle.setUpdateTime(LocalDateTime.now());
-        if (blogArticleService.updateById(blogArticle)) {
+        if (blogArticleService.updateBlog(blogArticle)) {
             log.info("博文信息已更新为{{}}", blogArticle);
             return R.ok(null).setCode(ResCode.OPERATION_SUCCESS);
         }
@@ -87,7 +86,7 @@ public class BlogArticleController {
     public R deleteBlog(@NotBlank(message = "博文id不能为空") @RequestParam("id") String id) {
         BlogArticle article = blogArticleService.getById(id);
         if (article != null) {
-            if (blogArticleService.removeById(id)) {
+            if (blogArticleService.deleteBlog(article)) {
                 log.info("此博文已删除 {{}}", article);
                 return R.ok(null).setCode(ResCode.OPERATION_SUCCESS);
             }

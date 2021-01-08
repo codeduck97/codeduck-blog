@@ -219,8 +219,8 @@ export default {
     // 创建发布列表信息
     initPublish() {
       const status = [
-        { 'id': '0', 'status': '是' },
-        { 'id': '1', 'status': '否' }
+        { 'id': '0', 'status': '否' },
+        { 'id': '1', 'status': '是' }
       ]
       this.publishList = status
     },

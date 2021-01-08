@@ -13,6 +13,17 @@ export function getBlogs (pageInfo) {
   })
 }
 
+// export function getBlogs (pageInfo) {
+//   return request({
+//     url: '/api/home/blogs',
+//     method: 'get',
+//     params: {
+//       pageNum: pageInfo.pageNum,
+//       pageSize: pageInfo.pageSize
+//     }
+//   })
+// }
+
 /* 获取所有标签信息 */
 export function getTags () {
   return request({

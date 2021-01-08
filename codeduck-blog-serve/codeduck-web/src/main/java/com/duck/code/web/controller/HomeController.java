@@ -5,6 +5,8 @@ import com.duck.code.commons.constant.ResCode;
 import com.duck.code.commons.entity.blog.BlogArticle;
 import com.duck.code.commons.entity.blog.BlogSort;
 import com.duck.code.commons.entity.blog.BlogTag;
+import com.duck.code.commons.entity.search.SearchParam;
+import com.duck.code.commons.feign.EsFeignClient;
 import com.duck.code.web.service.BlogArticleService;
 import com.duck.code.web.service.BlogSortService;
 import com.duck.code.web.service.BlogTagService;
@@ -15,10 +17,7 @@ import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.validation.constraints.Min;
@@ -43,6 +42,9 @@ public class HomeController {
     private BlogArticleService blogArticleService;
 
     @Resource
+    private EsFeignClient esFeignClient;
+
+    @Resource
     private BlogTagService blogTagService;
 
     @Resource
@@ -63,6 +65,22 @@ public class HomeController {
         log.info("博文列表被请求，pageNum：{{}}，pageSize：{{}}", pageNum, pageSize);
         return R.ok(resMap).setCode(ResCode.OPERATION_SUCCESS);
     }
+
+    @GetMapping("/blogs")
+    public R getAll(@Min(value = 1, message = "当前页 pageNum >= 1") @RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum,
+                    @Min(value = 1, message = "页面大小 pageSize >= 1") @RequestParam(value = "pageSize", defaultValue = "5") Integer pageSize) {
+
+        SearchParam searchParam = new SearchParam();
+        searchParam.setPageNum(pageNum);
+        searchParam.setPageSize(pageSize);
+        return esFeignClient.searchAllBlogs(searchParam);
+    }
+
+    @PostMapping("/search")
+    public R searchBlogs(@RequestBody SearchParam searchParam) {
+        return esFeignClient.searchBlog(searchParam);
+    }
+
 
     @ApiOperation(value = "获取标签云信息",notes = "只返回存在文章的标签")
     @GetMapping("/tags")

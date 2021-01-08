@@ -63,4 +63,14 @@ public class ServiceTest {
         HashSet<Object> objects = new HashSet<>();
     }
 
+    @Test
+    public void testEx(){
+        try {
+            System.out.println("0");
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("2");
+        }
+    }
+
 }

@@ -181,8 +181,8 @@ export default {
     // 创建发布字典信息
     initPublished() {
       const status = [
-        { 'id': '0', 'value': '已发布' },
-        { 'id': '1', 'value': '未发布' }
+        { 'id': '1', 'value': '已发布' },
+        { 'id': '0', 'value': '未发布' }
       ]
       this.publishList = status
     },
