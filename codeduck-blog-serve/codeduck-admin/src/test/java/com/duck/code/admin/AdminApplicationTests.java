@@ -7,6 +7,7 @@ import com.duck.code.admin.mapper.AdminMapper;
 import com.duck.code.admin.mapper.BlogArticleMapper;
 import com.duck.code.admin.mapper.PermissionMapper;
 import com.duck.code.admin.service.*;
+import com.duck.code.commons.entity.blog.BlogArticle;
 import com.duck.code.commons.entity.sys.Admin;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -42,9 +43,9 @@ class AdminApplicationTests {
 
     @Test
     public void tet() {
-        Map<String, Object> map = permissionService.getPermissionMenus();
-        Object rows = map.get("rows");
-        System.out.println(rows.toString());
+        BlogArticle blogArticle = new BlogArticle();
+        blogArticle.setTitle("test");
+
 
     }
 
