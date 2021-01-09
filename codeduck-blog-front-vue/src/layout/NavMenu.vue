@@ -13,12 +13,24 @@
           <el-menu-item v-for="(item,i) in navList" :key="i" :index="item.index">
             {{item.navItem}}
           </el-menu-item>
-          <router-link to="/">
-            <a class="brand">
-              Code Duck
-            </a>
-          </router-link>
-          <i class="el-icon-user" v-on:click="login"></i>
+          <el-col :span="8">
+            <router-link to="/">
+              <a class="brand">
+                Code Duck
+              </a>
+            </router-link>
+          </el-col>
+          <el-col :span="10">
+            <!--绑定回车事件@keyup.enter.native-->
+            <el-input class="search-bar"
+              @keyup.enter.native="searchClick"
+              style="width: 300px;margin:10px 0 10px"
+              placeholder="请输入需要检索的关键词..."
+              v-model="keyword">
+              <el-button slot="append" icon="el-icon-search" @click="searchClick"></el-button>
+            </el-input>
+          </el-col>
+          <el-col :span="6"><i class="el-icon-user" v-on:click="login"></i></el-col>
         </el-menu>
       </el-col>
     </el-row>
@@ -31,6 +43,7 @@ export default {
   data () {
     return {
       navBarFixed: false,
+      keyword: '',
       navList: [
         { index: '/', navItem: '首页' },
         { index: '/sort', navItem: '分类' },
@@ -53,6 +66,17 @@ export default {
         type: 'warning'
       })
       // this.$router.push('/login')
+    },
+    searchClick () {
+      if (this.keyword === '') {
+        return this.$message.warning('请输入需要检索的关键词')
+      } else {
+        const routeData = this.$router.resolve({
+          path: '/search',
+          query: { keyword: this.keyword }
+        })
+        window.open(routeData.href, '_blank')
+      }
     },
     watchScroll () {
       const scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop // 当滚动超过 50 时，实现吸顶效果
@@ -77,7 +101,7 @@ export default {
     color: #fff;
   }
   .el-icon-user {
-    position: relative;
+    position: absolute;
     float: right;
     top: 16px;
     right: 30px;
@@ -92,5 +116,8 @@ export default {
     top:0;
     z-index:999;
   }
-
+  .search-bar {
+    position: absolute;
+    left: 70%;
+  }
 </style>

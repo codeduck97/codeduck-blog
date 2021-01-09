@@ -25,10 +25,10 @@
             <el-card>
               <div class="blog-card">
                 <h3 class="blog-title">
-                  <a href="javascript:void(0);" @click="getArticleInfo(blog.id)">{{blog.title}}</a>
+                  <a href="javascript:void(0);" @click="getArticleInfo(blog.blogId)">{{blog.title}}</a>
                 </h3>
                 <span class="blog-cover">
-                  <el-image @click="getArticleInfo(blog.id)" :src="blog.cover"></el-image>
+                  <el-image @click="getArticleInfo(blog.blogId)" :src="blog.coverImage"></el-image>
                 </span>
                 <div style="padding:15px">{{blog.title}}</div>
                 <div class="blog-info">
@@ -43,23 +43,23 @@
                     <i class="el-icon-view" style="margin-right:5px" />{{blog.hits}}
                   </span>
                   <span style="margin-right:20px">
-                    <i class="el-icon-time" style="margin-right:5px" />{{blog.creationTime}}
+                    <i class="el-icon-time" style="margin-right:5px" />{{blog.createTime}}
                   </span>
                 </div>
               </div>
             </el-card>
           </div>
-          <div>
-                <!-- 用户管理||用户列表||分页 -->
-    <el-pagination
-      :current-page="pageInfo.pageNum"
-      :page-sizes="[10, 15, 20, 30]"
-      :page-size="pageInfo.pageSize"
-      layout="total, sizes, prev, pager, next, jumper"
-      :total="total"
-      @size-change="handleSizeChange"
-      @current-change="handleCurrentChange"
-    />
+          <div class="pagination">
+            <!-- 用户管理||用户列表||分页 -->
+            <el-pagination
+              :current-page="pageInfo.pageNum"
+              :page-sizes="[2, 3, 4, 5]"
+              :page-size="pageInfo.pageSize"
+              layout="total, sizes, prev, pager, next, jumper"
+              :total="total"
+              @size-change="handleSizeChange"
+              @current-change="handleCurrentChange"
+            />
           </div>
         </el-col>
         <!-- END -->
@@ -132,7 +132,7 @@ export default {
     return {
       pageInfo: {
         pageNum: 1,
-        pageSize: 10
+        pageSize: 4
       },
       total: 0,
       blogs: [], // 博文列表
@@ -142,21 +142,29 @@ export default {
     }
   },
   created () {
-    this.getBlogs()
+    // this.getBlogs()
     this.getTags()
     this.getSorts()
     this.getHotBlogs()
+    this.getList()
+    this.searchByKeyword()
   },
   methods: {
     // 获取所有博文信息
-    getBlogs () {
-      HomeApi.getBlogs(this.pageInfo).then(res => {
+    getList () {
+      HomeApi.getList(this.pageInfo).then(res => {
         if (res.code === 1000) {
-          this.blogs = res.data.blogs
+          this.blogs = res.data.blogIndexList
           this.total = res.data.total
           return
         }
         return this.$notify.error('博文信息获取失败')
+      })
+    },
+    searchByKeyword () {
+      const keyword = 'Elasticsearch'
+      HomeApi.searchByKeyword(keyword).then(res => {
+        console.log(res)
       })
     },
     // 获取所有标签信息
@@ -272,5 +280,8 @@ export default {
 }
 .box-hot {
   padding: 10px;
+}
+.pagination {
+  margin-top: 30px;
 }
 </style>

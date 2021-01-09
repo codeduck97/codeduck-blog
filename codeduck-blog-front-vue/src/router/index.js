@@ -15,6 +15,7 @@ const routes = [
       { path: '/archive', component: () => import('../views/Archive') },
       { path: '/about', component: () => import('../views/About') },
       { path: '/article', component: () => import('../views/Article') },
+      { path: '/search', component: () => import('../views/SearchList') },
       { path: '/500', component: () => import('../views/500') },
       { path: '/404', component: () => import('../views/404') },
       { path: '/502', component: () => import('../views/502') }

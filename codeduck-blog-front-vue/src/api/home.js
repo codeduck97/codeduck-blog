@@ -13,6 +13,22 @@ export function getBlogs (pageInfo) {
   })
 }
 
+export function getList (pageInfo) {
+  return request({
+    url: '/api/home/blogs',
+    method: 'post',
+    data: { ...pageInfo }
+  })
+}
+
+export function searchByKeyword (searchParm) {
+  return request({
+    url: '/api/home/search',
+    method: 'post',
+    data: { ...searchParm }
+  })
+}
+
 // export function getBlogs (pageInfo) {
 //   return request({
 //     url: '/api/home/blogs',

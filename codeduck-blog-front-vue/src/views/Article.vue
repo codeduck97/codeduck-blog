@@ -90,7 +90,6 @@ export default {
   mounted () {
   },
   methods: {
-
     /* 获取根据id获取博文信息 */
     getArticleInfo () {
       ArticleApi.getArticleInfo(this.blogId).then(res => {
