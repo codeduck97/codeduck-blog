@@ -15,6 +15,10 @@ public class CommonRes {
         return R.ok(o).setCode(ResCode.OPERATION_SUCCESS);
     }
 
+    public static R success(String msg) {
+        return R.ok(null).setCode(ResCode.OPERATION_SUCCESS).setMsg(msg);
+    }
+
     public static R fail(String msg) {
         return R.failed(msg).setCode(ResCode.OPERATION_FAIL);
     }

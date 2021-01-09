@@ -11,4 +11,5 @@ public class SQLConstants {
     public static final String USERNAME = "username";
     public static final String EMAIL = "email";
     public static final String LIMIT_ONE = "LIMIT 1";
+    public static final String STATUS = "status";
 }

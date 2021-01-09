@@ -73,4 +73,5 @@ public class ResMsg {
     public static final String LOGIN_TIMEOUT = "您已退出，请重新登录";
 
     public static final String PLEASE_CONFIGURE_A_PASSWORD = "请先到参数配置，配置默认密码";
+    public static final String ACCOUNT_DISABLE = "该账号不可用";
 }

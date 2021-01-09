@@ -4,8 +4,6 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.duck.code.commons.entity.sys.Admin;
 import com.duck.code.web.entity.LoginBody;
 
-import javax.annotation.Resource;
-
 /**
  * @program: codeduck-blog-serve
  * @description:
@@ -19,4 +17,5 @@ public interface UserService  extends IService<Admin> {
 
     Admin getUserByNameOrEmail(LoginBody loginBody);
 
+    Admin register(LoginBody loginBody);
 }

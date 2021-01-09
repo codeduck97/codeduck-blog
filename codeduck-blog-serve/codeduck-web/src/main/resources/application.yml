@@ -1,3 +1,23 @@
+signName: CodeDuck Blog
+# 项目英文名
+PROJECT_NAME_EN: CodeDuck Blog
+#项目名称
+PROJECT_NAME: CodeDuck 博客
+
+data:
+  # 门户页面
+  webSite:
+    url: http://localhost:7202/#/
+  # codeduck_web网址，用于第三方登录回调
+  web:
+    url: http://127.0.0.1:8202
+
 spring:
   profiles:
     active: dev
+
+  rabbitmq:
+    host: 192.168.192.169
+    port: 5672
+    username: guest
+    password: guest

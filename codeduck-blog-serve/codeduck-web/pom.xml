@@ -52,6 +52,7 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-actuator</artifactId>
         </dependency>
+
         <!--一般基础配置-->
         <dependency>
             <groupId>org.springframework.boot</groupId>

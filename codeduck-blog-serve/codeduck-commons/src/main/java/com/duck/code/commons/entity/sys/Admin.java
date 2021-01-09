@@ -119,10 +119,11 @@ public class Admin implements Serializable {
      */
     private String region;
 
+
     /**
-     * 0: 下线, 1: 在线
+     * 用户验证码
      */
-    private Integer online;
+    private String validCode;
 
     /**
      * 用户是否被删除：0正常，1，删除

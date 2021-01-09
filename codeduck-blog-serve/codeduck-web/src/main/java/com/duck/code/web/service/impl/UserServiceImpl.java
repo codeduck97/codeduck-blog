@@ -1,12 +1,11 @@
 package com.duck.code.web.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.duck.code.commons.constant.SQLConstants;
 import com.duck.code.commons.constant.SysConstants;
 import com.duck.code.commons.entity.sys.Admin;
-import com.duck.code.web.config.redis.RedisClient;
+import com.duck.code.commons.utils.StringUtil;
 import com.duck.code.web.entity.LoginBody;
 import com.duck.code.web.mapper.UserMapper;
 import com.duck.code.web.service.CacheService;
@@ -17,7 +16,6 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
-import java.time.LocalDateTime;
 
 /**
  * @program: codeduck-blog-serve
@@ -43,12 +41,24 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, Admin> implements U
 
     @Override
     public Admin getUserByNameOrEmail(LoginBody loginBody) {
-        log.info("用户登录信息{{}}",loginBody);
         String username = loginBody.getUsername();
         QueryWrapper<Admin> queryWrapper = new QueryWrapper<>();
         queryWrapper.and(wrapper -> wrapper.eq(SQLConstants.USERNAME, username).or().eq(SQLConstants.EMAIL, username));
+        queryWrapper.gt(SQLConstants.STATUS, SysConstants.DISABLED);
         queryWrapper.last(SQLConstants.LIMIT_ONE);
         return super.getOne(queryWrapper);
+    }
+
+    @Transactional
+    @Override
+    public Admin register(LoginBody loginBody) {
+            Admin admin = new Admin();
+            admin.setEmail(loginBody.getEmail());
+            admin.setPassword(StringUtil.md5UserPwd(loginBody.getPassword()));
+            admin.setStatus(SysConstants.FREEZE);
+            admin.setUsername(loginBody.getUsername());
+            super.save(admin);
+        return admin;
     }
 
 }
