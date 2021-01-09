@@ -13,4 +13,21 @@ public class Constants {
      */
     public static final String SESSION_USER_INFO = "userInfo";
     public static final String SESSION_USER_PERMISSION = "userPermission";
+
+    /**
+     * 英文符号
+     */
+    public final static String SYMBOL_COMMA = ",";
+    public final static String SYMBOL_POINT = ".";
+    public final static String SYMBOL_QUESTION = "?";
+    public final static String SYMBOL_COLON = ":";
+    public final static String SYMBOL_STAR = "*";
+    public final static String SYMBOL_WELL = "#";
+    public final static String SYMBOL_HYPHEN = "-";
+    public final static String SYMBOL_UNDERLINE = "_";
+    public final static String SYMBOL_LEFT_BRACKET = "{";
+    public final static String SYMBOL_RIGHT_BRACKET = "}";
+    public final static String SYMBOL_RIGHT_EQUAL = "=";
+    public final static String SYMBOL_LEFT_OBLIQUE_LINE = "/";
+
 }

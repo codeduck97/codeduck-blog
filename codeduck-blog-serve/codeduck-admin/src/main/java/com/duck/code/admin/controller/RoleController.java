@@ -6,7 +6,7 @@ import com.duck.code.admin.service.*;
 import com.duck.code.commons.constant.ResCode;
 import com.duck.code.commons.entity.sys.Role;
 import com.duck.code.commons.entity.sys.RolePermission;
-import com.duck.code.commons.utils.CommonRes;
+import com.duck.code.commons.constant.CommonRes;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;

@@ -51,7 +51,7 @@ public class Admin implements Serializable {
     private String password;
 
     /**
-     * 用户状态：0正常，1禁止登陆
+     * 0:未激活, 1:正常, 2,冻结
      */
     private Integer status;
 
@@ -118,6 +118,11 @@ public class Admin implements Serializable {
      * 用户所在地
      */
     private String region;
+
+    /**
+     * 0: 下线, 1: 在线
+     */
+    private Integer online;
 
     /**
      * 用户是否被删除：0正常，1，删除

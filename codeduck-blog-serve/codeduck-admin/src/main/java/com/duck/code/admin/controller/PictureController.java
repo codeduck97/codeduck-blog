@@ -5,7 +5,7 @@ import com.baomidou.mybatisplus.extension.api.R;
 import com.duck.code.commons.constant.ResCode;
 import com.duck.code.commons.entity.picture.Picture;
 import com.duck.code.commons.feign.PictureFeignClient;
-import com.duck.code.commons.utils.CommonRes;
+import com.duck.code.commons.constant.CommonRes;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;

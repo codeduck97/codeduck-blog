@@ -78,7 +78,7 @@ public class EsSearchServiceImpl implements EsSearchService {
         searchSourceBuilder.from(from);
         searchSourceBuilder.size(size);
 
-        log.debug("Query DSL语句 {}",searchSourceBuilder.toString());
+        log.info("Query DSL语句 {}",searchSourceBuilder.toString());
         SearchRequest request = new SearchRequest(new String[]{EsConstant.BLOG_INDEX}, searchSourceBuilder);
         return request;
     }
@@ -122,7 +122,7 @@ public class EsSearchServiceImpl implements EsSearchService {
             searchSourceBuilder.highlighter(highlightBuilder);
         }
 
-        log.debug("Query DSL语句 {}",searchSourceBuilder.toString());
+        log.info("Query DSL语句 {}",searchSourceBuilder.toString());
         SearchRequest request = new SearchRequest(new String[]{EsConstant.BLOG_INDEX}, searchSourceBuilder);
         return request;
     }

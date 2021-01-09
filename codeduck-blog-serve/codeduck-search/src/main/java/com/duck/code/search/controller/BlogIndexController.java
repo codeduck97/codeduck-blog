@@ -2,7 +2,7 @@ package com.duck.code.search.controller;
 
 import com.baomidou.mybatisplus.extension.api.R;
 import com.duck.code.commons.entity.search.EsBlogIndex;
-import com.duck.code.commons.utils.CommonRes;
+import com.duck.code.commons.constant.CommonRes;
 import com.duck.code.commons.entity.search.SearchBlogResult;
 import com.duck.code.commons.entity.search.SearchParam;
 import com.duck.code.search.service.EsOperateService;

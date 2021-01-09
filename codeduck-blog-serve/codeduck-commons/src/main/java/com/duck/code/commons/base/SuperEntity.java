@@ -21,9 +21,6 @@ import java.util.Date;
 @SuppressWarnings("rawtypes")
 public class SuperEntity<T extends Model> extends Model {
 
-    /**
-     *
-     */
     private static final long serialVersionUID = -4851055162892178225L;
 
     /**

@@ -21,29 +21,35 @@
             </router-link>
           </el-col>
           <el-col :span="10">
-            <!--绑定回车事件@keyup.enter.native-->
-            <el-input class="search-bar"
-              @keyup.enter.native="searchClick"
-              style="width: 300px;margin:10px 0 10px"
-              placeholder="请输入需要检索的关键词..."
-              v-model="keyword">
-              <el-button slot="append" icon="el-icon-search" @click="searchClick"></el-button>
-            </el-input>
+            <div class="search-box">
+              <!--绑定回车事件@keyup.enter.native-->
+              <el-input class="search-bar"
+                @keyup.enter.native="searchClick"
+                style="width: 300px;margin:10px 0 10px"
+                placeholder="请输入需要检索的关键词..."
+                v-model="keyword">
+                <el-button slot="append" icon="el-icon-search" @click="searchClick"></el-button>
+              </el-input>
+            </div>
           </el-col>
           <el-col :span="6"><i class="el-icon-user" v-on:click="login"></i></el-col>
         </el-menu>
       </el-col>
     </el-row>
+    <login-box v-if="showLogin" @closeLoginBox="closeLoginBox"></login-box>
   </div>
 </template>
 
 <script>
+import loginBox from '@/components/LoginBox'
 export default {
+  components: { loginBox },
   name: 'NavMenu',
   data () {
     return {
       navBarFixed: false,
       keyword: '',
+      showLogin: false, // 显示登录框
       navList: [
         { index: '/', navItem: '首页' },
         { index: '/sort', navItem: '分类' },
@@ -61,11 +67,10 @@ export default {
       // console.log(key, keyPath)
     },
     login () {
-      this.$notify({
-        title: '暂未实现',
-        type: 'warning'
-      })
-      // this.$router.push('/login')
+      this.showLogin = true
+    },
+    closeLoginBox: function () {
+      this.showLogin = false
     },
     searchClick () {
       if (this.keyword === '') {

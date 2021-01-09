@@ -8,8 +8,10 @@ import com.duck.code.web.mapper.PictureMapper;
 import com.duck.code.web.service.BlogArticleService;
 import com.duck.code.web.service.BlogSortService;
 import com.duck.code.web.service.BlogTagService;
+import com.duck.code.web.service.CacheService;
 import com.duck.code.web.vo.BlogArticleVO;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestTemplate;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import javax.annotation.Resource;
@@ -43,6 +45,14 @@ public class ServiceTest {
 
     @Resource
     private BlogArticleMapper blogArticleMapper;
+
+    @Resource
+    private CacheService cacheService;
+
+    @Test
+    public void testRedis() {
+        cacheService.testConnect();
+    }
 
     @Test
     public void testSortDic(){

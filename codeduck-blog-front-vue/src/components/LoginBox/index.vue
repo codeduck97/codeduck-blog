@@ -104,8 +104,9 @@
 </template>
 
 <script>
-import { login, localLogin, localRegister } from '@/api/user'
+import * as LoginApi from '@/api/login'
 import { Loading } from 'element-ui'
+
 export default {
   name: 'share',
   data () {
@@ -134,7 +135,7 @@ export default {
       },
       // 登录类别
       loginType: {
-        password: true,
+        password: false,
         gitee: true,
         github: true,
         qq: true,
@@ -188,28 +189,33 @@ export default {
       const webConfigData = this.$store.state.app.webConfigData
       if (webConfigData.loginTypeList !== undefined) {
         const loginTypeList = JSON.parse(webConfigData.loginTypeList)
-        // for (let a = 0; a < loginTypeList.length; a++) {
-        //   switch (loginTypeList[a]) {
-        //     case '1': {
-        //       this.loginType.password = false
-        //     } break
-        //     case '2': {
-        //       this.loginType.gitee = false
-        //     } break
-        //     case '3': {
-        //       this.loginType.github = false
-        //     } break
-        //     case '4': {
-        //       this.loginType.qq = false
-        //     } break
-        //     case '5': {
-        //       this.loginType.wechat = false
-        //     } break
-        //     default: {
-        //       console.log('登录方式设置有误！！')
-        //     }
-        //   }
-        // }
+        for (let a = 0; a < loginTypeList.length; a++) {
+          switch (loginTypeList[a]) {
+            case '1': {
+              this.loginType.password = false
+              break
+            }
+            case '2': {
+              this.loginType.gitee = false
+              break
+            }
+            case '3': {
+              this.loginType.github = false
+              break
+            }
+            case '4': {
+              this.loginType.qq = false
+              break
+            }
+            case '5': {
+              this.loginType.wechat = false
+              break
+            }
+            default: {
+              console.log('登录方式设置有误！！')
+            }
+          }
+        }
         console.log(loginTypeList)
       }
     },
@@ -219,22 +225,25 @@ export default {
         if (!valid) {
           console.log('校验失败')
         } else {
-          var params = {}
-          params.userName = this.loginForm.userName
-          params.passWord = this.loginForm.password
+          const params = {}
+          params.username = this.loginForm.userName
+          params.password = this.loginForm.password
           params.isRememberMe = 1
-          localLogin(params).then(response => {
-            if (response.code === this.$ECode.SUCCESS) {
-              // 跳转到首页
-              location.replace(this.vueMoguWebUrl + '/#/?token=' + response.data)
-              window.location.reload()
-            } else {
-              this.$message({
-                type: 'error',
-                message: response.data
-              })
-            }
+          LoginApi.login(params).then(res => {
+            console.log(res.data)
           })
+          // localLogin(params).then(response => {
+          //   if (response.code === this.$ECode.SUCCESS) {
+          //     // 跳转到首页
+          //     location.replace(this.vueMoguWebUrl + '/#/?token=' + response.data)
+          //     window.location.reload()
+          //   } else {
+          //     this.$message({
+          //       type: 'error',
+          //       message: response.data
+          //     })
+          //   }
+          // })
         }
       })
     },
@@ -253,25 +262,28 @@ export default {
             return
           }
           var params = {}
-          params.userName = this.registerForm.userName
-          params.passWord = this.registerForm.password
+          params.username = this.registerForm.userName
+          params.password = this.registerForm.password
           params.email = this.registerForm.email
-          params.nickName = this.registerForm.nickName
-          localRegister(params).then(response => {
-            if (response.code === this.$ECode.SUCCESS) {
-              this.$message({
-                type: 'success',
-                message: response.data
-              })
-              // 打开登录页面
-              this.goLogin()
-            } else {
-              this.$message({
-                type: 'error',
-                message: response.data
-              })
-            }
+          params.nickname = this.registerForm.nickName
+          LoginApi.register(params).then(res => {
+            console.log(res.data)
           })
+          // localRegister(params).then(response => {
+          //   if (response.code === this.$ECode.SUCCESS) {
+          //     this.$message({
+          //       type: 'success',
+          //       message: response.data
+          //     })
+          //     // 打开登录页面
+          //     this.goLogin()
+          //   } else {
+          //     this.$message({
+          //       type: 'error',
+          //       message: response.data
+          //     })
+          //   }
+          // })
         }
       })
     },
@@ -287,14 +299,14 @@ export default {
         text: '加载中……',
         background: 'rgba(0, 0, 0, 0.7)'
       })
-      var params = new URLSearchParams()
-      params.append('source', source)
-      login(params).then(response => {
-        if (response.code === this.$ECode.SUCCESS) {
-          // var token = response.data.token
-          window.location.href = response.data.url
-        }
-      })
+      // var params = new URLSearchParams()
+      // params.append('source', source)
+      // login(params).then(response => {
+      //   if (response.code === this.$ECode.SUCCESS) {
+      //     // var token = response.data.token
+      //     window.location.href = response.data.url
+      //   }
+      // })
     },
     closeLogin: function () {
       this.$emit('closeLoginBox', '')

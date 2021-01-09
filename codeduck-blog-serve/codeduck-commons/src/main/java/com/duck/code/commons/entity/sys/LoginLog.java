@@ -1,36 +1,41 @@
 package com.duck.code.commons.entity.sys;
 
-import com.baomidou.mybatisplus.annotation.TableName;
-import lombok.Data;
+import java.time.LocalDateTime;
+import java.io.Serializable;
 
-import java.util.Date;
+import com.baomidou.mybatisplus.annotation.TableName;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 /**
- * @program: codeduck-blog-serve
- * @description: 登录信息记录
- * @author: Code Duck
- * @create: 2020-11-30 21:20
+ * <p>
+ * 
+ * </p>
+ *
+ * @author Code Duck
+ * @since 2021-01-09
  */
-@TableName("t_login_log")
 @Data
-public class LoginLog {
-    /**
-     * 用户 ID
-     */
+@EqualsAndHashCode(callSuper = false)
+@ApiModel(value="SysLoginLog对象", description="")
+@TableName("login_log")
+public class LoginLog implements Serializable {
+
+    private static final long serialVersionUID = 1L;
+
+    @ApiModelProperty(value = "用户名")
     private String username;
 
-    /**
-     * 登录时间
-     */
-    private Date loginTime;
+    @ApiModelProperty(value = "登录时间")
+    private LocalDateTime loginTime;
 
-    /**
-     * 登录地点
-     */
+    @ApiModelProperty(value = "登录地点")
     private String location;
 
-    /**
-     * ip地址
-     */
+    @ApiModelProperty(value = "IP地址")
     private String ip;
+
+
 }

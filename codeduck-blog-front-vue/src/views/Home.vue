@@ -147,7 +147,6 @@ export default {
     this.getSorts()
     this.getHotBlogs()
     this.getList()
-    this.searchByKeyword()
   },
   methods: {
     // 获取所有博文信息
@@ -159,12 +158,6 @@ export default {
           return
         }
         return this.$notify.error('博文信息获取失败')
-      })
-    },
-    searchByKeyword () {
-      const keyword = 'Elasticsearch'
-      HomeApi.searchByKeyword(keyword).then(res => {
-        console.log(res)
       })
     },
     // 获取所有标签信息

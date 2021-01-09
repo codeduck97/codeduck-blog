@@ -68,7 +68,6 @@ public class HomeController {
 
     @PostMapping("/blogs")
     public R getAll(@RequestBody SearchParam searchParam) {
-        log.info("num{{}},size:{{}}", searchParam.getPageNum(),searchParam.getPageSize());
         return esFeignClient.searchAllBlogs(searchParam);
     }
 

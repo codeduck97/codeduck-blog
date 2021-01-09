@@ -1,4 +1,4 @@
-package com.duck.code.commons.utils;
+package com.duck.code.commons.constant;
 
 import com.baomidou.mybatisplus.extension.api.R;
 import com.duck.code.commons.constant.ResCode;
