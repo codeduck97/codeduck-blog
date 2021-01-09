@@ -16,7 +16,7 @@ public class SearchParam {
     /**
      * 页码
      */
-    private Integer pageNum = 1;
+    private Integer pageNum;
 
-    private Integer pageSize = 5;
+    private Integer pageSize;
 }

@@ -66,13 +66,9 @@ public class HomeController {
         return R.ok(resMap).setCode(ResCode.OPERATION_SUCCESS);
     }
 
-    @GetMapping("/blogs")
-    public R getAll(@Min(value = 1, message = "当前页 pageNum >= 1") @RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum,
-                    @Min(value = 1, message = "页面大小 pageSize >= 1") @RequestParam(value = "pageSize", defaultValue = "5") Integer pageSize) {
-
-        SearchParam searchParam = new SearchParam();
-        searchParam.setPageNum(pageNum);
-        searchParam.setPageSize(pageSize);
+    @PostMapping("/blogs")
+    public R getAll(@RequestBody SearchParam searchParam) {
+        log.info("num{{}},size:{{}}", searchParam.getPageNum(),searchParam.getPageSize());
         return esFeignClient.searchAllBlogs(searchParam);
     }
 

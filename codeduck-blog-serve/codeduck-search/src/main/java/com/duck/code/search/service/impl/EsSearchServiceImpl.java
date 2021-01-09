@@ -73,8 +73,11 @@ public class EsSearchServiceImpl implements EsSearchService {
         // bool query 构建完毕
         searchSourceBuilder.query(boolQueryBuilder);
         // 2. 分页
-        searchSourceBuilder.from((searchParam.getPageNum() - 1) * EsConstant.BLOG_PAGESIZE);
-        searchSourceBuilder.size(EsConstant.BLOG_PAGESIZE);
+        int from = (searchParam.getPageNum() - 1) * searchParam.getPageSize();
+        int size = searchParam.getPageSize();
+        searchSourceBuilder.from(from);
+        searchSourceBuilder.size(size);
+
         log.debug("Query DSL语句 {}",searchSourceBuilder.toString());
         SearchRequest request = new SearchRequest(new String[]{EsConstant.BLOG_INDEX}, searchSourceBuilder);
         return request;
@@ -96,12 +99,15 @@ public class EsSearchServiceImpl implements EsSearchService {
             // 1.2 bool filter
             boolQueryBuilder.filter(QueryBuilders.termQuery("status", 1));
         }
+
         // bool query 构建完毕
         searchSourceBuilder.query(boolQueryBuilder);
 
         // 2. 分页
-        searchSourceBuilder.from((searchParam.getPageNum() - 1) * EsConstant.BLOG_PAGESIZE);
-        searchSourceBuilder.size(EsConstant.BLOG_PAGESIZE);
+        int from = (searchParam.getPageNum() - 1) * searchParam.getPageSize();
+        int size = searchParam.getPageSize();
+        searchSourceBuilder.from(from);
+        searchSourceBuilder.size(size);
 
         // 3. 高亮
         if (!StringUtils.isEmpty(searchParam.getKeyword())) {
@@ -141,9 +147,9 @@ public class EsSearchServiceImpl implements EsSearchService {
                     HighlightField title = hit.getHighlightFields().get("title");
                     if (title != null) esBlogIndex.setTitle(title.getFragments()[0].string());
                     HighlightField author = hit.getHighlightFields().get("author");
-                    if (author != null) esBlogIndex.setTitle(author.getFragments()[0].string());
+                    if (author != null) esBlogIndex.setAuthor(author.getFragments()[0].string());
                     HighlightField content = hit.getHighlightFields().get("content");
-                    if (content != null) esBlogIndex.setTitle(content.getFragments()[0].string());
+                    if (content != null) esBlogIndex.setContent(content.getFragments()[0].string());
                 }
                 blogIndexList.add(esBlogIndex);
             }
@@ -152,11 +158,7 @@ public class EsSearchServiceImpl implements EsSearchService {
 
         //2. 封装分页信息
         searchBlogResult.setPageNum(searchParam.getPageNum());
-        long total = hits.getTotalHits().value;
-        searchBlogResult.setTotal(total);
-        Integer totalPages = (int)total % EsConstant.BLOG_PAGESIZE== 0 ?
-                (int)total / EsConstant.BLOG_PAGESIZE : (int)total / EsConstant.BLOG_PAGESIZE + 1;
-        searchBlogResult.setTotalPages(totalPages);
+        searchBlogResult.setTotal(hits.getTotalHits().value);
         return searchBlogResult;
     }
 
