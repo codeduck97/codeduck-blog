@@ -11,7 +11,7 @@
     "axios": "^0.19.2",
     "core-js": "^3.6.5",
     "element-ui": "^2.13.2",
-    "highlight.js": "^10.4.0",
+    "highlight.js": "^10.4.1",
     "js-cookie": "^2.2.1",
     "marked": "^1.2.5",
     "ui": "^0.2.4",
