@@ -1,0 +1,15 @@
+spring:
+  profiles:
+    active: dev
+
+  mail:
+    host: smtp.163.com
+    username: codeduck@163.com
+    password: NHXJJLMOBJZOHIRL
+    default-encoding: UTF-8
+
+  rabbitmq:
+    host: 192.168.192.169
+    port: 5672
+    username: guest
+    password: guest

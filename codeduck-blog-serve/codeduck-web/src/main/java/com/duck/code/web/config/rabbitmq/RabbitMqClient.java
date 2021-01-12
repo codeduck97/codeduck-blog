@@ -44,7 +44,7 @@ public class RabbitMqClient {
         Map<String, Object> result = new HashMap<>();
         result.put(SysConstants.RECEIVER, email);
         result.put(SysConstants.TEXT, text);
-        //发送到RabbitMq
+        // 发送到RabbitMq
         rabbitTemplate.convertAndSend(EXCHANGE_DIRECT, ROUTING_KEY_EMAIL, result);
     }
 
@@ -129,7 +129,7 @@ public class RabbitMqClient {
                         "</div>\r\n" +
                         "<div class=\"panel\" style=\"background-color: rgb(246, 244, 236);\">\r\n" +
                         "<div class=\"panel-header\" style=\"background-color: rgb(246, 244, 236);\">\r\n" +
-                        "蘑菇博客邮件提醒\r\n" +
+                        "CodeDuck Blog 邮件提醒\r\n" +
                         "\r\n" +
                         "</div>\r\n" +
                         "<div class=\"panel-body\">\r\n" +
@@ -175,12 +175,12 @@ public class RabbitMqClient {
                         "</div>\r\n" +
                         "<div class=\"panel\" style=\"background-color: rgb(246, 244, 236);\">\r\n" +
                         "<div class=\"panel-header\" style=\"background-color: rgb(246, 244, 236);\">\r\n" +
-                        "蘑菇博客账号激活\r\n" +
+                        "CodeDuck Blog 账号激活\r\n" +
                         "\r\n" +
                         "</div>\r\n" +
                         "<div class=\"panel-body\">\r\n" +
                         "<p>您好 <a href=\"mailto:" + user.getEmail() + "\" rel=\"noopener\" target=\"_blank\">" + user.getNickname() + "<wbr></a>！</p>\r\n" +
-                        "<p>欢迎您注册蘑菇博客账号，请点击下方链接进行账号激活</p>\r\n" +
+                        "<p>欢迎您注册 CodeDuck Blog 账号，请点击下方链接进行账号激活</p>\r\n" +
                         "<p>地址：" + "<a href=\"" + dataWebUrl + "/api/login/active/" + token + "\">点击这里</a>" + "</p>\r\n" +
                         "\r\n" +
                         "</div>\r\n" +
@@ -208,7 +208,7 @@ public class RabbitMqClient {
         String text =
                 "<html>\r\n" +
                         " <head>\r\n" +
-                        "  <title> Code Duck Blog </title>\r\n" +
+                        "  <title> CodeDuck Blog </title>\r\n" +
                         " </head>\r\n" +
                         " <body>\r\n" +
                         "  <div id=\"contentDiv\" onmouseover=\"getTop().stopPropagation(event);\" onclick=\"getTop().preSwapLink(event, 'spam', 'ZC1222-PrLAp4T0Z7Z7UUMYzqLkb8a');\" style=\"position:relative;font-size:14px;height:auto;padding:15px 15px 10px 15px;z-index:1;zoom:1;line-height:1.7;\" class=\"body\">    \r\n" +
@@ -220,16 +220,16 @@ public class RabbitMqClient {
                         "<div class=\"email-body\" style=\"background-color: rgb(246, 244, 236);\">\r\n" +
                         "<div class=\"container\">\r\n" +
                         "<div class=\"logo\">\r\n" +
-                        "<img src=\"http://codeduck.top/md/images/duck.jpg\",height=\"100\" width=\"100\">\r\n" +
+                        "<img src=\"https://jason-01.oss-cn-hangzhou.aliyuncs.com/public/image/markdown/duck.jpg\",height=\"100\" width=\"100\">\r\n" +
                         "</div>\r\n" +
                         "<div class=\"panel\" style=\"background-color: rgb(246, 244, 236);\">\r\n" +
                         "<div class=\"panel-header\" style=\"background-color: rgb(246, 244, 236);\">\r\n" +
-                        "蘑菇博客邮箱绑定\r\n" +
+                        "CodeDuck Blog 邮箱绑定\r\n" +
                         "\r\n" +
                         "</div>\r\n" +
                         "<div class=\"panel-body\">\r\n" +
                         "<p>您好 <a href=\"mailto:" + user.getEmail() + "\" rel=\"noopener\" target=\"_blank\">" + user.getNickname() + "<wbr></a>！</p>\r\n" +
-                        "<p>欢迎您给蘑菇博客账号绑定邮箱，请点击下方链接进行绑定</p>\r\n" +
+                        "<p>欢迎您给 CodeDuck Blog 账号绑定邮箱，请点击下方链接进行绑定</p>\r\n" +
                         "<p>地址：" + "<a href=\"" + dataWebUrl + "/oauth/bindUserEmail/" + token + "/" + user.getValidCode() + "\">点击这里</a>" + "</p>\r\n" +
                         "\r\n" +
                         "</div>\r\n" +

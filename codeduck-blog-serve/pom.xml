@@ -14,16 +14,19 @@
         <module>codeduck-commons</module>
         <module>codeduck-admin</module>
         <module>codeduck-web</module>
-        <module>codeduck-es</module>
+        <module>codeduck-message</module>
         <module>codeduck-search</module>
         <module>codeduck-gateway</module>
         <module>codeduck-file</module>
+        <module>codeduck-message</module>
     </modules>
 
     <properties>
         <java.version>1.8</java.version>
         <springboot.version>2.2.11.RELEASE</springboot.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <aliyun.java.sdk.dysmsapi.version>1.0.0</aliyun.java.sdk.dysmsapi.version>
+        <aliyun.java.sdk.core.version>3.2.5</aliyun.java.sdk.core.version>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
         <lombok.version>1.18.0</lombok.version>
@@ -194,6 +197,17 @@
                 <groupId>org.projectlombok</groupId>
                 <artifactId>lombok</artifactId>
                 <version>${lombok.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.aliyun</groupId>
+                <artifactId>aliyun-java-sdk-dysmsapi</artifactId>
+                <version>${aliyun.java.sdk.dysmsapi.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.aliyun</groupId>
+                <artifactId>aliyun-java-sdk-core</artifactId>
+                <version>${aliyun.java.sdk.core.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

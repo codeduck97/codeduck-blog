@@ -18,4 +18,6 @@ public interface UserService  extends IService<Admin> {
     Admin getUserByNameOrEmail(LoginBody loginBody);
 
     Admin register(LoginBody loginBody);
+
+    void activeAccount(String username, String email);
 }

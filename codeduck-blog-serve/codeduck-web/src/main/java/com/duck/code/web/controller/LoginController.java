@@ -80,8 +80,9 @@ public class LoginController {
             user.setPassword("");
             // redis存储用户信息 key = USER_TOKEN-
             redisClient.set(RedisConstants.USER_TOKEN + StringPool.COLON + token , JSONObject.toJSONString(user), 604800);
-            HashMap<String, String> map = new HashMap<>();
+            HashMap<String, Object> map = new HashMap<>();
             map.put(SysConstants.TOKEN, token);
+            map.put(SysConstants.USER_INFO, user);
             log.info("用户已从前台登录{{}}", user);
             return CommonRes.success(map);
         } else {
@@ -112,14 +113,17 @@ public class LoginController {
         // redis存储未激活用户信息 key = ACTIVATE_USER:token
         redisClient.set(RedisConstants.ACTIVATE_USER + StringPool.COLON + token, JSONObject.toJSONString(needActiveUser), SysConstants.ONE_HOURS);
 
+        log.info("用户{{}}已注册,准备发送邮件激活账号", needActiveUser.getUsername());
+        log.info("token{ACTIVATE_USER:{}}", token);
         rabbitMqClient.sendActivateEmail(needActiveUser, token);
-
-        return CommonRes.success(loginBody);
+        return CommonRes.success(needActiveUser);
     }
 
     @ApiOperation(value = "激活用户账号", notes = "激活用户账号")
     @GetMapping("/active/{token}")
     public R bindUserEmail(@PathVariable("token") String token){
+        log.info("准备激活用户{{}}账号", token);
+
         String userInfo = (String) redisClient.get(RedisConstants.ACTIVATE_USER + StringPool.COLON + token);
 
         if (StringUtils.isEmpty(userInfo)) {
@@ -128,18 +132,20 @@ public class LoginController {
 
         // JSON字符串转Java对象
         Admin user = JSONObject.parseObject(userInfo, Admin.class);
-        user.setStatus(SysConstants.ENABLE);
-        userService.updateById(user);
+
+        userService.activeAccount(user.getUsername(),user.getEmail());
+        log.info("用户{{}}已激活成功", token);
         return CommonRes.success(SysConstants.ACCOUNT_ACTIVATED);
     }
 
-    @ApiOperation(value = "退出登录", notes = "退出登录", response = String.class)
-    @PostMapping(value = "/logout")
-    public R logout(@RequestParam(name = "token", required = false) String token) {
+    @ApiOperation(value = "退出登录", notes = "退出登录")
+    @GetMapping("/logout/{token}")
+    public R logout(@PathVariable("token") String token) {
 
         if (StringUtils.isEmpty(token)) {
             return CommonRes.fail("token为空，登出失败");
         }
+        log.info("用户{{}}已退出登录", token);
         redisClient.del(RedisConstants.ACTIVATE_USER + StringPool.COLON + token);
         return CommonRes.success("已退出登录");
     }

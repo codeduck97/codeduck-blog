@@ -32,23 +32,44 @@
               </el-input>
             </div>
           </el-col>
-          <el-col :span="6"><i class="el-icon-user" v-on:click="login"></i></el-col>
+          <el-col :span="6">
+            <span class="login_avatar">
+              <el-dropdown @command="handleCommand">
+                <span class="el-dropdown-link" >
+                  <i class="el-icon-user"></i>
+                </span>
+
+                <el-dropdown-menu slot="dropdown">
+                  <el-dropdown-item command="login" v-show="!isLogin">登录</el-dropdown-item>
+                  <el-dropdown-item command="goUserInfo" v-show="isLogin">个人中心</el-dropdown-item>
+                  <el-dropdown-item command="logout" v-show="isLogin">退出登录</el-dropdown-item>
+                </el-dropdown-menu>
+              </el-dropdown>
+            </span>
+          </el-col>
         </el-menu>
       </el-col>
     </el-row>
     <login-box v-if="showLogin" @closeLoginBox="closeLoginBox"></login-box>
+    <person-center ref="personCenter"></person-center>
   </div>
 </template>
 
 <script>
 import loginBox from '@/components/LoginBox'
+import personCenter from '@/components/PersonCenter'
+import * as LoginApi from '@/api/login'
+import * as TokenUtil from '../utils/auth'
+
 export default {
-  components: { loginBox },
+  components: { loginBox, personCenter },
   name: 'NavMenu',
   data () {
     return {
+      drawer: false,
       navBarFixed: false,
       keyword: '',
+      isLogin: false,
       showLogin: false, // 显示登录框
       navList: [
         { index: '/', navItem: '首页' },
@@ -59,12 +80,66 @@ export default {
       ]
     }
   },
+  created () {
+    this.initUserState()
+  },
   mounted () {
     window.addEventListener('scroll', this.watchScroll)
   },
   methods: {
+    initUserState () {
+      console.log(TokenUtil.getToken())
+
+      if (TokenUtil.getToken() === undefined) {
+        this.isLogin = false
+      } else {
+        this.isLogin = true
+      }
+    },
     handleSelect (key, keyPath) {
       // console.log(key, keyPath)
+    },
+    handleCommand (command) {
+      switch (command) {
+        case 'logout' : {
+          this.logout()
+          break
+        }
+        case 'login' : {
+          this.login()
+          break
+        }
+        case 'goUserInfo' : {
+          // 打开抽屉
+          this.$refs.personCenter.drawer = true
+          // 获取评论列表
+          // this.getCommentList()
+
+          // 获取点赞列表
+          // this.getPraiseList()
+
+          // 获取反馈列表
+          // this.getFeedback()
+          break
+        }
+      }
+    },
+    logout () {
+      const token = TokenUtil.getToken()
+      if (token === 'undefined') {
+        return this.$message.success('退出成功')
+      } else {
+        LoginApi.logout(token).then(res => {
+          if (res.code === 1000) {
+            console.log('cookie已被移除')
+            TokenUtil.removeToken()
+            this.$message.success('退出成功')
+            return window.location.reload()
+          } else {
+            this.$message.error('系统错误')
+          }
+        })
+      }
     },
     login () {
       this.showLogin = true
@@ -105,11 +180,12 @@ export default {
     font-family: "Comic Sans MS";
     color: #fff;
   }
-  .el-icon-user {
+  .login_avatar {
+    margin-top: 15px;
     position: absolute;
-    float: right;
-    top: 16px;
-    right: 30px;
+    left: 96%;
+  }
+  .el-icon-user {
     color: #fff;
     font-size: 25px;
     cursor: pointer;

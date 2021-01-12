@@ -73,4 +73,5 @@ public class SysConstants {
     public static final String USER_UID = "user_id";
     public static final String URL = "url";
     public static final String ACCOUNT_ACTIVATED = "账号已激活,欢迎使用CodeDuck Blog! 现在可以去登录啦! ~^_^~";
+    public static final String USER_INFO = "userInfo";
 }

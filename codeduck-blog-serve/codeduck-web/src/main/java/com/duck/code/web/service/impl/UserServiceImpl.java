@@ -57,8 +57,19 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, Admin> implements U
             admin.setPassword(StringUtil.md5UserPwd(loginBody.getPassword()));
             admin.setStatus(SysConstants.FREEZE);
             admin.setUsername(loginBody.getUsername());
+            admin.setNickname(loginBody.getNickname());
             super.save(admin);
-        return admin;
+        return getUserByNameOrEmail(loginBody);
+    }
+
+    @Override
+    public void activeAccount(String username, String email) {
+        LoginBody loginBody = new LoginBody();
+        loginBody.setEmail(email);
+        loginBody.setUsername(username);
+        Admin user = getUserByNameOrEmail(loginBody);
+        user.setStatus(SysConstants.ENABLE);
+        super.updateById(user);
     }
 
 }

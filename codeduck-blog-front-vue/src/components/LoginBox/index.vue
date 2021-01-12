@@ -107,8 +107,12 @@
 import * as LoginApi from '@/api/login'
 import { Loading } from 'element-ui'
 
+import * as TokenUtil from '../../utils/auth'
+import { mapMutations } from 'vuex'
+
 export default {
   name: 'share',
+  inject: ['reload'],
   data () {
     return {
       loading: null,
@@ -116,7 +120,7 @@ export default {
         fullscreen: true,
         lock: true
       },
-      vueMoguWebUrl: process.env.VUE_MOGU_WEB,
+      WebUrl: 'http://localhost:7202/#/',
       // 显示登录页面
       showLogin: true,
       isLogin: false,
@@ -184,6 +188,7 @@ export default {
     this.setLoginTypeList()
   },
   methods: {
+    ...mapMutations(['setUserInfo', 'getUserInfo', 'setLoginState', 'getLoginState', 'setWebConfigData']),
     setLoginTypeList: function () {
       // 获取登录方式列表
       const webConfigData = this.$store.state.app.webConfigData
@@ -221,29 +226,39 @@ export default {
     },
     startLogin: function () {
       this.$refs.loginForm.validate((valid) => {
-        console.log('开始校验', valid)
-        if (!valid) {
-          console.log('校验失败')
-        } else {
+        if (valid) {
           const params = {}
           params.username = this.loginForm.userName
           params.password = this.loginForm.password
           params.isRememberMe = 1
           LoginApi.login(params).then(res => {
-            console.log(res.data)
+            console.log(res)
+            if (res.code !== 1000) {
+              return this.$message({
+                type: 'error',
+                message: res.msg
+              })
+            }
+            let localToken = TokenUtil.getToken()
+            if (localToken === undefined) {
+              console.log('cookie设置成功')
+              TokenUtil.setToken(res.data.token)
+            } else {
+              localToken = TokenUtil.getToken()
+            }
+            if (localToken !== undefined) {
+              const userInfo = res.data.userInfo
+              this.isLogin = true
+              this.setUserInfo(userInfo)
+            } else {
+              this.isLogin = false
+            }
+            this.setLoginState(this.isLogin)
           })
-          // localLogin(params).then(response => {
-          //   if (response.code === this.$ECode.SUCCESS) {
-          //     // 跳转到首页
-          //     location.replace(this.vueMoguWebUrl + '/#/?token=' + response.data)
-          //     window.location.reload()
-          //   } else {
-          //     this.$message({
-          //       type: 'error',
-          //       message: response.data
-          //     })
-          //   }
-          // })
+          this.$emit('closeLoginBox', '')
+          this.$message.success('登录成功')
+          // this.reload()
+          // location.replace(this.WebUrl)
         }
       })
     },
@@ -268,23 +283,28 @@ export default {
           params.nickname = this.registerForm.nickName
           LoginApi.register(params).then(res => {
             console.log(res.data)
+            if (res.code !== 1000) {
+              return this.$message({
+                type: 'error',
+                message: res.msg
+              })
+            }
+            this.$notify({
+              title: '账号已注册成功，请前往邮箱激活！',
+              type: 'success'
+            })
+            return this.goLogin()
           })
-          // localRegister(params).then(response => {
-          //   if (response.code === this.$ECode.SUCCESS) {
-          //     this.$message({
-          //       type: 'success',
-          //       message: response.data
-          //     })
-          //     // 打开登录页面
-          //     this.goLogin()
-          //   } else {
-          //     this.$message({
-          //       type: 'error',
-          //       message: response.data
-          //     })
-          //   }
-          // })
         }
+      })
+    },
+    logout () {
+      const token = TokenUtil.getToken()
+      TokenUtil.removeToken()
+      this.isLogin = false
+      this.setLoginState(this.isLogin)
+      LoginApi.logout(token).then(res => {
+        console.log(res)
       })
     },
     goLogin: function () {

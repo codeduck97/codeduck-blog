@@ -15,3 +15,10 @@ export function register (params) {
     data: { ...params }
   })
 }
+
+export function logout (token) {
+  return request({
+    url: 'api/login/logout/' + token,
+    method: 'get'
+  })
+}
