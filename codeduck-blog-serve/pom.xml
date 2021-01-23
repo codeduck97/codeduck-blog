@@ -19,6 +19,7 @@
         <module>codeduck-gateway</module>
         <module>codeduck-file</module>
         <module>codeduck-message</module>
+        <module>codeduck-sentinel</module>
     </modules>
 
     <properties>
