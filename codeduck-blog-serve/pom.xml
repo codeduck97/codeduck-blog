@@ -40,7 +40,7 @@
         <freemarker.version>2.3.30</freemarker.version>
         <hutool.version>5.4.3</hutool.version>
         <java.jwt.version>3.4.0</java.jwt.version>
-        <shiro.version>1.5.1</shiro.version>
+        <shiro.version>1.7.0</shiro.version>
         <swagger2.version>2.9.2</swagger2.version>
         <swagger-ui.version>1.8.7</swagger-ui.version>
         <commons-lang3.version>3.9</commons-lang3.version>
