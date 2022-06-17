@@ -44,7 +44,7 @@
         <swagger2.version>2.9.2</swagger2.version>
         <swagger-ui.version>1.8.7</swagger-ui.version>
         <commons-lang3.version>3.9</commons-lang3.version>
-        <fastjson.version>1.2.66</fastjson.version>
+        <fastjson.version>1.2.83</fastjson.version>
     </properties>
 
     <dependencyManagement>
